@@ -77,9 +77,8 @@ public class SqlDatabase implements Database {
         ResultSet resultSet = this.executeQuery(sql);
         resultSet.first();
         int count = Integer.parseInt(resultSet.getString("result"));
-        if (count > 0) {
+        if (count > 0)
             return true;
-        }
         return false;
     }
 
@@ -92,12 +91,24 @@ public class SqlDatabase implements Database {
      */
     private ResultSet executeQuery(String sql) throws SQLException {
         Statement statement = this.connection.createStatement();
-        statement.executeUpdate(sql);
-        System.out.println(sql);
+//        System.out.println(sql);
         return statement.executeQuery(sql);
     }
 
-
+    /**
+     * Gets the highest ID out of the table
+     * @param table
+     * @return
+     * @throws SQLException
+     */
+    private int getMaxIdFromTable(String table) throws SQLException {
+        String sql = "SELECT MAX(id) FROM " + table + ";";
+        ResultSet resultSet = this.executeQuery(sql);
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
+    }
 
 
 
@@ -121,10 +132,10 @@ public class SqlDatabase implements Database {
     }
 
     @Override
-    public boolean insertProject(Project object) throws SQLException {
+    public int insertProject(Project object) throws SQLException {
         String sql = "INSERT INTO Project SET name='" + object.getName() + "';";
         this.executeQuery(sql);
-        return false;
+        return this.getMaxIdFromTable("project");
     }
 
     @Override
@@ -157,10 +168,10 @@ public class SqlDatabase implements Database {
     }
 
     @Override
-    public boolean insertMaingroup(MainGroup object) throws SQLException {
+    public int insertMaingroup(MainGroup object) throws SQLException {
         String sql = "INSERT INTO Maingroup SET name='" + object.getName() + "', number=" + object.getNumber() + ", idProject=" + object.getIdProject() + ";";
         this.executeQuery(sql);
-        return false;
+        return this.getMaxIdFromTable("Maingroup");
     }
 
     @Override
@@ -193,10 +204,10 @@ public class SqlDatabase implements Database {
     }
 
     @Override
-    public boolean insertMiddlegroup(MiddleGroup object) throws SQLException {
+    public int insertMiddlegroup(MiddleGroup object) throws SQLException {
         String sql = "INSERT INTO Middlegroup SET name='" + object.getName() + "', number=" + object.getNumber() + ", idMaingroup=" + object.getIdMaingroup() + ";";
         this.executeQuery(sql);
-        return false;
+        return this.getMaxIdFromTable("Middlegroup");
     }
 
     @Override
@@ -229,10 +240,10 @@ public class SqlDatabase implements Database {
     }
 
     @Override
-    public boolean insertAddress(Address object) throws SQLException {
+    public int insertAddress(Address object) throws SQLException {
         String sql = "INSERT INTO Address SET name='" + object.getName() + "', startaddress=" + object.getStartAddress() + ", idMiddlegroup=" + object.getIdMiddlegroup() + ";";
         this.executeQuery(sql);
-        return false;
+        return this.getMaxIdFromTable("Address");
     }
 
     @Override
@@ -263,8 +274,10 @@ public class SqlDatabase implements Database {
     }
 
     @Override
-    public boolean insertObjectTemplate(ObjectTemplate object) throws SQLException {
-        return false;
+    public int insertObjectTemplate(ObjectTemplate object) throws SQLException {
+        String sql = "INSERT INTO ObjectTemplate SET name='" + object.getName() + "', idAddress="+ object.getIdAddress()+";";
+        this.executeQuery(sql);
+        return this.getMaxIdFromTable("ObjectTemplate");
     }
 
     @Override
@@ -293,10 +306,10 @@ public class SqlDatabase implements Database {
     }
 
     @Override
-    public boolean insertAttribute(Attribute object) throws SQLException {
+    public int insertAttribute(Attribute object) throws SQLException {
         String sql = "INSERT INTO Attribute SET name='" + object.getName() + "', idObjectTemplate=" + object.getIdObjectTemplate() + ";";
         this.executeQuery(sql);
-        return false;
+        return this.getMaxIdFromTable("Attribute");
     }
 
     @Override

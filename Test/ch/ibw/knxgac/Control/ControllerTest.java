@@ -34,7 +34,7 @@ class ControllerTest {
     }
 
     @Test
-    void checkConfiguration() throws SQLException, IOException {
+    void checkConfiguration() throws SQLException, IOException, ClassNotFoundException {
         // Arrange
         Database db = mock(Database.class);
         Configuration configuration = mock(Configuration.class);

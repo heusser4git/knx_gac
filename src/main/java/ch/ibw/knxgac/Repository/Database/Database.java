@@ -10,35 +10,35 @@ public interface Database {
     boolean isConnected() throws SQLException;
     void closeConnection() throws SQLException;
 
-    public ArrayList<Project> selectProject(Project filter) throws SQLException;
-    public boolean insertProject(Project object) throws SQLException;
-    public boolean updateProject(Project object) throws SQLException;
-    public boolean deleteProject(Project object) throws SQLException;
+    ArrayList<Project> selectProject(Project filter) throws SQLException;
+    int insertProject(Project object) throws SQLException;
+    boolean updateProject(Project object) throws SQLException;
+    boolean deleteProject(Project object) throws SQLException;
 
-    public ArrayList<MainGroup> selectMaingroup(MainGroup filter) throws SQLException;
-    public boolean insertMaingroup(MainGroup object) throws SQLException;
-    public boolean updateMaingroup(MainGroup object) throws SQLException;
-    public boolean deleteMaingroup(MainGroup object) throws SQLException;
+    ArrayList<MainGroup> selectMaingroup(MainGroup filter) throws SQLException;
+    int insertMaingroup(MainGroup object) throws SQLException;
+    boolean updateMaingroup(MainGroup object) throws SQLException;
+    boolean deleteMaingroup(MainGroup object) throws SQLException;
 
-    public ArrayList<MiddleGroup> selectMiddlegroup(MiddleGroup filter) throws SQLException;
-    public boolean insertMiddlegroup(MiddleGroup object) throws SQLException;
-    public boolean updateMiddlegroup(MiddleGroup object) throws SQLException;
-    public boolean deleteMiddlegroup(MiddleGroup object) throws SQLException;
+    ArrayList<MiddleGroup> selectMiddlegroup(MiddleGroup filter) throws SQLException;
+    int insertMiddlegroup(MiddleGroup object) throws SQLException;
+    boolean updateMiddlegroup(MiddleGroup object) throws SQLException;
+    boolean deleteMiddlegroup(MiddleGroup object) throws SQLException;
 
-    public ArrayList<Address> selectAddress(Address filter) throws SQLException;
-    public boolean insertAddress(Address object) throws SQLException;
-    public boolean updateAddress(Address object) throws SQLException;
-    public boolean deleteAddress(Address object) throws SQLException;
+    ArrayList<Address> selectAddress(Address filter) throws SQLException;
+    int insertAddress(Address object) throws SQLException;
+    boolean updateAddress(Address object) throws SQLException;
+    boolean deleteAddress(Address object) throws SQLException;
 
-    public ArrayList<ObjectTemplate> selectObjectTemplate(ObjectTemplate filter) throws SQLException;
-    public boolean insertObjectTemplate(ObjectTemplate object) throws SQLException;
-    public boolean updateObjectTemplate(ObjectTemplate object) throws SQLException;
-    public boolean deleteObjectTemplate(ObjectTemplate object) throws SQLException;
+    ArrayList<ObjectTemplate> selectObjectTemplate(ObjectTemplate filter) throws SQLException;
+    int insertObjectTemplate(ObjectTemplate object) throws SQLException;
+    boolean updateObjectTemplate(ObjectTemplate object) throws SQLException;
+    boolean deleteObjectTemplate(ObjectTemplate object) throws SQLException;
 
-    public ArrayList<Attribute> selectAttribute(Attribute filter) throws SQLException;
-    public boolean insertAttribute(Attribute object) throws SQLException;
-    public boolean updateAttribute(Attribute object) throws SQLException;
-    public boolean deleteAttribute(Attribute object) throws SQLException;
+    ArrayList<Attribute> selectAttribute(Attribute filter) throws SQLException;
+    int insertAttribute(Attribute object) throws SQLException;
+    boolean updateAttribute(Attribute object) throws SQLException;
+    boolean deleteAttribute(Attribute object) throws SQLException;
 
     void createTablesToDb() throws SQLException;
 }

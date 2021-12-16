@@ -3,31 +3,28 @@ package ch.ibw.knxgac.Model;
 import java.util.ArrayList;
 
 public class Project extends Data {
-    private String name;
     private ArrayList<MainGroup> maingroups = new ArrayList<>();
 
-    public String getName() {
-        return name;
+    public Project() {
+    }
+    public Project(int idProject) {
+        this.setId(idProject);
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ArrayList getMaingroups() {
+    public ArrayList<MainGroup> getMaingroups() {
         return maingroups;
     }
 
-    public void setMaingroups(ArrayList maingroups) {
-        this.maingroups = maingroups;
+    public void setMaingroups(ArrayList<MainGroup> maingroups) {
+        this.maingroups.addAll(maingroups);
     }
 
-    public void addFloor(MainGroup floor) {
-        this.maingroups.add(floor);
+    public void addMaingroup(MainGroup mainGroup) {
+        this.maingroups.add(mainGroup);
     }
 
-    public void removeFloor(MainGroup floor) {
-        this.maingroups.remove(floor);
+    public void removeMaingroup(MainGroup mainGroup) {
+        this.maingroups.remove(mainGroup);
     }
 
     @Override
@@ -40,6 +37,6 @@ public class Project extends Data {
                 where += " AND name LIKE '" + this.name + "%'";
             }
         }
-        return  where;
+        return where;
     }
 }

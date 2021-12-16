@@ -5,8 +5,8 @@ package ch.ibw.knxgac.Model;
  * otherwise it won't be able to use the Repository
  */
 public class Data {
-    protected int id;
-    protected String name;
+    protected int id = 0;
+    protected String name = "";
 
     public int getId() {
         return id;
@@ -24,7 +24,11 @@ public class Data {
         this.name = name;
     }
 
+    /**
+     * Generates the WhereClause for SQL-Queries
+     * @return String SQL-WhereClause
+     */
     public String getWhereClause() {
         return "ID is not NULL";
-    };
+    }
 }

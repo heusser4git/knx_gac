@@ -2,6 +2,7 @@ package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.*;
+import ch.ibw.knxgac.Repository.Database.SqlDatabase;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class KnxGacApplication extends Application {
     private Stage stage = null;
@@ -19,7 +21,15 @@ public class KnxGacApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
-        this.controller = new Controller();
+        try {
+            this.controller = new Controller();
+        } catch (SQLException e) {
+            // TODO urs errorhandling
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO urs errorhandling
+            e.printStackTrace();
+        }
         try {
             // get the configuration out of the config-file
             this.configuration = controller.getConfiguration();
@@ -28,8 +38,34 @@ public class KnxGacApplication extends Application {
             e.printStackTrace();
         }
 
+        /**
+         * Beispiel für das erstellen eines Projektes
+         */
+//        Project p = new Project();
+//        p.setName("Projekt new");
+//        try {
+//            p.setId(controller.insertObject(p));
+//            System.out.println("IdProjekt: " + p.getId());
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        /**
+         * Beispiel für das holen aller Projekte
+         */
+//        try {
+//            Project filter = new Project(29);
+//            ArrayList<Project> projects = controller.selectObject(filter);
+//            for(Project p : projects) {
+//                System.out.println(p.getId() + " " + p.getName());
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+
         // Check if DB-Connection ok, otherwise open config-Tab
-        boolean configGui = false;
+        boolean configGui;
         try {
             // check if the configuration-data are complete and the
             // database is reachable, also the outputfolder is available
