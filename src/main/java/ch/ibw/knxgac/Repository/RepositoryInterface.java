@@ -4,7 +4,7 @@ import ch.ibw.knxgac.Model.*;
 
 import java.util.ArrayList;
 
-public interface RepositoryInterface<T extends DataInterface> {
+public interface RepositoryInterface<T extends Data> {
     /**
      * Gets Data of the given Filter-Object which extends DataInterface
      * Expl. If the Filter-Object has an ID the Return will be an ArrayList with

@@ -1,22 +1,14 @@
 package ch.ibw.knxgac.View;
 
-import ch.ibw.knxgac.Model.DataInterface;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-import java.io.DataInput;
 import java.io.File;
-import java.util.ArrayList;
 
 public class FieldHelper {
     public Label getLable(String lable) {

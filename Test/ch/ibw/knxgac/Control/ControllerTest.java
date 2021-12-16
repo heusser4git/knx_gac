@@ -7,6 +7,7 @@ import javafx.application.ConditionalFeature;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -33,7 +34,7 @@ class ControllerTest {
     }
 
     @Test
-    void checkConfiguration() throws SQLException {
+    void checkConfiguration() throws SQLException, IOException {
         // Arrange
         Database db = mock(Database.class);
         Configuration configuration = mock(Configuration.class);

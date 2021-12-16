@@ -142,21 +142,38 @@ public class GuiConfig {
                             tab.setDisable(false);
                         }
                         tabPane.getSelectionModel().selectFirst();
+                    } else {
+                        new Dialog().getInformation(
+                                "Speichern nicht möglich",
+                                "Information",
+                                "Bitte füllen Sie die Felder korrekt aus."
+                        ).show();
                     }
                 } catch (SQLException e) {
-                    // deactivate all tabs except the selected one
-                    Tab actualTab = tabPane.getSelectionModel().getSelectedItem();
-                    for (Tab tab : tabPane.getTabs()) {
-                        if(!tab.equals(actualTab)) {
-                            tab.setDisable(true);
+                    if(e.getErrorCode()== 1007) {
+                        // datenbank existiert schon, deshalb konnte nicht geschrieben werden - timingproblem...
+                        new Dialog().getInformation(
+                                "Die Datenbank wurde erstellt",
+                                "Information",
+                                "Bitte klicken Sie nochmals speichern \num die notwendigen Einstellungen zu speichern."
+                        ).show();
+                    } else {
+                        // deactivate all tabs except the selected one
+                        Tab actualTab = tabPane.getSelectionModel().getSelectedItem();
+                        for (Tab tab : tabPane.getTabs()) {
+                            if (!tab.equals(actualTab)) {
+                                tab.setDisable(true);
+                            }
                         }
+                        // alert an error because of the SQLException
+                        new Dialog().getError(
+                                "Fehler bei der Datenbankverbindung",
+                                "SQL Exception",
+                                "Bitte prüfen Sie ihre Datenbankverbindungsangaben.\nEs konnte keine Verbindung zur Datenbank aufgebaut werden.\n" +
+                                        "Error: " + e.getMessage()
+
+                        ).show();
                     }
-                    // alert an error because of the SQLException
-                    new Dialog().getError(
-                            "Fehler bei der Datenbankverbindung",
-                            "SQL Exception",
-                            "Bitte prüfen Sie ihre Datenbankverbindungsangaben.\nEs konnte keine Verbindung zur Datenbank aufgebaut werden.\n"
-                    ).show();
                 } catch (ClassNotFoundException e) {
                     // alert an error because of the ClassNotFoundException
                     new Dialog().getError(

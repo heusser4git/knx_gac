@@ -2,17 +2,10 @@ package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.*;
-import ch.ibw.knxgac.Repository.Database.Sql;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,22 +28,12 @@ public class KnxGacApplication extends Application {
             e.printStackTrace();
         }
 
-
-//        Sql sql = new Sql();
-//        try {
-//            sql.createConnection(configuration.getDbServertyp().name(), configuration.getDbServer(), configuration.getDbServerPort(), configuration.getDbName(), configuration.getDbUsername(), configuration.getDbPassword());
-//            sql.createTable(new ObjectTemplate());
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
-
         // Check if DB-Connection ok, otherwise open config-Tab
         boolean configGui = false;
         try {
             // check if the configuration-data are complete and the
             // database is reachable, also the outputfolder is available
-            this.controller.checkConfiguration(this.configuration);
+            configGui = !this.controller.checkConfiguration(this.configuration);
         } catch (SQLException e) {
             // if database has an error show the config-gui
             configGui = true;

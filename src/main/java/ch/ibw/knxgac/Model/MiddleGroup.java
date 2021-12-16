@@ -1,45 +1,17 @@
 package ch.ibw.knxgac.Model;
 
-import ch.ibw.knxgac.Repository.Database.DBField;
-
 import java.util.ArrayList;
 
-/**
- * Model.Floor aka Hauptgruppe or Etage (expl. 1. Stock)
- */
-public class MiddleGroup implements DataInterface  {
-    @DBField(name="id", isFilter = true, isPrimaryKey = true, datatype = "int(11)", isAutoincrement = true, type = Integer.class)
-    private int id;
-    @DBField(name = "name", isFilter = true, useQuotes = true, datatype = "varchar(255)", type = String.class)
-    private String name;
-    @DBField(name = "number", isFilter = true, datatype = "int", datatypesize = "(11)", type = Integer.class)
-    private String number;
-    @DBField(name = "idMaingroup", isFilter = true, isForeignKey=true, foreignTable = "MainGroup", foreignTableColumn = "id", datatype = "int(11)", type = Integer.class)
+public class MiddleGroup extends Data {
+    private int number;
     private int idMaingroup;
-    @DBField(isNotInDb = true)
     private ArrayList<Address> addresses = new ArrayList<>();
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
@@ -65,5 +37,24 @@ public class MiddleGroup implements DataInterface  {
 
     public void setIdMaingroup(int idMaingroup) {
         this.idMaingroup = idMaingroup;
+    }
+
+    @Override
+    public String getWhereClause() {
+        String where = "ID is not NULL";
+        if(this.id>0) {
+            where = "ID = " + this.id;
+        } else {
+            if(this.name.length()>0) {
+                where += " AND name LIKE '" + this.name + "%'";
+            }
+            if(this.number>0) {
+                where += " AND number = " + this.number;
+            }
+            if(this.idMaingroup>0) {
+                where += " AND idMaingroup = " + this.idMaingroup;
+            }
+        }
+        return  where;
     }
 }

@@ -1,13 +1,6 @@
 package ch.ibw.knxgac.Model;
 
-import ch.ibw.knxgac.Repository.Database.DBField;
-
-public class Attribute {
-    @DBField(name="id", isFilter = true, isPrimaryKey = true, datatype = "int(11)", isAutoincrement = true, type = Integer.class)
-    private int id;
-    @DBField(name = "name", isFilter = true, useQuotes = true, datatype = "varchar(255)", type = String.class)
-    private String name;
-    @DBField(name = "idObjectTemplate", isFilter = true, isForeignKey=true, foreignTable = "ObjectTemplate", foreignTableColumn = "id", datatype = "int(11)", type = Integer.class)
+public class Attribute extends Data {
     private int idObjectTemplate;
 
     public Attribute(int id, String name) {
@@ -18,27 +11,27 @@ public class Attribute {
     public Attribute() {
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getIdObjectTemplate() {
         return idObjectTemplate;
     }
 
     public void setIdObjectTemplate(int idObjectTemplate) {
         this.idObjectTemplate = idObjectTemplate;
+    }
+
+    @Override
+    public String getWhereClause() {
+        String where = "ID is not NULL";
+        if(this.id>0) {
+            where = "ID = " + this.id;
+        } else {
+            if(this.name.length()>0) {
+                where += " AND name LIKE '" + this.name + "%'";
+            }
+            if(this.idObjectTemplate>0) {
+                where += " AND idObjectTemplate = " + this.idObjectTemplate;
+            }
+        }
+        return  where;
     }
 }

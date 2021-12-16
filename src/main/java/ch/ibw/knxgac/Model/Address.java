@@ -1,36 +1,11 @@
 package ch.ibw.knxgac.Model;
 
-import ch.ibw.knxgac.Repository.Database.DBField;
-
 import java.util.ArrayList;
 
-public class Address implements DataInterface {
-    @DBField(name = "id", isFilter = true, isPrimaryKey = true, datatype = "int", datatypesize = "(11)", isAutoincrement = true, type = Integer.class)
-    private int id;
-    @DBField(name = "name", useQuotes = true, datatype = "varchar", datatypesize = "(255)", type = String.class)
-    private String name;
-    @DBField(name = "idMiddlegroup", isFilter = true, datatype = "int", datatypesize = "(11)", isForeignKey = true, foreignTable = "MiddleGroup", foreignTableColumn = "id", type = Integer.class)
+public class Address extends Data {
     private int idMiddlegroup;
-    @DBField(name = "startaddress", datatype = "int", datatypesize = "(11)")
     private int startAddress;
-    @DBField(isNotInDb = true)
     private ArrayList<ObjectTemplate> objectTemplates = new ArrayList<>();
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getIdMiddlegroup() {
         return idMiddlegroup;
@@ -38,5 +13,40 @@ public class Address implements DataInterface {
 
     public void setIdMiddlegroup(int idMiddlegroup) {
         this.idMiddlegroup = idMiddlegroup;
+    }
+
+    public int getStartAddress() {
+        return startAddress;
+    }
+
+    public void setStartAddress(int startAddress) {
+        this.startAddress = startAddress;
+    }
+
+    public ArrayList<ObjectTemplate> getObjectTemplates() {
+        return objectTemplates;
+    }
+
+    public void setObjectTemplates(ArrayList<ObjectTemplate> objectTemplates) {
+        this.objectTemplates = objectTemplates;
+    }
+
+    @Override
+    public String getWhereClause() {
+        String where = "ID is not NULL";
+        if(this.id>0) {
+            where = "ID = " + this.id;
+        } else {
+            if(this.name.length()>0) {
+                where += " AND name LIKE '" + this.name + "%'";
+            }
+            if(this.startAddress>0) {
+                where += " AND startaddress = " + this.startAddress;
+            }
+            if(this.idMiddlegroup>0) {
+                where += " AND idMiddlegroup = " + this.idMiddlegroup;
+            }
+        }
+        return  where;
     }
 }

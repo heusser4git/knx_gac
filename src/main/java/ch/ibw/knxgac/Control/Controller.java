@@ -3,10 +3,9 @@ package ch.ibw.knxgac.Control;
 import ch.ibw.knxgac.Model.Configuration;
 import ch.ibw.knxgac.Model.Project;
 import ch.ibw.knxgac.Repository.Database.Database;
-import ch.ibw.knxgac.Repository.Database.Sql;
+import ch.ibw.knxgac.Repository.Database.SqlDatabase;
 
 import java.io.*;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -16,7 +15,7 @@ public class Controller implements ControllerInterface {
     private Database db;
 
     public Controller() throws IOException {
-        this.db = new Sql();
+        this.db = new SqlDatabase();
         Path configfile = Path.of(CONFIGFILE);
         if(Files.notExists(configfile)) {
             // create Config File
@@ -25,7 +24,8 @@ public class Controller implements ControllerInterface {
             this.saveConfiguration(new Configuration());
         }
     }
-    public Controller(Database db) {
+    public Controller(Database db) throws IOException {
+        this();
         this.db = db;
     }
 

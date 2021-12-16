@@ -2,13 +2,13 @@ package ch.ibw.knxgac.Repository;
 
 import ch.ibw.knxgac.Model.*;
 import ch.ibw.knxgac.Repository.Database.Database;
-import ch.ibw.knxgac.Repository.Database.Sql;
+import ch.ibw.knxgac.Repository.Database.SqlDatabase;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Repository implements RepositoryInterface {
-    Database db = new Sql();
+    Database db = new SqlDatabase();
     public Repository() throws SQLException {
         // TODO korrekte connection
         //db.createConnection("mariadb", "semesterprojekt", "root", "123456");
@@ -17,11 +17,11 @@ public class Repository implements RepositoryInterface {
 
 
     @Override
-    public ArrayList getData(DataInterface filter) {
+    public ArrayList getData(Data filter) {
         if(filter.getClass().getSimpleName().equals(new String("Project"))) {
             ArrayList<Project> result = new ArrayList();
             try {
-                db.select(filter);
+                this.db.selectProject((Project) filter);
             } catch (SQLException e) {
                 // TODO Errormeldung
                 e.printStackTrace();
@@ -49,12 +49,47 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public DataInterface saveData(DataInterface object) {
+    public Data saveData(Data object) {
+        if(object.getId()>0) {
+            // update
+            if(object instanceof Project) {
+
+            } else if(object instanceof MainGroup) {
+
+            } else if(object instanceof MiddleGroup) {
+
+            } else if(object instanceof Address) {
+
+            } else if(object instanceof ObjectTemplate) {
+
+            } else if(object instanceof Attribute) {
+
+            }
+
+        } else {
+            // insert
+            if(object instanceof Project) {
+
+            } else if(object instanceof MainGroup) {
+
+            } else if(object instanceof MiddleGroup) {
+
+            } else if(object instanceof Address) {
+
+            } else if(object instanceof ObjectTemplate) {
+
+            } else if(object instanceof Attribute) {
+
+            }
+        }
         return null;
+    }
+    private void createProject(Project project) {
+
     }
 
     @Override
-    public boolean deleteData(DataInterface object) {
+    public boolean deleteData(Data object) {
         return false;
     }
 

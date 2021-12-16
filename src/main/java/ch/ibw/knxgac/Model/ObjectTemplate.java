@@ -1,34 +1,17 @@
 package ch.ibw.knxgac.Model;
 
-import ch.ibw.knxgac.Repository.Database.DBField;
-
 import java.util.ArrayList;
 
-public class ObjectTemplate implements DataInterface  {
-    @DBField(name="id", isFilter = true, isPrimaryKey = true, datatype = "int(11)", isAutoincrement = true, type = Integer.class)
-    private int id = 0;
-    @DBField(name = "name", isFilter = true, useQuotes = true, datatype = "varchar(255)", type = String.class)
-    private String name = null;
-    @DBField(name = "idaddress", isFilter = true, isForeignKey=true, foreignTable = "Address", foreignTableColumn = "id", datatype = "int(11)", type = Integer.class)
+public class ObjectTemplate extends Data {
     private int idAddress;
-    @DBField(isNotInDb = true)
     private ArrayList<Attribute> attributes = new ArrayList<>();
 
-
-    public int getId() {
-        return id;
+    public int getIdAddress() {
+        return idAddress;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setIdAddress(int idAddress) {
+        this.idAddress = idAddress;
     }
 
     public ArrayList<Attribute> getAttributes() {
@@ -45,5 +28,21 @@ public class ObjectTemplate implements DataInterface  {
 
     public void removeAttribute(Attribute attribute) {
         this.attributes.remove(attribute);
+    }
+
+    @Override
+    public String getWhereClause() {
+        String where = "ID is not NULL";
+        if(this.id>0) {
+            where = "ID = " + this.id;
+        } else {
+            if(this.name.length()>0) {
+                where += " AND name LIKE '" + this.name + "%'";
+            }
+            if(this.idAddress>0) {
+                where += " AND idAddress = " + this.idAddress;
+            }
+        }
+        return  where;
     }
 }
