@@ -22,6 +22,15 @@ public class FieldHelper {
     public Label getLable(String lable) {
         return new Label(lable);
     }
+
+    /**
+     * Get a label with individual Styling
+     * @param lable
+     * @param schriftart
+     * @param fontSize
+     * @param fontStyle
+     * @return
+     */
     public Label getLable(String lable, String schriftart, int fontSize, FontWeight fontStyle) {
         Font font = Font.font(schriftart, fontStyle, fontSize);
         Label l = new Label(lable);
@@ -31,17 +40,37 @@ public class FieldHelper {
     public TextField getTextField(String defaulvalue) {
         return new TextField(defaulvalue);
     }
+
+    /**
+     * Get a TextField with a Defaultvalue and an ID
+     * @param defaulvalue
+     * @param id
+     * @return
+     */
     public TextField getTextField(String defaulvalue, String id) {
         TextField tf = new TextField(defaulvalue);
         tf.setId(id);
         return tf;
     }
+
+    /**
+     * Get a PasswordField with a DefaultValue
+     * @param defaultValue
+     * @return
+     */
     public PasswordField getPasswordField(String defaultValue) {
         PasswordField pwd = new PasswordField();
         pwd.setText(defaultValue);
         return pwd;
     }
 
+    /**
+     * Get a HBox with an DirectoryChooser in it
+     * @param stage
+     * @param buttonText
+     * @param targetTextField   It is a targed Textfield (may be hidden) required to save the choosed value
+     * @return
+     */
     public HBox getDirectoryChooser(Stage stage, String buttonText, TextField targetTextField) {
         DirectoryChooser dc = new DirectoryChooser();
         Button btn = new Button(buttonText);
@@ -58,32 +87,4 @@ public class FieldHelper {
         return hBox;
     }
 
-//    public <T extends DataInterface> ChoiceBox<T> getChoiceBox(ArrayList<T> arrayList, String defaultValue, T gewahlterWert, TextField hiddenField) {
-//        // Choice Class fuer die ChoiceBox-Items
-//        class Choice {
-//            Integer id; String displayString;
-//            Choice(Integer id, String displayString) { this.id = id; this.displayString = displayString; }
-//            @Override public String toString() { return displayString; }
-//        }
-//
-//        ObservableList<Choice> choices = FXCollections.observableArrayList();
-//        if(defaultValue!=null && defaultValue.length()>0) {
-//            choices.add(new Choice(null, defaultValue));
-//        }
-//        // fuelle die daten aus der DB in die List für die ChoiceBox
-//        for (T object : arrayList) {
-//            choices.add(new Choice(object.getId(), object.getName()));
-//        }
-//        final ChoiceBox choiceBox = new ChoiceBox(choices);
-//        choiceBox.getSelectionModel().select(0);
-//        choiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ObservableValue observableValue, Object oldChoice, Object newChoice) {
-//                // schreibe den gewaehlten User (id) in ein hidden field
-//                hiddenField.setText(String.valueOf(((Choice) newChoice).id));
-//                return;
-//            }
-//        });
-//        return choiceBox;
-//    }
 }
