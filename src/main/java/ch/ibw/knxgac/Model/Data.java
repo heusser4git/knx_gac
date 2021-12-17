@@ -31,4 +31,8 @@ public class Data {
     public String getWhereClause() {
         return "ID is not NULL";
     }
+
+    public String getUpdateClause() {
+        return "name = '" + this.getName() + "'";
+    }
 }

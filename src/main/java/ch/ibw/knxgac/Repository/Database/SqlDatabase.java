@@ -96,27 +96,60 @@ public class SqlDatabase implements Database {
     }
 
     /**
-     * Gets the highest ID out of the table
+     * Gets the highest ID out of the table and adds 1
      * @param table
      * @return
      * @throws SQLException
      */
-    private int getMaxIdFromTable(String table) throws SQLException {
-        String sql = "SELECT MAX(id) FROM " + table + ";";
+    private int getNextIdFromTable(String table) throws SQLException {
+        String sql = "SELECT MAX(id) AS id FROM " + table + ";";
         ResultSet resultSet = this.executeQuery(sql);
         if (resultSet.next()) {
-            return resultSet.getInt(1);
+            return (resultSet.getInt("id")+1);
         }
-        return 0;
+        throw new SQLException("Next ID could not be found!");
     }
 
 
+
+    /**
+     * Generates the SQL-Query-String for Select Data Operation
+     * @param table         String Name of the Table
+     * @param whereClause   String Where-Clause of the SQL-Query eg. "id IS NOT NULL"
+     * @return              String The whole Query to retrieve Data out of the Table
+     */
+    private String getSqlSelectQuery(String table, String whereClause) {
+        return "SELECT * FROM " + table + " WHERE " + whereClause;
+    }
+
+    /**
+     * Generates the SQL-Query-String for Insert Data Operation
+     * @param table         String Name of the Table
+     * @param fieldsValues  Fields and Values for the SET Part of the SQL-Query, eg. "name='jack', number=123"
+     * @return
+     */
+    private String getSqlInsertQuery(String table, String fieldsValues) {
+        return "INSERT INTO " + table + " SET " + fieldsValues + ";";
+    }
+
+    private String getSqlUpdateQuery(String table, Data object) {
+        return "UPDATE " + table + " SET " + object.getUpdateClause() + " WHERE id=" + object.getId() + ";";
+    }
+    /**
+     * Generates the SQL-Query-String for Insert Data Operation
+     * @param table    String Name of the Table
+     * @param id       int  ID of the dataset which has to be deleted
+     * @return
+     */
+    private String getSqlDeleteQuery(String table, int id) {
+        return "UPDATE " + table + " SET deleted=1 WHERE id=" + id + ";";
+    }
 
 
 
     @Override
     public ArrayList<Project> selectProject(Project filter) throws SQLException {
-        String sql = "SELECT * FROM Project WHERE " + filter.getWhereClause();
+        String sql = this.getSqlSelectQuery("Project", filter.getWhereClause());
         ArrayList<Project> projects = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -131,26 +164,40 @@ public class SqlDatabase implements Database {
         return projects;
     }
 
+    /**
+     * Inserts a new Project-Row
+     * @param object    Project with data to be written into DB
+     * @return          ID of the written Project-Row
+     * @throws SQLException
+     */
     @Override
     public int insertProject(Project object) throws SQLException {
-        String sql = "INSERT INTO Project SET name='" + object.getName() + "';";
+        int idProject = this.getNextIdFromTable("Project");
+        String sql = this.getSqlInsertQuery("Project", "id=" + idProject + ", name='" + object.getName());
         this.executeQuery(sql);
-        return this.getMaxIdFromTable("project");
+        return idProject;
     }
 
     @Override
-    public boolean updateProject(Project object) throws SQLException {
-        return false;
+    public void updateProject(Project object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlUpdateQuery("Project", object));
     }
 
+    /**
+     * Deletes a row off Project by writing 1 to the deleted-Flag
+     * @param object    Project with an ID is required
+     * @throws SQLException
+     */
     @Override
-    public boolean deleteProject(Project object) throws SQLException {
-        return false;
+    public void deleteProject(Project object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlDeleteQuery("Project", object.getId()));
     }
 
     @Override
     public ArrayList<MainGroup> selectMaingroup(MainGroup filter) throws SQLException {
-        String sql = "SELECT * FROM Maingroup WHERE " + filter.getWhereClause();
+        String sql = this.getSqlSelectQuery("Maingroup", filter.getWhereClause());
         ArrayList<MainGroup> maingroups = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -169,24 +216,27 @@ public class SqlDatabase implements Database {
 
     @Override
     public int insertMaingroup(MainGroup object) throws SQLException {
-        String sql = "INSERT INTO Maingroup SET name='" + object.getName() + "', number=" + object.getNumber() + ", idProject=" + object.getIdProject() + ";";
+        int idMaingroup = this.getNextIdFromTable("Maingroup");
+        String sql = this.getSqlInsertQuery("Maingroup", "id=" + idMaingroup + ", name='" + object.getName() + "', number=" + object.getNumber() + ", idProject=" + object.getIdProject());
         this.executeQuery(sql);
-        return this.getMaxIdFromTable("Maingroup");
+        return idMaingroup;
     }
 
     @Override
-    public boolean updateMaingroup(MainGroup object) throws SQLException {
-        return false;
+    public void updateMaingroup(MainGroup object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlUpdateQuery("Maingroup", object));
     }
 
     @Override
-    public boolean deleteMaingroup(MainGroup object) throws SQLException {
-        return false;
+    public void deleteMaingroup(MainGroup object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlDeleteQuery("Maingroup", object.getId()));
     }
 
     @Override
     public ArrayList<MiddleGroup> selectMiddlegroup(MiddleGroup filter) throws SQLException {
-        String sql = "SELECT * FROM Middlegroups WHERE " + filter.getWhereClause();
+        String sql = this.getSqlSelectQuery("Middlegroup", filter.getWhereClause());
         ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -205,24 +255,27 @@ public class SqlDatabase implements Database {
 
     @Override
     public int insertMiddlegroup(MiddleGroup object) throws SQLException {
-        String sql = "INSERT INTO Middlegroup SET name='" + object.getName() + "', number=" + object.getNumber() + ", idMaingroup=" + object.getIdMaingroup() + ";";
+        int idMiddlegroup = this.getNextIdFromTable("Middlegroup");
+        String sql = this.getSqlInsertQuery("Middlegroup", "id=" + idMiddlegroup + ", name='" + object.getName() + "', number=" + object.getNumber() + ", idMaingroup=" + object.getIdMaingroup());
         this.executeQuery(sql);
-        return this.getMaxIdFromTable("Middlegroup");
+        return idMiddlegroup;
     }
 
     @Override
-    public boolean updateMiddlegroup(MiddleGroup object) throws SQLException {
-        return false;
+    public void updateMiddlegroup(MiddleGroup object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlUpdateQuery("Middlegroup", object));
     }
 
     @Override
-    public boolean deleteMiddlegroup(MiddleGroup object) throws SQLException {
-        return false;
+    public void deleteMiddlegroup(MiddleGroup object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlDeleteQuery("Middlegroup", object.getId()));
     }
 
     @Override
     public ArrayList<Address> selectAddress(Address filter) throws SQLException {
-        String sql = "SELECT * FROM Address WHERE " + filter.getWhereClause();
+        String sql = this.getSqlSelectQuery("Address", filter.getWhereClause());
         ArrayList<Address> addresses = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -241,30 +294,34 @@ public class SqlDatabase implements Database {
 
     @Override
     public int insertAddress(Address object) throws SQLException {
-        String sql = "INSERT INTO Address SET name='" + object.getName() + "', startaddress=" + object.getStartAddress() + ", idMiddlegroup=" + object.getIdMiddlegroup() + ";";
+        int idAddress = this.getNextIdFromTable("Address");
+        String sql = this.getSqlInsertQuery("Address", "id=" + idAddress + ", name='" + object.getName() + "', startaddress=" + object.getStartAddress() + ", idMiddlegroup=" + object.getIdMiddlegroup());
         this.executeQuery(sql);
-        return this.getMaxIdFromTable("Address");
+        return idAddress;
     }
 
     @Override
-    public boolean updateAddress(Address object) throws SQLException {
-        return false;
+    public void updateAddress(Address object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlUpdateQuery("Address", object));
     }
 
     @Override
-    public boolean deleteAddress(Address object) throws SQLException {
-        return false;
+    public void deleteAddress(Address object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlDeleteQuery("Address", object.getId()));
     }
 
     @Override
     public ArrayList<ObjectTemplate> selectObjectTemplate(ObjectTemplate filter) throws SQLException {
-        String sql = "SELECT * FROM ObjectTemplate WHERE " + filter.getWhereClause();
+        String sql = this.getSqlSelectQuery("ObjectTemplate", filter.getWhereClause());
         ArrayList<ObjectTemplate> objectTemplates = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
             ObjectTemplate objectTemplate = new ObjectTemplate();
             objectTemplate.setId(resultSet.getInt("id"));
             objectTemplate.setName(resultSet.getString("name"));
+            objectTemplate.setIdAddress(resultSet.getInt("idAddress"));
             Attribute filterAttribute = new Attribute();
             filterAttribute.setIdObjectTemplate(objectTemplate.getId());
             objectTemplate.setAttributes(this.selectAttribute(filterAttribute));
@@ -275,24 +332,27 @@ public class SqlDatabase implements Database {
 
     @Override
     public int insertObjectTemplate(ObjectTemplate object) throws SQLException {
-        String sql = "INSERT INTO ObjectTemplate SET name='" + object.getName() + "', idAddress="+ object.getIdAddress()+";";
+        int idObjectTemplate = this.getNextIdFromTable("ObjectTemplate");
+        String sql = this.getSqlInsertQuery("ObjectTemplate", "id=" + idObjectTemplate + ", name='" + object.getName() + "', idAddress="+ object.getIdAddress());
         this.executeQuery(sql);
-        return this.getMaxIdFromTable("ObjectTemplate");
+        return idObjectTemplate;
     }
 
     @Override
-    public boolean updateObjectTemplate(ObjectTemplate object) throws SQLException {
-        return false;
+    public void updateObjectTemplate(ObjectTemplate object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlUpdateQuery("ObjectTemplate", object));
     }
 
     @Override
-    public boolean deleteObjectTemplate(ObjectTemplate object) throws SQLException {
-        return false;
+    public void deleteObjectTemplate(ObjectTemplate object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlDeleteQuery("ObjectTemplate", object.getId()));
     }
 
     @Override
     public ArrayList<Attribute> selectAttribute(Attribute filter) throws SQLException {
-        String sql = "SELECT * FROM Attribute WHERE " + filter.getWhereClause();
+        String sql = this.getSqlSelectQuery("Attribute", filter.getWhereClause());
         ArrayList<Attribute> attributes = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -307,24 +367,29 @@ public class SqlDatabase implements Database {
 
     @Override
     public int insertAttribute(Attribute object) throws SQLException {
-        String sql = "INSERT INTO Attribute SET name='" + object.getName() + "', idObjectTemplate=" + object.getIdObjectTemplate() + ";";
+        int idAttribute = this.getNextIdFromTable("Attribute");
+        String sql = this.getSqlInsertQuery("Attribute", "id=" + idAttribute + ", name='" + object.getName() + "', idObjectTemplate=" + object.getIdObjectTemplate());
         this.executeQuery(sql);
-        return this.getMaxIdFromTable("Attribute");
+        return idAttribute;
     }
 
     @Override
-    public boolean updateAttribute(Attribute object) throws SQLException {
-        return false;
+    public void updateAttribute(Attribute object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlUpdateQuery("Attribute", object));
     }
 
+
+
     @Override
-    public boolean deleteAttribute(Attribute object) throws SQLException {
-        return false;
+    public void deleteAttribute(Attribute object) throws SQLException {
+        if(object.getId()>0)
+            this.executeQuery(this.getSqlDeleteQuery("Attribute", object.getId()));
     }
 
     private String getSqlCreateTableProject() {
         return "CREATE TABLE IF NOT EXISTS `project` (\n" +
-                "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
+                "  `id` INT NOT NULL,\n" +
                 "  `name` VARCHAR(255) NULL,\n" +
                 "  `deleted` TINYINT NULL DEFAULT 0,\n" +
                 "  PRIMARY KEY (`id`));\n";
@@ -332,7 +397,7 @@ public class SqlDatabase implements Database {
 
     private String getSqlCreateTableMaingroup() {
         return "CREATE TABLE IF NOT EXISTS `maingroup` (\n" +
-                "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
+                "  `id` INT NOT NULL,\n" +
                 "  `name` VARCHAR(255) NULL,\n" +
                 "  `number` INT(11) NULL,\n" +
                 "  `idProject` INT NOT NULL,\n" +
@@ -347,7 +412,7 @@ public class SqlDatabase implements Database {
 
     private String getSqlCreateTableMiddlegroup() {
         return "CREATE TABLE IF NOT EXISTS `middlegroup` (" +
-                "  `id` INT NOT NULL AUTO_INCREMENT," +
+                "  `id` INT NOT NULL," +
                 "  `name` VARCHAR(255) NULL," +
                 "  `number` INT(11) NULL," +
                 "  `idMaingroup` INT NOT NULL," +
@@ -362,7 +427,7 @@ public class SqlDatabase implements Database {
 
     private String getSqlCreateTableAddress() {
         return "CREATE TABLE IF NOT EXISTS `address` (" +
-                "  `id` INT NOT NULL AUTO_INCREMENT," +
+                "  `id` INT NOT NULL," +
                 "  `name` VARCHAR(255) NULL," +
                 "  `startaddress` INT(11) NULL," +
                 "  `idMiddlegroup` INT NOT NULL," +
@@ -377,7 +442,7 @@ public class SqlDatabase implements Database {
 
     private String getSqlCreateTableObjectTemplate() {
         return "CREATE TABLE IF NOT EXISTS `objecttemplate` (" +
-                "  `id` INT NOT NULL AUTO_INCREMENT," +
+                "  `id` INT NOT NULL," +
                 "  `name` VARCHAR(255) NULL," +
                 "  `idAddress` INT NOT NULL," +
                 "  `deleted` TINYINT NULL DEFAULT 0," +
@@ -391,7 +456,7 @@ public class SqlDatabase implements Database {
 
     private String getSqlCreateTableAttribute() {
         return "CREATE TABLE IF NOT EXISTS `attribute` (" +
-                "  `id` INT NOT NULL AUTO_INCREMENT," +
+                "  `id` INT NOT NULL," +
                 "  `name` VARCHAR(255) NULL," +
                 "  `idObjectTemplate` INT NOT NULL," +
                 "  `deleted` TINYINT NULL DEFAULT 0," +

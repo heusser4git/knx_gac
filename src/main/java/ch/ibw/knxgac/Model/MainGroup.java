@@ -7,6 +7,13 @@ public class MainGroup extends Data {
     private int idProject;
     private ArrayList<MiddleGroup> middlegroups = new ArrayList<>();
 
+    public MainGroup() {
+    }
+
+    public MainGroup(int idMaingroup) {
+        this.setId(idMaingroup);
+    }
+
     public int getNumber() {
         return number;
     }
@@ -47,6 +54,30 @@ public class MainGroup extends Data {
                 where += " AND idProject = " + this.idProject;
             }
         }
+        where += " AND deleted <> 1";
         return  where;
+    }
+
+    @Override
+    public String getUpdateClause() {
+        String update = super.getUpdateClause();
+        if(this.getNumber()>=0)
+            update += " , number = " + this.getNumber();
+        update += " , idProject = " + this.getIdProject();
+        return update;
+    }
+
+    @Override
+    public String toString() {
+        String result = "MainGroup{";
+        result += "id: " + this.getId() + ", ";
+        result += "name: " + this.getName() + ", ";
+        result += "idProject: " + this.getIdProject() + ", ";
+        result += "Middlegroups: \n";
+        for(MiddleGroup m : this.getMiddlegroups()) {
+            result.concat(m.toString() + "\n");
+        }
+        result += "}";
+        return result;
     }
 }

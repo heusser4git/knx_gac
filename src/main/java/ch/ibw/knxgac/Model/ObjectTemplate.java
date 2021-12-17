@@ -6,6 +6,13 @@ public class ObjectTemplate extends Data {
     private int idAddress;
     private ArrayList<Attribute> attributes = new ArrayList<>();
 
+    public ObjectTemplate() {
+    }
+
+    public ObjectTemplate(int idObjectTemplate) {
+        this.setId(idObjectTemplate);
+    }
+
     public int getIdAddress() {
         return idAddress;
     }
@@ -43,6 +50,28 @@ public class ObjectTemplate extends Data {
                 where += " AND idAddress = " + this.idAddress;
             }
         }
+        where += " AND deleted <> 1";
         return  where;
+    }
+
+    @Override
+    public String getUpdateClause() {
+        String update = super.getUpdateClause();
+        update += " , idAddress = " + this.getIdAddress();
+        return update;
+    }
+
+    @Override
+    public String toString() {
+        String result = "ObjectTemplate{";
+        result += "id: " + this.getId() + ", ";
+        result += "name: " + this.getName() + ", ";
+        result += "idAddress: " + this.getIdAddress() + ", ";
+        result += "Attributes: \n";
+        for(Attribute a : this.getAttributes()) {
+            result.concat(a.toString() + "\n");
+        }
+        result += "}";
+        return result;
     }
 }

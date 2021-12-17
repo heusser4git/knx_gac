@@ -7,6 +7,13 @@ public class MiddleGroup extends Data {
     private int idMaingroup;
     private ArrayList<Address> addresses = new ArrayList<>();
 
+    public MiddleGroup() {
+    }
+
+    public MiddleGroup(int idMiddlegroup) {
+        this.setId(idMiddlegroup);
+    }
+
     public int getNumber() {
         return number;
     }
@@ -15,12 +22,12 @@ public class MiddleGroup extends Data {
         this.number = number;
     }
 
-    public ArrayList getAddresses() {
+    public ArrayList<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(ArrayList addresses) {
-        this.addresses = addresses;
+    public void setAddresses(ArrayList<Address> addresses) {
+        this.addresses.addAll(addresses);
     }
 
     public void addAddress(Address address) {
@@ -55,6 +62,30 @@ public class MiddleGroup extends Data {
                 where += " AND idMaingroup = " + this.idMaingroup;
             }
         }
+        where += " AND deleted <> 1";
         return  where;
+    }
+
+    @Override
+    public String getUpdateClause() {
+        String update = super.getUpdateClause();
+        if(this.getNumber()>=0)
+            update += " , number = " + this.getNumber();
+        update += " , idMaingroup = " + this.getIdMaingroup();
+        return update;
+    }
+
+    @Override
+    public String toString() {
+        String result = "MiddleGroup{";
+        result += "id: " + this.getId() + ", ";
+        result += "name: " + this.getName() + ", ";
+        result += "idMaingroup: " + this.getIdMaingroup() + ", ";
+        result += "Adresses: \n";
+        for(Address a : this.getAddresses()) {
+            result.concat(a.toString() + "\n");
+        }
+        result += "}";
+        return result;
     }
 }

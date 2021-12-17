@@ -3,13 +3,19 @@ package ch.ibw.knxgac.Model;
 public class Attribute extends Data {
     private int idObjectTemplate;
 
+
+    public Attribute() {
+    }
+
+    public Attribute(int idAttribute) {
+        this.setId(idAttribute);
+    }
+
     public Attribute(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Attribute() {
-    }
 
     public int getIdObjectTemplate() {
         return idObjectTemplate;
@@ -32,6 +38,24 @@ public class Attribute extends Data {
                 where += " AND idObjectTemplate = " + this.idObjectTemplate;
             }
         }
+        where += " AND deleted <> 1";
         return  where;
+    }
+
+    @Override
+    public String getUpdateClause() {
+        String update = super.getUpdateClause();
+        update += " , idObjectTemplate = " + this.getIdObjectTemplate();
+        return update;
+    }
+
+    @Override
+    public String toString() {
+        String result = "Attribute{";
+        result += "id: " + this.getId() + ", ";
+        result += "name: " + this.getName() + ", ";
+        result += "idObjectTemplate: " + this.getIdObjectTemplate();
+        result += "}";
+        return result;
     }
 }

@@ -39,6 +39,19 @@ public class KnxGacApplication extends Application {
         }
 
         /**
+         * Beispiel für das holen aller Projekte
+         */
+//        try {
+//            Project filter = new Project();
+//            ArrayList<Project> projects = controller.selectObject(filter);
+//            for(Project p : projects) {
+//                System.out.println(p.toString());
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        /**
          * Beispiel für das erstellen eines Projektes
          */
 //        Project p = new Project();
@@ -51,17 +64,63 @@ public class KnxGacApplication extends Application {
 //        }
 
         /**
-         * Beispiel für das holen aller Projekte
+         * Beispiel für das aktualisieren eines projektes
          */
+//        Project p = new Project(3);
+//        p.setName("aktualisiertes Projekt");
 //        try {
-//            Project filter = new Project(29);
-//            ArrayList<Project> projects = controller.selectObject(filter);
-//            for(Project p : projects) {
-//                System.out.println(p.getId() + " " + p.getName());
-//            }
+//            controller.updateObject(p);
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
+
+        /**
+         * Beispiel für das loeschen eines projektes
+         */
+//        Project p = new Project(3);
+//        try {
+//            controller.deleteObject(p);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        /**
+         * Beispiel für das Erstellen einer neuen MainGroup
+         */
+//        MainGroup m = new MainGroup();
+//        m.setIdProject(1);
+//        m.setNumber(12345);
+//        m.setName("Neue Mittelgruppe 1");
+//        try {
+//            controller.insertObject(m);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        /**
+         * Beispiel für das Aendern einer  MainGroup
+         */
+//        MainGroup m = new MainGroup(1);
+//        m.setIdProject(2);
+//        m.setNumber(125345);
+//        m.setName("changed: Neue Mittelgruppe 1");
+//        try {
+//            controller.updateObject(m);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        /**
+         * Beispiel für das loeschen einer  MainGroup
+         */
+//        MainGroup m = new MainGroup(1);
+//        try {
+//            controller.deleteObject(m);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+
 
 
         // Check if DB-Connection ok, otherwise open config-Tab

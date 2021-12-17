@@ -37,6 +37,20 @@ public class Project extends Data {
                 where += " AND name LIKE '" + this.name + "%'";
             }
         }
+        where += " AND deleted <> 1";
         return where;
+    }
+
+    @Override
+    public String toString() {
+        String result = "Project{";
+        result += "id: " + this.getId() + ", ";
+        result += "name: " + this.getName() + ", ";
+        result += "Maingroups: \n";
+        for (MainGroup m : this.getMaingroups()) {
+            result.concat(m.toString() + "\n");
+        }
+        result += "}";
+        return result;
     }
 }

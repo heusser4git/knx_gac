@@ -12,33 +12,33 @@ public interface Database {
 
     ArrayList<Project> selectProject(Project filter) throws SQLException;
     int insertProject(Project object) throws SQLException;
-    boolean updateProject(Project object) throws SQLException;
-    boolean deleteProject(Project object) throws SQLException;
+    void updateProject(Project object) throws SQLException;
+    void deleteProject(Project object) throws SQLException;
 
     ArrayList<MainGroup> selectMaingroup(MainGroup filter) throws SQLException;
     int insertMaingroup(MainGroup object) throws SQLException;
-    boolean updateMaingroup(MainGroup object) throws SQLException;
-    boolean deleteMaingroup(MainGroup object) throws SQLException;
+    void updateMaingroup(MainGroup object) throws SQLException;
+    void deleteMaingroup(MainGroup object) throws SQLException;
 
     ArrayList<MiddleGroup> selectMiddlegroup(MiddleGroup filter) throws SQLException;
     int insertMiddlegroup(MiddleGroup object) throws SQLException;
-    boolean updateMiddlegroup(MiddleGroup object) throws SQLException;
-    boolean deleteMiddlegroup(MiddleGroup object) throws SQLException;
+    void updateMiddlegroup(MiddleGroup object) throws SQLException;
+    void deleteMiddlegroup(MiddleGroup object) throws SQLException;
 
     ArrayList<Address> selectAddress(Address filter) throws SQLException;
     int insertAddress(Address object) throws SQLException;
-    boolean updateAddress(Address object) throws SQLException;
-    boolean deleteAddress(Address object) throws SQLException;
+    void updateAddress(Address object) throws SQLException;
+    void deleteAddress(Address object) throws SQLException;
 
     ArrayList<ObjectTemplate> selectObjectTemplate(ObjectTemplate filter) throws SQLException;
     int insertObjectTemplate(ObjectTemplate object) throws SQLException;
-    boolean updateObjectTemplate(ObjectTemplate object) throws SQLException;
-    boolean deleteObjectTemplate(ObjectTemplate object) throws SQLException;
+    void updateObjectTemplate(ObjectTemplate object) throws SQLException;
+    void deleteObjectTemplate(ObjectTemplate object) throws SQLException;
 
     ArrayList<Attribute> selectAttribute(Attribute filter) throws SQLException;
     int insertAttribute(Attribute object) throws SQLException;
-    boolean updateAttribute(Attribute object) throws SQLException;
-    boolean deleteAttribute(Attribute object) throws SQLException;
+    void updateAttribute(Attribute object) throws SQLException;
+    void deleteAttribute(Attribute object) throws SQLException;
 
     void createTablesToDb() throws SQLException;
 }

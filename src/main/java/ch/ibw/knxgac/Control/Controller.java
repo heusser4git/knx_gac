@@ -121,13 +121,35 @@ public class Controller implements ControllerInterface {
 
     @Override
     public void updateObject(Data object) throws SQLException {
-
+        if(object instanceof Project) {
+            this.db.updateProject((Project) object);
+        } else if(object instanceof MainGroup) {
+            this.db.updateMaingroup((MainGroup) object);
+        } else if(object instanceof MiddleGroup) {
+            this.db.updateMiddlegroup((MiddleGroup) object);
+        } else if(object instanceof Address) {
+            this.db.updateAddress((Address) object);
+        } else if(object instanceof ObjectTemplate) {
+            this.db.updateObjectTemplate((ObjectTemplate) object);
+        } else if(object instanceof Attribute) {
+            this.db.updateAttribute((Attribute) object);
+        }
     }
 
     @Override
     public void deleteObject(Data object) throws SQLException {
         if(object instanceof Project) {
             this.db.deleteProject((Project) object);
+        } else if(object instanceof MainGroup) {
+            this.db.deleteMaingroup((MainGroup) object);
+        } else if(object instanceof MiddleGroup) {
+            this.db.deleteMiddlegroup((MiddleGroup) object);
+        } else if(object instanceof Address) {
+            this.db.deleteAddress((Address) object);
+        } else if(object instanceof ObjectTemplate) {
+            this.db.deleteObjectTemplate((ObjectTemplate) object);
+        } else if(object instanceof Attribute) {
+            this.db.deleteAttribute((Attribute) object);
         }
     }
 }
