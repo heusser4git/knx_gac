@@ -2,14 +2,14 @@ package ch.ibw.knxgac.Model;
 
 import java.io.Serializable;
 
-public class Configuration implements Serializable {
-    private Enum<Servertyp> dbServertyp;
-    private String dbServer;
+public class Configuration {
+    private Enum<Servertyp> dbServertyp = Servertyp.MARIADB;
+    private String dbServer = "";
     private int dbServerPort = 0;
-    private String dbName;
-    private String dbUsername;
-    private String dbPassword;
-    private String csvOutputpath;
+    private String dbName = "";
+    private String dbUsername = "";
+    private String dbPassword = "";
+    private String csvOutputpath = "";
 
     public Configuration(Enum<Servertyp> dbServertyp, String dbServer, int dbServerPort, String dbName, String dbUsername, String dbPassword, String cvsOutputpath) {
         this.dbServertyp = dbServertyp;
@@ -80,13 +80,6 @@ public class Configuration implements Serializable {
     }
 
 
-
-    @Override
-    public String toString() {
-        return "DB-Server: " + this.dbServer + "; DB-Name: " + this.dbName + "; DB-User: " + this.dbUsername + "; DB-Pwd: " + this.dbPassword + "; CSV-Outputpath: " + this.csvOutputpath;
-    }
-
-
     /**
      * Checks if the configuration data are filled in complete
      *
@@ -115,5 +108,18 @@ public class Configuration implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Configuration{" +
+                "Server: " + this.getDbServer() +
+                ", Typ: " + this.getDbServertyp().name() +
+                ", Port: " + this.getDbServerPort() +
+                ", DB Name: " + this.getDbName() +
+                ", DB User: " + this.getDbUsername() +
+                ", DB Pwd: " + this.getDbPassword() +
+                ", CSV-Ouput: " + this.getCsvOutputpath() +
+                "}";
     }
 }

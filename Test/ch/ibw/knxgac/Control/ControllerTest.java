@@ -1,9 +1,7 @@
 package ch.ibw.knxgac.Control;
 
 import ch.ibw.knxgac.Model.Configuration;
-import ch.ibw.knxgac.Model.Servertyp;
-import ch.ibw.knxgac.Repository.Database.Database;
-import javafx.application.ConditionalFeature;
+import ch.ibw.knxgac.Repository.Database;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

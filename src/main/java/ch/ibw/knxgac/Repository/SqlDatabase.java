@@ -1,4 +1,4 @@
-package ch.ibw.knxgac.Repository.Database;
+package ch.ibw.knxgac.Repository;
 
 import ch.ibw.knxgac.Model.*;
 
@@ -10,9 +10,6 @@ public class SqlDatabase implements Database {
     private Connection connection;
     private String dburl;
 
-    public Connection getConnection() {
-        return connection;
-    }
 
     /**
      * Creates a DB Connection
@@ -156,6 +153,7 @@ public class SqlDatabase implements Database {
             Project project = new Project();
             project.setId(resultSet.getInt("id"));
             project.setName(resultSet.getString("name"));
+            project.setNumber(resultSet.getInt("number"));
             MainGroup filterMaingroup = new MainGroup();
             filterMaingroup.setIdProject(project.getId());
             project.setMaingroups(this.selectMaingroup(filterMaingroup));
@@ -173,7 +171,7 @@ public class SqlDatabase implements Database {
     @Override
     public int insertProject(Project object) throws SQLException {
         int idProject = this.getNextIdFromTable("Project");
-        String sql = this.getSqlInsertQuery("Project", "id=" + idProject + ", name='" + object.getName());
+        String sql = this.getSqlInsertQuery("Project", "id=" + idProject + ", name='" + object.getName() + ", number=" + object.getNumber());
         this.executeQuery(sql);
         return idProject;
     }

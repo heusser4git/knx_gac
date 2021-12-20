@@ -37,6 +37,13 @@ public class Address extends Data {
     public void setObjectTemplates(ArrayList<ObjectTemplate> objectTemplates) {
         this.objectTemplates = objectTemplates;
     }
+    public void addObjectTemplate(ObjectTemplate objectTemplate) {
+        this.objectTemplates.add(objectTemplate);
+    }
+
+    public void removeObjectTemplate(ObjectTemplate objectTemplate) {
+        this.objectTemplates.remove(objectTemplate);
+    }
 
     @Override
     public String getWhereClause() {
@@ -61,9 +68,9 @@ public class Address extends Data {
     @Override
     public String getUpdateClause() {
         String update = super.getUpdateClause();
-        if(this.getStartAddress()>=0)
+        if(this.getStartAddress() >= 0)
             update += " , startaddress = " + this.getStartAddress();
-        if(this.idMiddlegroup>0)
+        if(this.idMiddlegroup > 0)
             update += " , idMiddlegroup = " + this.getIdMiddlegroup();
         return update;
     }

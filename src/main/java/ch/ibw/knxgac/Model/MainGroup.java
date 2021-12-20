@@ -37,7 +37,13 @@ public class MainGroup extends Data {
     public void setMiddlegroups(ArrayList<MiddleGroup> middlegroups) {
         this.middlegroups = middlegroups;
     }
+    public void addMiddlegroup(MiddleGroup middleGroup) {
+        this.middlegroups.add(middleGroup);
+    }
 
+    public void removeMiddlegroup(MiddleGroup middleGroup) {
+        this.middlegroups.remove(middleGroup);
+    }
     @Override
     public String getWhereClause() {
         String where = "ID is not NULL";

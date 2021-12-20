@@ -1,64 +1,100 @@
 package ch.ibw.knxgac.Control;
 
 import ch.ibw.knxgac.Model.*;
-import ch.ibw.knxgac.Repository.Database.Database;
-import ch.ibw.knxgac.Repository.Database.SqlDatabase;
+import ch.ibw.knxgac.Repository.Database;
+import ch.ibw.knxgac.Repository.SqlDatabase;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Controller implements ControllerInterface {
     final String CONFIGFILE = System.getProperty("user.dir") + "/src/main/java/ch/ibw/knxgac/configuration.txt";
     private Database db;
 
-    public Controller() throws IOException, ClassNotFoundException, SQLException {
+    public Controller() throws IOException, SQLException {
+        this.createEmptyConfig();
         this.db = new SqlDatabase();
-        this.starteDbConnection(this.getConfiguration());
+        Configuration configuration = this.getConfiguration();
+        if(configuration.configComplete()) {
+            this.starteDbConnection(configuration);
+        }
+    }
+
+    public Controller(Database db) throws IOException, SQLException {
+        this();
+        this.db = db;
+    }
+
+    private void createEmptyConfig() throws IOException {
         Path configfile = Path.of(CONFIGFILE);
         if(Files.notExists(configfile)) {
             // create Config File
             Files.createFile(configfile);
             // write a empty config into the file
-            this.saveConfiguration(new Configuration());
+            Configuration c = new Configuration();
+            this.saveConfiguration(c);
         }
     }
-    public Controller(Database db) throws IOException, SQLException, ClassNotFoundException {
-        this();
-        this.db = db;
-    }
 
-    @Override
     /**
-     * saves the configuration to the Config File
+     * Saves the Configuration
+     *
+     * @param configuration
+     * @throws IOException
      */
+    @Override
     public void saveConfiguration(Configuration configuration) throws IOException {
-        File configfile = new File(CONFIGFILE);
-        FileOutputStream f = new FileOutputStream(configfile);
-        ObjectOutputStream o = new ObjectOutputStream(f);
-        o.writeObject(configuration);
-        o.close();
-        f.close();
+        List<String> lines = new ArrayList<>();
+        lines.add(configuration.getDbServer());
+        lines.add(configuration.getDbServertyp().name());
+        lines.add(String.valueOf(configuration.getDbServerPort()));
+        lines.add(configuration.getDbName());
+        lines.add(configuration.getDbUsername());
+        lines.add(configuration.getDbPassword());
+        lines.add(configuration.getCsvOutputpath());
+
+        Path pathWrite = Path.of(CONFIGFILE);
+        Files.write(pathWrite, lines, StandardCharsets.UTF_8);
     }
 
-    @Override
     /**
-     * Opens the Config File and returns the Configuration
+     * Gets the Configuration
+     *
+     * @return Configuration
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
-    public Configuration getConfiguration() throws IOException, ClassNotFoundException {
-        File configfile = new File(CONFIGFILE);
-        FileInputStream fi = new FileInputStream(configfile);
-        ObjectInputStream oi = new ObjectInputStream(fi);
+    @Override
+    public Configuration getConfiguration() throws IOException {
+        this.createEmptyConfig();
 
-        Configuration configuration = (Configuration) oi.readObject();
-
-        oi.close();
-        fi.close();
-
-        return configuration;
+        Path path = Path.of(CONFIGFILE);
+        List<String> lines = Files.readAllLines(path);
+        if(lines.size()>5) {
+            Configuration configuration = new Configuration();
+            configuration.setDbServer(lines.get(0));
+            for(Servertyp s : Servertyp.values()) {
+                if(lines.get(1).equals(s.name())) {
+                    configuration.setDbServertyp(s);
+                    break;
+                }
+            }
+            configuration.setDbServerPort(Integer.valueOf(lines.get(2)));
+            configuration.setDbName(lines.get(3));
+            configuration.setDbUsername(lines.get(4));
+            configuration.setDbPassword(lines.get(5));
+            configuration.setCsvOutputpath(lines.get(6));
+            return configuration;
+        } else {
+            throw new IOException("configuration.txt File nicht vollständig.");
+        }
     }
+
     private boolean starteDbConnection(Configuration configuration) throws SQLException {
         this.db.createConnection(configuration.getDbServertyp().name(), configuration.getDbServer(), configuration.getDbServerPort(), configuration.getDbName(), configuration.getDbUsername(), configuration.getDbPassword());
         return this.db.isConnected();

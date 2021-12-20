@@ -114,7 +114,7 @@ public class GuiConfig {
                 Configuration config = new Configuration();
                 // get the servertyp-object of the servertyp-field-string out of the form
                 for(Servertyp s : Servertyp.values()) {
-                    if(cBservertyp.getSelectionModel().getSelectedItem() == s.name()) {
+                    if(cBservertyp.getSelectionModel().getSelectedItem().equals(s.name())) {
                         config.setDbServertyp(s);
                         break;
                     }
@@ -174,13 +174,6 @@ public class GuiConfig {
 
                         ).show();
                     }
-                } catch (ClassNotFoundException e) {
-                    // alert an error because of the ClassNotFoundException
-                    new Dialog().getError(
-                            "Fehler beim Laden der Konfiguration",
-                            "ClassNotFoundException",
-                            "Die gespeicherte Konfiguration konnte nicht geladen werden."
-                    ).show();
                 } catch (IOException e) {
                     // alert an error because of the IOException
                     new Dialog().getError(

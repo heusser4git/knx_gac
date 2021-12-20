@@ -2,7 +2,6 @@ package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.*;
-import ch.ibw.knxgac.Repository.Database.SqlDatabase;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,7 +10,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class KnxGacApplication extends Application {
     private Stage stage = null;
@@ -26,18 +24,15 @@ public class KnxGacApplication extends Application {
         } catch (SQLException e) {
             // TODO urs errorhandling
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO urs errorhandling
-            e.printStackTrace();
         }
+
         try {
             // get the configuration out of the config-file
             this.configuration = controller.getConfiguration();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException e) {
             // TODO urs: errorhandling
             e.printStackTrace();
         }
-
         /**
          * Beispiel für das holen aller Projekte
          */
