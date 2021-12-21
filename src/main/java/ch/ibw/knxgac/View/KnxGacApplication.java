@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class KnxGacApplication extends Application {
+    public static String currentProjectName;
+    public static int currentProjectID;
     private Stage stage = null;
     private Configuration configuration = null;
     private Controller controller = null;

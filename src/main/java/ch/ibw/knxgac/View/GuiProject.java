@@ -8,12 +8,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class GuiProject {
     public GridPane getProjectGrid() {
@@ -42,9 +44,21 @@ public class GuiProject {
 
         grid.add(fieldHelper.getLable("Projekt wählen"), x+2,y);
         ChoiceBox selectProject = new ChoiceBox<>();
-        // Genearte ChoiceBox Code
+        try {
+            Controller controller = new Controller();
+            Project project = new Project();
+            ArrayList<Project> result = controller.selectObject(project);
+            for (Project p: result) {
+                selectProject.getItems().add(p.getName() + "_" + p.getNumber());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //String value = (String) selectProject.getValue();
+        //System.out.println(value);
         grid.add(selectProject,x+3,y);
-
 
         y++;
         grid.add(fieldHelper.getLable("Projektnummer"), x,y);
@@ -67,6 +81,9 @@ public class GuiProject {
         btnExport.setText("CSV Export");
         grid.add(btnExport,x+2,y+4);
 
+        Label laChossenProject = fieldHelper.getLable("","Tahoma",10,FontWeight.BOLD);
+        grid.add(laChossenProject,x+2,y+10);
+
         //-- Eventhandling --//
         // Creat Projekt
         btnCreat.setOnAction(new EventHandler<ActionEvent>() {
@@ -77,14 +94,44 @@ public class GuiProject {
                 project.setNumber(Integer.parseInt(tfProjektnummer.getText()));
                 try {
                     Controller controller = new Controller();
-                    controller.insertObject(project);
+                    project.setId(controller.insertObject(project));
+                    selectProject.getItems().add(project.getName());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // choose Project
+        btnUse.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String s = (String) selectProject.getValue();
+                String[] parts = s.split("_");
+                String p1 = parts[0];
+                String p2 = parts[1];
+                try {
+                    Controller controller = new Controller();
+                    Project project = new Project();
+                    ArrayList<Project> result = controller.selectObject(project);
+                    int i = Integer.parseInt(p2);
+                    for (Project p: result) {
+                        if (p.getName() == p1 || p.getNumber() == Integer.parseInt(p2)){
+                            KnxGacApplication.currentProjectID = p.getId();
+                        }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
 
-
+                KnxGacApplication.currentProjectName = s;
+                laChossenProject.setText(KnxGacApplication.currentProjectName);
+                System.out.println(KnxGacApplication.currentProjectName);
+                System.out.println(KnxGacApplication.currentProjectID);
 
             }
         });
