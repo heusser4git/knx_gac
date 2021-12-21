@@ -34,8 +34,8 @@ public class GuiProject {
         FieldHelper fieldHelper = new FieldHelper();
 
         y++;
-        grid.add(fieldHelper.getLable("Projekt erstellen", "Tahoma", 14, FontWeight.BOLD), x,y);
-        grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), x+2,y);
+        grid.add(fieldHelper.getLable("Projekt erstellen", "Tahoma", 14, FontWeight.BOLD), x,y,2,1);
+        grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), x+2,y,2,1);
 
         y++;
         grid.add(fieldHelper.getLable("Projektname"), x,y);
@@ -44,18 +44,7 @@ public class GuiProject {
 
         grid.add(fieldHelper.getLable("Projekt wählen"), x+2,y);
         ChoiceBox selectProject = new ChoiceBox<>();
-        try {
-            Controller controller = new Controller();
-            Project project = new Project();
-            ArrayList<Project> result = controller.selectObject(project);
-            for (Project p: result) {
-                selectProject.getItems().add(p.getName() + "_" + p.getNumber());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        projectChoice(selectProject);
         //String value = (String) selectProject.getValue();
         //System.out.println(value);
         grid.add(selectProject,x+3,y);
@@ -81,8 +70,8 @@ public class GuiProject {
         btnExport.setText("CSV Export");
         grid.add(btnExport,x+2,y+4);
 
-        Label laChossenProject = fieldHelper.getLable("","Tahoma",10,FontWeight.BOLD);
-        grid.add(laChossenProject,x+2,y+10);
+        Label laChossenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
+        grid.add(laChossenProject,x+2,y+20,2,1);
 
         //-- Eventhandling --//
         // Creat Projekt
@@ -95,7 +84,7 @@ public class GuiProject {
                 try {
                     Controller controller = new Controller();
                     project.setId(controller.insertObject(project));
-                    selectProject.getItems().add(project.getName());
+                    projectChoice(selectProject);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {
@@ -128,7 +117,7 @@ public class GuiProject {
                     e.printStackTrace();
                 }
 
-                KnxGacApplication.currentProjectName = s;
+                KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
                 laChossenProject.setText(KnxGacApplication.currentProjectName);
                 System.out.println(KnxGacApplication.currentProjectName);
                 System.out.println(KnxGacApplication.currentProjectID);
@@ -136,6 +125,41 @@ public class GuiProject {
             }
         });
 
+        // delete Project
+        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Project project = new Project(KnxGacApplication.currentProjectID);
+                try {
+                    Controller controller = new Controller();
+                    controller.deleteObject(project);
+                    projectChoice(selectProject);
+                    //selectProject.getItems().add(project.getName()+ "_" + project.getNumber());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return grid;
+    }
+    public void projectChoice(ChoiceBox selectProject){
+        Controller controller = null;
+        try {
+            controller = new Controller();
+            Project project = new Project();
+            ArrayList<Project> result = controller.selectObject(project);
+            for (Project p: result) {
+                selectProject.getItems().add(p.getName() + "_" + p.getNumber());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
