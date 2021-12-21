@@ -1,5 +1,5 @@
-/target/*
-/.idea/*
-/lib/*
+target/*
+.idea/*
+lib/*
 pom.xml
 KNX-GAC.iml
