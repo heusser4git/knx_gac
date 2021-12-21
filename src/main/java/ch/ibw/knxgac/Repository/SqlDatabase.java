@@ -171,7 +171,7 @@ public class SqlDatabase implements Database {
     @Override
     public int insertProject(Project object) throws SQLException {
         int idProject = this.getNextIdFromTable("Project");
-        String sql = this.getSqlInsertQuery("Project", "id=" + idProject + ", name='" + object.getName() + ", number=" + object.getNumber());
+        String sql = this.getSqlInsertQuery("Project", "id=" + idProject + ", name='" + object.getName() + "', number=" + object.getNumber());
         this.executeQuery(sql);
         return idProject;
     }
@@ -389,6 +389,7 @@ public class SqlDatabase implements Database {
         return "CREATE TABLE IF NOT EXISTS `project` (\n" +
                 "  `id` INT NOT NULL,\n" +
                 "  `name` VARCHAR(255) NULL,\n" +
+                "  `number` INT(11) NULL,\n" +
                 "  `deleted` TINYINT NULL DEFAULT 0,\n" +
                 "  PRIMARY KEY (`id`));\n";
     }
