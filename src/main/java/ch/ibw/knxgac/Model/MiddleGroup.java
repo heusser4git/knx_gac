@@ -69,9 +69,18 @@ public class MiddleGroup extends Data {
     @Override
     public String getUpdateClause() {
         String update = super.getUpdateClause();
-        if(this.getNumber()>=0)
-            update += " , number = " + this.getNumber();
-        update += " , idMaingroup = " + this.getIdMaingroup();
+        if(this.getNumber()>=0) {
+            if (update.length() > 0) {
+                update += ", ";
+            }
+            update += "number = " + this.getNumber();
+        }
+        if(this.getIdMaingroup()>0) {
+            if(update.length()>0) {
+                update += ", ";
+            }
+            update += "idMaingroup = " + this.getIdMaingroup();
+        }
         return update;
     }
 

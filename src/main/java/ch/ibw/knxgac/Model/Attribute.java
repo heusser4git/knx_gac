@@ -45,7 +45,12 @@ public class Attribute extends Data {
     @Override
     public String getUpdateClause() {
         String update = super.getUpdateClause();
-        update += " , idObjectTemplate = " + this.getIdObjectTemplate();
+        if(this.idObjectTemplate>0) {
+            if(update.length()>0) {
+                update += ", ";
+            }
+            update += "idObjectTemplate = " + this.getIdObjectTemplate();
+        }
         return update;
     }
 
