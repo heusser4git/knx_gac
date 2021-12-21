@@ -68,10 +68,18 @@ public class Address extends Data {
     @Override
     public String getUpdateClause() {
         String update = super.getUpdateClause();
-        if(this.getStartAddress() >= 0)
-            update += " , startaddress = " + this.getStartAddress();
-        if(this.idMiddlegroup > 0)
-            update += " , idMiddlegroup = " + this.getIdMiddlegroup();
+        if(this.getStartAddress() >= 0) {
+            if(update.length()>0) {
+                update += ", ";
+            }
+            update += "startaddress = " + this.getStartAddress();
+        }
+        if(this.idMiddlegroup > 0) {
+            if(update.length()>0) {
+                update += ", ";
+            }
+            update += "idMiddlegroup = " + this.getIdMiddlegroup();
+        }
         return update;
     }
 

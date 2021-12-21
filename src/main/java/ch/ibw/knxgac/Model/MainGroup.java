@@ -67,9 +67,18 @@ public class MainGroup extends Data {
     @Override
     public String getUpdateClause() {
         String update = super.getUpdateClause();
-        if(this.getNumber()>=0)
-            update += " , number = " + this.getNumber();
-        update += " , idProject = " + this.getIdProject();
+        if(this.getNumber()>=0) {
+            if (update.length() > 0) {
+                update += ", ";
+            }
+            update += "number = " + this.getNumber();
+        }
+        if(this.idProject>0) {
+            if (update.length() > 0) {
+                update += ", ";
+            }
+            update += "idProject = " + this.getIdProject();
+        }
         return update;
     }
 

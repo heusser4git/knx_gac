@@ -57,7 +57,12 @@ public class ObjectTemplate extends Data {
     @Override
     public String getUpdateClause() {
         String update = super.getUpdateClause();
-        update += " , idAddress = " + this.getIdAddress();
+        if(this.getIdAddress()>0) {
+            if (update.length() > 0) {
+                update += ", ";
+            }
+            update += "idAddress = " + this.getIdAddress();
+        }
         return update;
     }
 

@@ -33,6 +33,8 @@ public class Data {
     }
 
     public String getUpdateClause() {
-        return "name = '" + this.getName() + "'";
+        if(this.getName() != null)
+            return "name = '" + this.getName() + "'";
+        return "";
     }
 }

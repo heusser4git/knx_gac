@@ -125,11 +125,11 @@ public class SqlDatabase implements Database {
      * @param fieldsValues  Fields and Values for the SET Part of the SQL-Query, eg. "name='jack', number=123"
      * @return
      */
-    private String getSqlInsertQuery(String table, String fieldsValues) {
+    protected String getSqlInsertQuery(String table, String fieldsValues) {
         return "INSERT INTO " + table + " SET " + fieldsValues + ";";
     }
 
-    private String getSqlUpdateQuery(String table, Data object) {
+    protected String getSqlUpdateQuery(String table, Data object) {
         return "UPDATE " + table + " SET " + object.getUpdateClause() + " WHERE id=" + object.getId() + ";";
     }
     /**
@@ -138,7 +138,7 @@ public class SqlDatabase implements Database {
      * @param id       int  ID of the dataset which has to be deleted
      * @return
      */
-    private String getSqlDeleteQuery(String table, int id) {
+    protected String getSqlDeleteQuery(String table, int id) {
         return "UPDATE " + table + " SET deleted=1 WHERE id=" + id + ";";
     }
 

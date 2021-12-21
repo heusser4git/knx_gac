@@ -54,6 +54,17 @@ public class Project extends Data {
     }
 
     @Override
+    public String getUpdateClause() {
+        String update = super.getUpdateClause();
+        if(this.getNumber()>=0)
+            if(update.length()>0) {
+                update += ", ";
+            }
+            update += "number = " + this.getNumber();
+        return update;
+    }
+
+    @Override
     public String toString() {
         String result = "Project{";
         result += "id: " + this.getId() + ", ";
