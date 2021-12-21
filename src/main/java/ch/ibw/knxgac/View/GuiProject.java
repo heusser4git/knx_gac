@@ -1,11 +1,19 @@
 package ch.ibw.knxgac.View;
 
+import ch.ibw.knxgac.Control.Controller;
+import ch.ibw.knxgac.Model.Project;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class GuiProject {
     public GridPane getProjectGrid() {
@@ -42,6 +50,44 @@ public class GuiProject {
         grid.add(fieldHelper.getLable("Projektnummer"), x,y);
         TextField tfProjektnummer = fieldHelper.getTextField("");
         grid.add(tfProjektnummer,x+1,y); // Todo adjust size
+
+        Button btnCreat = new Button();
+        btnCreat.setText("erstellen");
+        grid.add(btnCreat,x+1,y+3);
+
+        Button btnUse = new Button();
+        btnUse.setText("auswählen");
+        grid.add(btnUse,x+2,y);
+
+        Button btnDelete = new Button();
+        btnDelete.setText("Projekt löschen");
+        grid.add(btnDelete,x+2,y+3);
+
+        Button btnExport = new Button();
+        btnExport.setText("CSV Export");
+        grid.add(btnExport,x+2,y+4);
+
+        //-- Eventhandling --//
+        // Creat Projekt
+        btnCreat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Project project = new Project();
+                project.setName(tfProjektname.getText());
+                project.setNumber(Integer.parseInt(tfProjektnummer.getText()));
+                try {
+                    Controller controller = new Controller();
+                    controller.insertObject(project);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+        });
 
         return grid;
     }
