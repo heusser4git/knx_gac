@@ -21,14 +21,14 @@ public class KnxGacApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
-        boolean noDbError = true;   // false, if a Database-Error occurs
-        Alert dbAlert = null;
+        boolean noDbError = true;   // false, if a Database-Exception occurs
+        Alert alert = null; // Dialog if an Exception occurs
         try {
             this.controller = new Controller();
         } catch (SQLException e) {
-            // errorhandling if a DB-Error occurs
+            // errorhandling if a DB-Exception occurs
             noDbError = false;
-            dbAlert = new Dialog().getException(
+            alert = new Dialog().getException(
                     "Error",
                     "Datenbankfehler",
                     "Es ist ein Fehler im Zusammenhang mit der Datenbank aufgetreten.\n" +
@@ -36,13 +36,18 @@ public class KnxGacApplication extends Application {
                     e
             );
         }
-        if(noDbError) { // if a dbError occurs, we cannot get the configuration
+        if(noDbError) { // if a DB-Exception occurs, we cannot get the configuration
             try {
                 // get the configuration out of the config-file
                 this.configuration = controller.getConfiguration();
-            } catch (IOException e) {
-                // TODO urs: errorhandling
-                e.printStackTrace();
+            } catch (IOException exception) {
+                alert = new Dialog().getException(
+                        "Error",
+                        "Fehler beim Lesen der Konfiguration",
+                        "Prüfen Sie die Datei configuration.txt.\n" +
+                                "Stellen Sie sicher, dass die Datei vorhanden und lesbar ist.",
+                        exception
+                );
             }
         }
         /**
@@ -132,7 +137,7 @@ public class KnxGacApplication extends Application {
 
         // Check if DB-Connection ok, otherwise open config-Tab
         boolean configGui = false;
-        if(noDbError) {// if a dbError occurs, we cannot check or get the configuration
+        if(noDbError) {// if a DB-Exception occurs, we cannot check or get the configuration
             try {
                 // check if the configuration-data are complete and the
                 // database is reachable, also the outputfolder is available
@@ -201,9 +206,9 @@ public class KnxGacApplication extends Application {
         }
         stage.setTitle("KNX Group Address Creator");
         stage.show();
-        // if a dbAlert exists, show the alert
-        if(dbAlert!=null)
-            dbAlert.show();
+        // if a alert exists, show the alert
+        if(alert!=null)
+            alert.showAndWait();
     }
 
     public static void main(String[] args) {launch();}
