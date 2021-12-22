@@ -135,9 +135,9 @@ public class KnxGacApplication extends Application {
         this.tabPane = new TabPane();
 
         // Tab for the Configuration-Information
-        GuiConfig guiConfig = new GuiConfig();
+        GuiConfig guiConfig = new GuiConfig(this.stage, this.controller);
         // get the GridPane from outsourced Class "gridConfig"
-        GridPane gridConfiguration = guiConfig.getConfigurationGrid(this.stage, this.controller, this.configuration, this.tabPane);
+        GridPane gridConfiguration = guiConfig.getConfigurationGrid(this.configuration, this.tabPane);
         Tab tabConfig = new Tab("Systemkonfiguration");
         tabConfig.setClosable(false);
         tabConfig.setContent(gridConfiguration);

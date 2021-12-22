@@ -3,6 +3,8 @@ package ch.ibw.knxgac.View;
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.Configuration;
 import ch.ibw.knxgac.Model.Servertyp;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,8 +19,16 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class GuiConfig {
-    Stage stage = null;
-    public GridPane getConfigurationGrid(Stage stage, Controller controller, Configuration configuration, TabPane tabPane) {
+    private Stage stage;
+    private Controller controller;
+
+    public GuiConfig(Stage stage, Controller controller) {
+        this.stage = stage;
+        this.controller = controller;
+    }
+
+    public GridPane getConfigurationGrid(Configuration configuration, TabPane tabPane) {
+        this.stage = stage;
         // Create GridPane to locate the Form-Fields
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_LEFT);
@@ -35,13 +45,18 @@ public class GuiConfig {
         y++;
         grid.add(fieldHelper.getLable("Datenbankkonfiguration", "Tahoma", 14, FontWeight.BOLD), x,y);
 
+
+
+
         // Setting up the ChoiceBox for the DB Servertyp
         y++;
-        ChoiceBox cBservertyp = new ChoiceBox();
-        // Add the Enum Servertyp Values to the ChoiceBox
+        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
         for(Servertyp s : Servertyp.values()) {
-            cBservertyp.getItems().add(s.name());
+            items.add(new ChoiceBoxItem(s.ordinal(), s.name()));
         }
+        ChoiceBox<ChoiceBoxItem> cBservertyp = new ChoiceBox<>();
+        cBservertyp.getItems().addAll(items);
+        // Add the Enum Servertyp Values to the ChoiceBox
         // if no choosen servertyp in config, select the first available typ
         if(configuration.getDbServertyp() == null) {
             // no servertype choosen -> select the first
@@ -113,12 +128,7 @@ public class GuiConfig {
                 // create a new configuration-object to save the formdata in it
                 Configuration config = new Configuration();
                 // get the servertyp-object of the servertyp-field-string out of the form
-                for(Servertyp s : Servertyp.values()) {
-                    if(cBservertyp.getSelectionModel().getSelectedItem().equals(s.name())) {
-                        config.setDbServertyp(s);
-                        break;
-                    }
-                }
+                config.setDbServertyp(Servertyp.valueOf(cBservertyp.getSelectionModel().getSelectedItem().getName()));
                 // set data from fx-form to the configuration form
                 config.setDbServer(tfServer.getText());
                 config.setDbServerPort(Integer.parseInt(tfServerPort.getText()));
