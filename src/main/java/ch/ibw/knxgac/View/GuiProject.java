@@ -2,6 +2,8 @@ package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.Project;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -48,6 +50,26 @@ public class GuiProject {
         //String value = (String) selectProject.getValue();
         //System.out.println(value);
         grid.add(selectProject,x+3,y);
+
+//        y++;
+//        // TODO Dieser Try/Catch-Block könnte gespart werden, wenn einfach das Array projects mit dem Constructor übergeben würde...
+//        ArrayList<Project> projects = new ArrayList<>();
+//        try {
+//            Controller controller = new Controller();
+//            projects = controller.selectObject(new Project());
+//        } catch (SQLException | IOException e) {
+//            e.printStackTrace();
+//        }
+//        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+//        for (Project p : projects) {
+//            // mache ChoiceBoxItems, jeweils mit der ID und dem Namen, welcher im GUI angezeigt werden soll
+//            // ChoiceBoxItem ist eine neue Hilfsklasse unter View - damit wir diese für jede ChoiceBox nutzen können
+//            items.add(new ChoiceBoxItem(p.getId(), p.getName() + " " + p.getNumber()));
+//        }
+//        ChoiceBox<ChoiceBoxItem> selectProject2 = new ChoiceBox<>();
+//        // übergebe der ChoiceBox alle ChoiceBoxItems
+//        selectProject2.getItems().addAll(items);
+//        grid.add(selectProject2, x+3, y);
 
         y++;
         grid.add(fieldHelper.getLable("Projektnummer"), x,y);
@@ -122,6 +144,10 @@ public class GuiProject {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
+//                // TODO alternativ zu selectProject hier selectProject2
+//                KnxGacApplication.currentProjectID = selectProject2.getSelectionModel().getSelectedItem().getId();
+//                String s = selectProject2.getSelectionModel().getSelectedItem().getName();
 
                 KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
                 laChossenProject.setText(KnxGacApplication.currentProjectName);
