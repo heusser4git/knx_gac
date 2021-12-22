@@ -88,7 +88,7 @@ public class SqlDatabase implements Database {
      */
     private ResultSet executeQuery(String sql) throws SQLException {
         Statement statement = this.connection.createStatement();
-        System.out.println(sql);
+//        System.out.println(sql);
         return statement.executeQuery(sql);
     }
 
