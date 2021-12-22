@@ -84,9 +84,9 @@ public class GuiProject {
         TextField tfProjektnummer = fieldHelper.getTextField("");
         grid.add(tfProjektnummer,x+1,y); // Todo adjust size
 
-        Button btnCreat = new Button();
-        btnCreat.setText("erstellen");
-        grid.add(btnCreat,x+1,y+3);
+        Button btnCreate = new Button();
+        btnCreate.setText("erstellen");
+        grid.add(btnCreate,x+1,y+3);
 
         Button btnUse = new Button();
         btnUse.setText("auswählen");
@@ -105,20 +105,22 @@ public class GuiProject {
 
         //-- Eventhandling --//
         // Creat Projekt
-        btnCreat.setOnAction(new EventHandler<ActionEvent>() {
+        btnCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Project project = new Project();
                 project.setName(tfProjektname.getText());
                 project.setNumber(Integer.parseInt(tfProjektnummer.getText()));
                 try {
-                    Controller controller = new Controller();
                     project.setId(controller.insertObject(project));
-                } catch (IOException e) {
-                    e.printStackTrace();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                updateProjects();
+                // empty the choiceBox
+                selectProject.getItems().clear();
+                // add the project-items new to the choiceBox
+                selectProject.getItems().addAll(projectItems());
             }
         });
 
@@ -174,8 +176,9 @@ public class GuiProject {
                     controller.deleteObject(project);
                     // update the projects from db
                     updateProjects();
-                    // add the project-items new to the choicebox
-                    selectProject.getItems().removeAll();
+                    // empty the choiceBox
+                    selectProject.getItems().clear();
+                    // add the project-items new to the choiceBox
                     selectProject.getItems().addAll(projectItems());
                     KnxGacApplication.currentProjectName = "";
                     KnxGacApplication.currentProjectID = 0;
