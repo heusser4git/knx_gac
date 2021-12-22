@@ -136,7 +136,7 @@ public class KnxGacApplication extends Application {
 
 
         // Check if DB-Connection ok, otherwise open config-Tab
-        boolean configGui = false;
+        boolean configGui;
         if(noDbError) {// if a DB-Exception occurs, we cannot check or get the configuration
             try {
                 // check if the configuration-data are complete and the
