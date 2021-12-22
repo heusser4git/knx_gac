@@ -64,7 +64,7 @@ public class GuiProject {
 
         grid.add(fieldHelper.getLable("Projekt erstellen", "Tahoma", 14, FontWeight.BOLD), 2,1,3,1);
         grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), 6,1,3,1);
-        //test
+
 
         grid.add(fieldHelper.getLable("Projektname"), 2,2,2,1);
         TextField tfProjektname = fieldHelper.getTextField("");
