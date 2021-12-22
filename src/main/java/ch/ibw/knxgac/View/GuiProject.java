@@ -20,10 +20,36 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GuiProject {
+    private Controller controller;
+    ArrayList<Project> projects = new ArrayList<>();
+
+    public GuiProject(Controller controller) {
+        this.controller = controller;
+        updateProjects();
+    }
+
+    private void updateProjects() {
+        try {
+            // get all projects out of the DB
+            this.projects = this.controller.selectObject(new Project());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ObservableList<ChoiceBoxItem> projectItems() {
+        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+        for (Project p : this.projects) {
+            // mache ChoiceBoxItems, jeweils mit der ID und dem Namen, welcher im GUI angezeigt werden soll
+            // ChoiceBoxItem ist eine neue Hilfsklasse unter View - damit wir diese für jede ChoiceBox nutzen können
+            items.add(new ChoiceBoxItem(p.getId(), p.getName() + " (" + p.getNumber() + ")"));
+        }
+        return items;
+    }
+
     public GridPane getProjectGrid() {
         // TODO create the Project Grid with all Form
         // Todo create middelline
-        //Project project = new Project();
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_LEFT);
@@ -45,31 +71,13 @@ public class GuiProject {
         grid.add(tfProjektname,x+1,y); // Todo adjust size
 
         grid.add(fieldHelper.getLable("Projekt wählen"), x+2,y);
-        ChoiceBox selectProject = new ChoiceBox<>();
-        projectChoice(selectProject);
-        //String value = (String) selectProject.getValue();
-        //System.out.println(value);
-        grid.add(selectProject,x+3,y);
 
-//        y++;
-//        // TODO Dieser Try/Catch-Block könnte gespart werden, wenn einfach das Array projects mit dem Constructor übergeben würde...
-//        ArrayList<Project> projects = new ArrayList<>();
-//        try {
-//            Controller controller = new Controller();
-//            projects = controller.selectObject(new Project());
-//        } catch (SQLException | IOException e) {
-//            e.printStackTrace();
-//        }
-//        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
-//        for (Project p : projects) {
-//            // mache ChoiceBoxItems, jeweils mit der ID und dem Namen, welcher im GUI angezeigt werden soll
-//            // ChoiceBoxItem ist eine neue Hilfsklasse unter View - damit wir diese für jede ChoiceBox nutzen können
-//            items.add(new ChoiceBoxItem(p.getId(), p.getName() + " " + p.getNumber()));
-//        }
-//        ChoiceBox<ChoiceBoxItem> selectProject2 = new ChoiceBox<>();
-//        // übergebe der ChoiceBox alle ChoiceBoxItems
-//        selectProject2.getItems().addAll(items);
-//        grid.add(selectProject2, x+3, y);
+        y++;
+
+        ChoiceBox<ChoiceBoxItem> selectProject = new ChoiceBox<>();
+        // übergebe der ChoiceBox alle ChoiceBoxItems
+        selectProject.getItems().addAll(this.projectItems());
+        grid.add(selectProject, x+3, y);
 
         y++;
         grid.add(fieldHelper.getLable("Projektnummer"), x,y);
@@ -106,7 +114,6 @@ public class GuiProject {
                 try {
                     Controller controller = new Controller();
                     project.setId(controller.insertObject(project));
-                    projectChoice(selectProject);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {
@@ -119,35 +126,35 @@ public class GuiProject {
         btnUse.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String s = (String) selectProject.getValue();
-                String[] parts = s.split("_");
-                String p1 = parts[0];
-                String p2 = parts[1];
-                System.out.println("p1: " + p1 + " p2: " + p2);
-                try {
-                    Controller controller = new Controller();
-                    Project project = new Project();
-                    // TODO Mitja, du könntest hier direkt nach dem Projekt suchen
-                    // indem du den namen und die nummer mitgibst - in etwa so:
-//                    project.setName(p1);
-//                    project.setNumber(Integer.parseInt(p2));
-                    // Natürlich wäre es hier viel besser, wenn man die ID bekommen würde aus der ChoiceBox
-                    ArrayList<Project> result = controller.selectObject(project);
-                    int i = Integer.parseInt(p2);
-                    for (Project p: result) {
-                        if (p.getName() == p1 || p.getNumber() == Integer.parseInt(p2)){
-                            KnxGacApplication.currentProjectID = p.getId();
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+//                String s = (String) selectProject.getValue();
+//                String[] parts = s.split("_");
+//                String p1 = parts[0];
+//                String p2 = parts[1];
+//                System.out.println("p1: " + p1 + " p2: " + p2);
+//                try {
+//                    Controller controller = new Controller();
+//                    Project project = new Project();
+//                    // TODO Mitja, du könntest hier direkt nach dem Projekt suchen
+//                    // indem du den namen und die nummer mitgibst - in etwa so:
+////                    project.setName(p1);
+////                    project.setNumber(Integer.parseInt(p2));
+//                    // Natürlich wäre es hier viel besser, wenn man die ID bekommen würde aus der ChoiceBox
+//                    ArrayList<Project> result = controller.selectObject(project);
+//                    int i = Integer.parseInt(p2);
+//                    for (Project p: result) {
+//                        if (p.getName() == p1 || p.getNumber() == Integer.parseInt(p2)){
+//                            KnxGacApplication.currentProjectID = p.getId();
+//                        }
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
 
-//                // TODO alternativ zu selectProject hier selectProject2
-//                KnxGacApplication.currentProjectID = selectProject2.getSelectionModel().getSelectedItem().getId();
-//                String s = selectProject2.getSelectionModel().getSelectedItem().getName();
+//                // TODO alternativ zu selectProject hier selectProject
+                KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
+                String s = selectProject.getSelectionModel().getSelectedItem().getName();
 
                 KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
                 laChossenProject.setText(KnxGacApplication.currentProjectName);
@@ -163,12 +170,17 @@ public class GuiProject {
             public void handle(ActionEvent actionEvent) {
                 Project project = new Project(KnxGacApplication.currentProjectID);
                 try {
-                    Controller controller = new Controller();
+                    // delete the actual project
                     controller.deleteObject(project);
-                    projectChoice(selectProject);
-                    //selectProject.getItems().add(project.getName()+ "_" + project.getNumber());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    // update the projects from db
+                    updateProjects();
+                    // add the project-items new to the choicebox
+                    selectProject.getItems().removeAll();
+                    selectProject.getItems().addAll(projectItems());
+                    KnxGacApplication.currentProjectName = "";
+                    KnxGacApplication.currentProjectID = 0;
+                    laChossenProject.setText("Kein Projekt gewählt.");
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -176,22 +188,5 @@ public class GuiProject {
         });
 
         return grid;
-    }
-    public void projectChoice(ChoiceBox selectProject){
-        Controller controller = null;
-        try {
-            controller = new Controller();
-            Project project = new Project();
-            ArrayList<Project> result = controller.selectObject(project);
-            for (Project p: result) {
-                selectProject.getItems().add(p.getName() + "_" + p.getNumber());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
     }
 }

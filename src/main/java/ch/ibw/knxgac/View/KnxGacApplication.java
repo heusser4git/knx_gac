@@ -159,7 +159,7 @@ public class KnxGacApplication extends Application {
             tabConfig.setContent(gridConfiguration);
 
             // Tab Project
-            GuiProject guiProject = new GuiProject();
+            GuiProject guiProject = new GuiProject(this.controller);
             GridPane gridProject = guiProject.getProjectGrid();
             Tab tabProject = new Tab("Projekt");
             tabProject.setClosable(false);
