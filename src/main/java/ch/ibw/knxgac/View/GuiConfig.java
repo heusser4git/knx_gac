@@ -144,29 +144,29 @@ public class GuiConfig {
                     // check config against database
                     if(controller.checkConfiguration(newConfiguration)) {
                         new Dialog().getInformation(
-                                "Erfolgreich gespeichert",
                                 "Information",
+                                "Erfolgreich gespeichert",
                                 "Die Konfiguration wurde erfolgreich gespeichert."
-                        ).show();
+                        ).showAndWait();
                         for (Tab tab : tabPane.getTabs()) {
                             tab.setDisable(false);
                         }
                         tabPane.getSelectionModel().selectFirst();
                     } else {
                         new Dialog().getInformation(
-                                "Speichern nicht möglich",
                                 "Information",
+                                "Speichern nicht möglich",
                                 "Bitte füllen Sie die Felder korrekt aus."
-                        ).show();
+                        ).showAndWait();
                     }
-                } catch (SQLException e) {
-                    if(e.getErrorCode()== 1007) {
+                } catch (SQLException exception) {
+                    if(exception.getErrorCode()== 1007) {
                         // datenbank existiert schon, deshalb konnte nicht geschrieben werden - timingproblem...
                         new Dialog().getInformation(
-                                "Die Datenbank wurde erstellt",
                                 "Information",
+                                "Die Datenbank wurde erstellt",
                                 "Bitte klicken Sie nochmals speichern \num die notwendigen Einstellungen zu speichern."
-                        ).show();
+                        ).showAndWait();
                     } else {
                         // deactivate all tabs except the selected one
                         Tab actualTab = tabPane.getSelectionModel().getSelectedItem();
@@ -176,23 +176,25 @@ public class GuiConfig {
                             }
                         }
                         // alert an error because of the SQLException
-                        new Dialog().getError(
-                                "Fehler bei der Datenbankverbindung",
+                        new Dialog().getException(
                                 "SQL Exception",
-                                "Bitte prüfen Sie ihre Datenbankverbindungsangaben.\nEs konnte keine Verbindung zur Datenbank aufgebaut werden.\n" +
-                                        "Error: " + e.getMessage()
+                                "Fehler bei der Datenbankverbindung",
+                                "Bitte prüfen Sie ihre Datenbankverbindungsangaben.\n" +
+                                        "Es konnte keine Verbindung zur Datenbank aufgebaut werden.",
+                                exception
 
-                        ).show();
+                        ).showAndWait();
                     }
-                } catch (IOException e) {
+                } catch (IOException exception) {
                     // alert an error because of the IOException
-                    new Dialog().getError(
-                            "Fehler beim Speichern",
+                    new Dialog().getException(
                             "IO Exception",
+                            "Fehler beim Speichern",
                             "Die Konfiguration konnte nicht gespeichert werden.\n" +
                                     "Löschen Sie die Datei configuration.txt und \n" +
-                                    "starten Sie die Applikation erneut."
-                    ).show();
+                                    "starten Sie die Applikation erneut.",
+                            exception
+                    ).showAndWait();
                 }
             }
         });
