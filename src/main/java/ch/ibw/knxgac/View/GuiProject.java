@@ -101,9 +101,15 @@ public class GuiProject {
                 String[] parts = s.split("_");
                 String p1 = parts[0];
                 String p2 = parts[1];
+                System.out.println("p1: " + p1 + " p2: " + p2);
                 try {
                     Controller controller = new Controller();
                     Project project = new Project();
+                    // TODO Mitja, du könntest hier direkt nach dem Projekt suchen
+                    // indem du den namen und die nummer mitgibst - in etwa so:
+//                    project.setName(p1);
+//                    project.setNumber(Integer.parseInt(p2));
+                    // Natürlich wäre es hier viel besser, wenn man die ID bekommen würde aus der ChoiceBox
                     ArrayList<Project> result = controller.selectObject(project);
                     int i = Integer.parseInt(p2);
                     for (Project p: result) {
