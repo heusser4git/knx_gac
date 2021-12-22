@@ -57,51 +57,49 @@ public class GuiProject {
         grid.setVgap(10);
         grid.setPadding(new Insets(15,15,15,15));
 
-        int y = 0;
-        int x = 1;
+
+
         FieldHelper fieldHelper = new FieldHelper();
 
-        y++;
-        grid.add(fieldHelper.getLable("Projekt erstellen", "Tahoma", 14, FontWeight.BOLD), x,y,2,1);
-        grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), x+2,y,2,1);
 
-        y++;
-        grid.add(fieldHelper.getLable("Projektname"), x,y);
+        grid.add(fieldHelper.getLable("Projekt erstellen", "Tahoma", 14, FontWeight.BOLD), 2,1,3,1);
+        grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), 6,1,3,1);
+
+
+        grid.add(fieldHelper.getLable("Projektname"), 2,2,2,1);
         TextField tfProjektname = fieldHelper.getTextField("");
-        grid.add(tfProjektname,x+1,y); // Todo adjust size
+        grid.add(tfProjektname,4,2,2,1); // Todo adjust size
 
-        grid.add(fieldHelper.getLable("Projekt wählen"), x+2,y);
-
-        y++;
+        grid.add(fieldHelper.getLable("Projekte"), 6,2,2,1);
 
         ChoiceBox<ChoiceBoxItem> selectProject = new ChoiceBox<>();
         // übergebe der ChoiceBox alle ChoiceBoxItems
         selectProject.getItems().addAll(this.projectItems());
-        grid.add(selectProject, x+3, y);
+        grid.add(selectProject, 8,2,2,1);
 
-        y++;
-        grid.add(fieldHelper.getLable("Projektnummer"), x,y);
+
+        grid.add(fieldHelper.getLable("Projektnummer"), 2,3,2,1);
         TextField tfProjektnummer = fieldHelper.getTextField("");
-        grid.add(tfProjektnummer,x+1,y); // Todo adjust size
+        grid.add(tfProjektnummer,4,3,2,1); // Todo adjust size
 
         Button btnCreate = new Button();
         btnCreate.setText("erstellen");
-        grid.add(btnCreate,x+1,y+3);
+        grid.add(btnCreate,4,4,2,1);
 
         Button btnUse = new Button();
         btnUse.setText("auswählen");
-        grid.add(btnUse,x+2,y);
+        grid.add(btnUse,6,3,2,1);
 
         Button btnDelete = new Button();
         btnDelete.setText("Projekt löschen");
-        grid.add(btnDelete,x+2,y+3);
+        grid.add(btnDelete,6,7,2,1);
 
         Button btnExport = new Button();
         btnExport.setText("CSV Export");
-        grid.add(btnExport,x+2,y+4);
+        grid.add(btnExport,6,8,2,1);
 
         Label laChossenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
-        grid.add(laChossenProject,x+2,y+20,2,1);
+        grid.add(laChossenProject,6,16,2,1);
 
         //-- Eventhandling --//
         // Creat Projekt
@@ -128,33 +126,6 @@ public class GuiProject {
         btnUse.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-//                String s = (String) selectProject.getValue();
-//                String[] parts = s.split("_");
-//                String p1 = parts[0];
-//                String p2 = parts[1];
-//                System.out.println("p1: " + p1 + " p2: " + p2);
-//                try {
-//                    Controller controller = new Controller();
-//                    Project project = new Project();
-//                    // TODO Mitja, du könntest hier direkt nach dem Projekt suchen
-//                    // indem du den namen und die nummer mitgibst - in etwa so:
-////                    project.setName(p1);
-////                    project.setNumber(Integer.parseInt(p2));
-//                    // Natürlich wäre es hier viel besser, wenn man die ID bekommen würde aus der ChoiceBox
-//                    ArrayList<Project> result = controller.selectObject(project);
-//                    int i = Integer.parseInt(p2);
-//                    for (Project p: result) {
-//                        if (p.getName() == p1 || p.getNumber() == Integer.parseInt(p2)){
-//                            KnxGacApplication.currentProjectID = p.getId();
-//                        }
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-
-//                // TODO alternativ zu selectProject hier selectProject
                 KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
                 String s = selectProject.getSelectionModel().getSelectedItem().getName();
 
@@ -187,6 +158,14 @@ public class GuiProject {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        // CSV Export Project
+        btnExport.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                //TODO implements export code
             }
         });
 
