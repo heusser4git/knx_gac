@@ -18,6 +18,7 @@ public class KnxGacApplication extends Application {
     private Configuration configuration = null;
     private Controller controller = null;
     private TabPane tabPane;
+
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
@@ -209,6 +210,7 @@ public class KnxGacApplication extends Application {
         // if a alert exists, show the alert
         if(alert!=null)
             alert.showAndWait();
+
     }
 
     public static void main(String[] args) {launch();}

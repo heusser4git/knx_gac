@@ -8,10 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
 
@@ -29,6 +26,7 @@ public class GuiMaingroup {
         updateMaingroops();
     }
 
+
     private void updateMaingroops() {
         try{
             this.mainGroups = this.controller.selectObject(new MainGroup());
@@ -40,19 +38,19 @@ public class GuiMaingroup {
     private ObservableList<ChoiceBoxItem> mgroupItems(){
         ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
         for (MainGroup m : this.mainGroups){
-            items.add(new ChoiceBoxItem(m.getId(), m.getNumber() + " " + m.getName()));
+            if (m.getIdProject() == KnxGacApplication.currentProjectID){
+                items.add(new ChoiceBoxItem(m.getId(), m.getNumber() + " " + m.getName()));
+            }
         }
         return items;
     }
     public GridPane getMaingroupGrid() {
-
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_LEFT);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(15,15,15,15));
         FieldHelper fieldHelper = new FieldHelper();
-
         int y = 0;
         int x = 1;
 
@@ -72,8 +70,6 @@ public class GuiMaingroup {
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
         TextField tfMainGroopNummer = fieldHelper.getTextField("");
-
-
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(0,1,2,3,4
         ,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31));
         grid.add(cb,x+1,y);
@@ -93,18 +89,15 @@ public class GuiMaingroup {
                 mainGroup.setNumber((Integer) cb.getSelectionModel().getSelectedItem());
 
                 try {
-                    Controller controller = new Controller();
                     controller.insertObject(mainGroup);
-                } catch (IOException e) {
-                    e.printStackTrace();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-
+                updateMaingroops();
+                list.getItems().clear();
+                list.getItems().addAll(mgroupItems());
             }
         });
-
         return grid;
     }
 
