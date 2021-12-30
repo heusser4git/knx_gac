@@ -99,7 +99,7 @@ public class GuiProject {
         grid.add(btnExport,6,8,2,1);
 
         Label laChossenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
-        grid.add(laChossenProject,6,16,2,1);
+        grid.add(laChossenProject,6,16,4,1);
 
         //-- Eventhandling --//
         // Creat Projekt

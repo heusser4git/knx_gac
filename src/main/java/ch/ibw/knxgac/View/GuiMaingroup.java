@@ -1,11 +1,49 @@
 package ch.ibw.knxgac.View;
 
+import ch.ibw.knxgac.Control.Controller;
+import ch.ibw.knxgac.Model.MainGroup;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class GuiMaingroup {
+
+    private Controller controller;
+    ArrayList<MainGroup> mainGroups = new ArrayList<>();
+
+    public GuiMaingroup(Controller controller){
+        this.controller = controller;
+        updateMaingroops();
+    }
+
+    private void updateMaingroops() {
+        try{
+            this.mainGroups = this.controller.selectObject(new MainGroup());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ObservableList<ChoiceBoxItem> mgroupItems(){
+        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+        for (MainGroup m : this.mainGroups){
+            items.add(new ChoiceBoxItem(m.getId(), m.getNumber() + " " + m.getName()));
+        }
+        return items;
+    }
     public GridPane getMaingroupGrid() {
 
         GridPane grid = new GridPane();
@@ -19,13 +57,55 @@ public class GuiMaingroup {
         int x = 1;
 
         y++;
-        grid.add(fieldHelper.getLable("Hauptgruppe erstellen", "Tahoma", 14, FontWeight.BOLD), x,y);
+        grid.add(fieldHelper.getLable("Hauptgruppe erstellen", "Tahoma", 14, FontWeight.BOLD), x,y,2,1);
         grid.add(fieldHelper.getLable("Hauptgruppen", "Tahoma", 14, FontWeight.BOLD), x+4,y);
 
+        y++;
+        grid.add(fieldHelper.getLable("Name"),x,y);
+        TextField tfMainGroopname = fieldHelper.getTextField("");
+        grid.add(tfMainGroopname,x+1,y); // Todo adjust size
+
+        ListView<ChoiceBoxItem> list = new ListView<>();
+        list.getItems().addAll(this.mgroupItems());
+        grid.add(list,x+4,y,2,7);
+
+        y++;
+        grid.add(fieldHelper.getLable("Nummer"),x,y);
+        TextField tfMainGroopNummer = fieldHelper.getTextField("");
 
 
+        ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(0,1,2,3,4
+        ,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31));
+        grid.add(cb,x+1,y);
 
+        y++;
+        Button btnCreate = new Button();
+        btnCreate.setText("erstellen");
+        grid.add(btnCreate,x+1,y);
+
+        // Eventheandler
+        btnCreate.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                MainGroup mainGroup = new MainGroup();
+                mainGroup.setName(tfMainGroopname.getText());
+                mainGroup.setIdProject(KnxGacApplication.currentProjectID);
+                mainGroup.setNumber((Integer) cb.getSelectionModel().getSelectedItem());
+
+                try {
+                    Controller controller = new Controller();
+                    controller.insertObject(mainGroup);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
 
         return grid;
     }
+
 }

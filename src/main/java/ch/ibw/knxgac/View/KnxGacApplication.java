@@ -166,7 +166,7 @@ public class KnxGacApplication extends Application {
             tabProject.setContent(gridProject);
 
             // Tab Maingroup
-            GuiMaingroup guiMaingroup = new GuiMaingroup();
+            GuiMaingroup guiMaingroup = new GuiMaingroup(this.controller);
             GridPane gridMaingroup = guiMaingroup.getMaingroupGrid();
             Tab tabMaingroup = new Tab("Hauptgruppe");
             tabMaingroup.setClosable(false);
