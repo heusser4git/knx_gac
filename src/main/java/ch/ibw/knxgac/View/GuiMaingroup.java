@@ -6,15 +6,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
+import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GuiMaingroup {
 
@@ -25,7 +28,6 @@ public class GuiMaingroup {
         this.controller = controller;
         updateMaingroops();
     }
-
 
     private void updateMaingroops() {
         try{
@@ -44,6 +46,7 @@ public class GuiMaingroup {
         }
         return items;
     }
+
     public GridPane getMaingroupGrid() {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_LEFT);
@@ -99,6 +102,8 @@ public class GuiMaingroup {
             }
         });
         return grid;
+
     }
+
 
 }

@@ -47,6 +47,7 @@ public class GuiProject {
         return items;
     }
 
+
     public GridPane getProjectGrid() {
         // TODO create the Project Grid with all Form
         // Todo create middelline
@@ -57,10 +58,7 @@ public class GuiProject {
         grid.setVgap(10);
         grid.setPadding(new Insets(15,15,15,15));
 
-
-
         FieldHelper fieldHelper = new FieldHelper();
-
 
         grid.add(fieldHelper.getLable("Projekt erstellen", "Tahoma", 14, FontWeight.BOLD), 2,1,3,1);
         grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), 6,1,3,1);
@@ -131,6 +129,7 @@ public class GuiProject {
 
                 KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
                 laChossenProject.setText(KnxGacApplication.currentProjectName);
+
                 System.out.println(KnxGacApplication.currentProjectName);
                 System.out.println(KnxGacApplication.currentProjectID);
 
