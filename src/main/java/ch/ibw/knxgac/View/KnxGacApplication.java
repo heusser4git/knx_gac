@@ -174,7 +174,7 @@ public class KnxGacApplication extends Application {
             tabMaingroup.setContent(gridMaingroup);
 
             // Tab Middlegroup
-            GuiMiddlegroup guiMiddlegroup = new GuiMiddlegroup();
+            GuiMiddlegroup guiMiddlegroup = new GuiMiddlegroup(this.controller);
             GridPane gridMiddlegroup = guiMiddlegroup.getMiddlegroupGrid();
             Tab tabMiddlegroup = new Tab("Mittelgruppe");
             tabMiddlegroup.setClosable(false);

@@ -82,6 +82,11 @@ public class GuiMaingroup {
         btnCreate.setText("erstellen");
         grid.add(btnCreate,x+1,y);
 
+        y++;
+        Button btnUpdate = new Button();
+        btnUpdate.setText("Update");
+        grid.add(btnUpdate,x+1,y);
+
         // Eventheandler
         btnCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -96,6 +101,15 @@ public class GuiMaingroup {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                updateMaingroops();
+                list.getItems().clear();
+                list.getItems().addAll(mgroupItems());
+            }
+        });
+
+        btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
                 updateMaingroops();
                 list.getItems().clear();
                 list.getItems().addAll(mgroupItems());
