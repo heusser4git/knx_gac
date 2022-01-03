@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -96,8 +97,8 @@ public class GuiProject {
         btnExport.setText("CSV Export");
         grid.add(btnExport,6,8,2,1);
 
-        Label laChossenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
-        grid.add(laChossenProject,6,16,4,1);
+        Label laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
+        grid.add(laChosenProject,6,16,4,1);
 
         //-- Eventhandling --//
         // Creat Projekt
@@ -120,21 +121,35 @@ public class GuiProject {
             }
         });
 
-        // choose Project
-        btnUse.setOnAction(new EventHandler<ActionEvent>() {
+        EventHandler useProject = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
                 String s = selectProject.getSelectionModel().getSelectedItem().getName();
 
                 KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
-                laChossenProject.setText(KnxGacApplication.currentProjectName);
+                laChosenProject.setText(KnxGacApplication.currentProjectName);
 
                 System.out.println(KnxGacApplication.currentProjectName);
                 System.out.println(KnxGacApplication.currentProjectID);
-
             }
-        });
+        };
+        btnUse.addEventHandler(EventType.ROOT, useProject);
+        // choose Project
+//        btnUse.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
+//                String s = selectProject.getSelectionModel().getSelectedItem().getName();
+//
+//                KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
+//                laChosenProject.setText(KnxGacApplication.currentProjectName);
+//
+//                System.out.println(KnxGacApplication.currentProjectName);
+//                System.out.println(KnxGacApplication.currentProjectID);
+//
+//            }
+//        });
 
         // delete Project
         btnDelete.setOnAction(new EventHandler<ActionEvent>() {
@@ -152,7 +167,7 @@ public class GuiProject {
                     selectProject.getItems().addAll(projectItems());
                     KnxGacApplication.currentProjectName = "";
                     KnxGacApplication.currentProjectID = 0;
-                    laChossenProject.setText("Kein Projekt gewählt.");
+                    laChosenProject.setText("Kein Projekt gewählt.");
 
                 } catch (SQLException e) {
                     e.printStackTrace();

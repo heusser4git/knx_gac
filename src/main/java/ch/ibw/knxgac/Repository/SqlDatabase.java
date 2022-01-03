@@ -14,17 +14,14 @@ public class SqlDatabase implements Database {
     /**
      * Creates a DB Connection
      *
-     * @param databaseTyp String "mariadb" or "mysql"
-     * @param database    String database name
-     * @param user        String database-user
-     * @param password    String database-password
+     * @param configuration Object Configuration
      * @return boolean Returns a TRUE for positive Connection
      * @throws SQLException
      */
-    public boolean createConnection(String databaseTyp, String dbServername, int dbServerPort, String database, String user, String password) throws SQLException {
-        dburl = "jdbc:" + databaseTyp.toLowerCase(Locale.ROOT) + "://" + dbServername + ":" + dbServerPort + "/";
-        this.connection = DriverManager.getConnection(dburl, user, password);
-        this.createUseDatabase(database);
+    public boolean createConnection(Configuration configuration) throws SQLException {
+        dburl = "jdbc:" + configuration.getDbServertyp().name().toLowerCase(Locale.ROOT) + "://" + configuration.getDbServer() + ":" + configuration.getDbServerPort() + "/";
+        this.connection = DriverManager.getConnection(dburl, configuration.getDbUsername(), configuration.getDbPassword());
+        this.createUseDatabase(configuration.getDbName());
         return this.isConnected();
     }
 

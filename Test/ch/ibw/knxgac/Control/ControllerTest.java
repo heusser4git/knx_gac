@@ -32,14 +32,14 @@ class ControllerTest {
     }
 
     @Test
-    void checkConfiguration() throws SQLException, IOException, ClassNotFoundException {
+    void checkConfiguration() throws SQLException, IOException {
         // Arrange
         Database db = mock(Database.class);
         Configuration configuration = mock(Configuration.class);
         Controller controller = new Controller(db);
 
         doReturn(true).when(configuration).configComplete();
-        when(db.createConnection(anyString(), anyString(), anyInt(), anyString(), anyString(), anyString())).thenReturn(true);
+//        when(db.createConnection(anyString(), anyString(), anyInt(), anyString(), anyString(), anyString())).thenReturn(true);
         doReturn(true).when(db).isConnected();
 //        when(db.createConnection(configuration.getDbServertyp().name(), configuration.getDbServer(), configuration.getDbServerPort(), configuration.getDbName(), configuration.getDbUsername(), configuration.getDbPassword())).thenReturn(true);
 //        doReturn(true).when(db.createConnection(configuration.getDbServertyp().name(), configuration.getDbServer(), configuration.getDbServerPort(), configuration.getDbName(), configuration.getDbUsername(), configuration.getDbPassword()));

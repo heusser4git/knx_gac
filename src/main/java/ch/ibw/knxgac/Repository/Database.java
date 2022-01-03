@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface Database {
-    boolean createConnection(String databaseTyp, String dbServer, int dbServerPort, String database, String user, String password) throws SQLException;
+    boolean createConnection(Configuration configuration) throws SQLException;
     boolean isConnected() throws SQLException;
     void closeConnection() throws SQLException;
 
