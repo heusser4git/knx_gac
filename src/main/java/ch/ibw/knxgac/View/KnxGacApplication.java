@@ -181,7 +181,7 @@ public class KnxGacApplication extends Application {
             tabMiddlegroup.setContent(gridMiddlegroup);
 
             // Tab Address
-            GuiAddress guiAddress = new GuiAddress();
+            GuiAddress guiAddress = new GuiAddress(this.controller);
             GridPane gridAddress = guiAddress.getAddressGrid();
             Tab tabAddress = new Tab("Adressen");
             tabAddress.setClosable(false);
@@ -210,6 +210,10 @@ public class KnxGacApplication extends Application {
         // if a alert exists, show the alert
         if(alert!=null)
             alert.showAndWait();
+
+        //Eventhandler
+
+
 
     }
 
