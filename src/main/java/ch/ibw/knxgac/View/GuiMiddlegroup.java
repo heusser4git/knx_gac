@@ -75,7 +75,7 @@ public class GuiMiddlegroup {
 
         y++;
         grid.add(fieldHelper.getLable("Hauptgruppe"),x,y);
-        ChoiceBox cbmaingroup = new ChoiceBox();
+        ChoiceBox<ChoiceBoxItem> cbmaingroup = new ChoiceBox();
         cbmaingroup.getItems().addAll(this.maingroupItems());
         grid.add(cbmaingroup,x+1,y);
 
@@ -115,15 +115,29 @@ public class GuiMiddlegroup {
             }
         });
 
-        cbmaingroup.setOnAction(new EventHandler<ActionEvent>() {
+        btnCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                idMaingroup = Integer.parseInt(cbmaingroup.getId());
+                MiddleGroup middleGroup = new MiddleGroup();
+                middleGroup.setName(tfMiddelGroopname.getText());
+                middleGroup.setIdMaingroup(idMaingroup);
+                middleGroup.setNumber((Integer) cbMiddelgroupNumber.getSelectionModel().getSelectedItem());
+                try{
+                    controller.insertObject(middleGroup);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 update();
                 middelGroupList.getItems().clear();
                 middelGroupList.getItems().addAll(middelgroupItems());
-
             }
+        });
+
+        cbmaingroup.setOnAction((event) -> {
+                idMaingroup = cbmaingroup.getSelectionModel().getSelectedItem().getId();
+                update();
+                middelGroupList.getItems().clear();
+                middelGroupList.getItems().addAll(middelgroupItems());
         });
 
 
