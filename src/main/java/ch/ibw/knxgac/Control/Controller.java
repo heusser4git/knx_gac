@@ -96,8 +96,6 @@ public class Controller implements ControllerInterface {
     }
 
     private boolean starteDbConnection(Configuration configuration) throws SQLException {
-        String test = configuration.getDbServertyp().name();
-
         this.db.createConnection(configuration);
         return this.db.isConnected();
     }

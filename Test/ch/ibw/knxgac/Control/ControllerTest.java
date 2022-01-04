@@ -4,12 +4,12 @@ import ch.ibw.knxgac.Model.Configuration;
 import ch.ibw.knxgac.Repository.Database;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.util.collections.Iterables;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.sql.SQLException;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class ControllerTest {
@@ -36,14 +36,13 @@ class ControllerTest {
         // Arrange
         Database db = mock(Database.class);
         Configuration configuration = mock(Configuration.class);
+        // TODO CSV Output is null so it crashes at Controller:115
+        configuration.setCsvOutputpath(Iterables.firstOf(FileSystems.getDefault().getRootDirectories()).toString());
         Controller controller = new Controller(db);
 
         doReturn(true).when(configuration).configComplete();
-//        when(db.createConnection(anyString(), anyString(), anyInt(), anyString(), anyString(), anyString())).thenReturn(true);
         doReturn(true).when(db).isConnected();
-//        when(db.createConnection(configuration.getDbServertyp().name(), configuration.getDbServer(), configuration.getDbServerPort(), configuration.getDbName(), configuration.getDbUsername(), configuration.getDbPassword())).thenReturn(true);
-//        doReturn(true).when(db.createConnection(configuration.getDbServertyp().name(), configuration.getDbServer(), configuration.getDbServerPort(), configuration.getDbName(), configuration.getDbUsername(), configuration.getDbPassword()));
-//        doReturn(true).when(db).createConnection(Servertyp.MARIADB.name(), "server", 1234, "database", "user", "pwd");
+
         // Act
         boolean result = controller.checkConfiguration(configuration);
         // Assert
