@@ -3,6 +3,8 @@ package ch.ibw.knxgac.View;
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.*;
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -172,6 +174,15 @@ public class KnxGacApplication extends Application {
             Tab tabMaingroup = new Tab("Hauptgruppe");
             tabMaingroup.setClosable(false);
             tabMaingroup.setContent(gridMaingroup);
+            tabMaingroup.setOnSelectionChanged(new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                    if(tabMaingroup.isSelected()) {
+                        System.out.println("middlegrouplist updated");
+                        guiMaingroup.updateMaingroupList(KnxGacApplication.currentProjectID);
+                    }
+                }
+            });
 
             // Tab Middlegroup
             GuiMiddlegroup guiMiddlegroup = new GuiMiddlegroup(this.controller);
@@ -210,10 +221,6 @@ public class KnxGacApplication extends Application {
         // if a alert exists, show the alert
         if(alert!=null)
             alert.showAndWait();
-
-        //Eventhandler
-
-
 
     }
 

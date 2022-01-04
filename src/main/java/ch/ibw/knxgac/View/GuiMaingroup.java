@@ -23,12 +23,24 @@ public class GuiMaingroup {
 
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
+    private ListView<ChoiceBoxItem> list = null;
 
     public GuiMaingroup(Controller controller){
         this.controller = controller;
         updateMaingroops();
     }
 
+    private void updateMaingroups(int idProject) {
+        try{
+            MainGroup filterMaingroup = new MainGroup();
+            filterMaingroup.setIdProject(idProject);
+            this.mainGroups = this.controller.selectObject(filterMaingroup);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // TODO diese Methode würde ich mit meiner Methode "updateMaingroupList(int idProject)" ersetzen - immer nur die Maingroups des ausgewählten Projekts
     private void updateMaingroops() {
         try{
             this.mainGroups = this.controller.selectObject(new MainGroup());
@@ -37,9 +49,19 @@ public class GuiMaingroup {
         }
     }
 
+    public void updateMaingroupList(int idProject) {
+        // data update
+        this.updateMaingroups(idProject);
+        // delete all items from maingrouplist
+        this.list.getItems().clear();
+        // add refreshed items to list
+        this.list.getItems().addAll(this.mgroupItems());
+    }
+
     private ObservableList<ChoiceBoxItem> mgroupItems(){
         ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
         for (MainGroup m : this.mainGroups){
+            // TODO wenn du meine methode "updateMaingroupList(int idProject)" nutzt erübrigt sich die prüfung mit der currendProjectID, da nur diese aus der DB geholt werden
             if (m.getIdProject() == KnxGacApplication.currentProjectID){
                 items.add(new ChoiceBoxItem(m.getId(), m.getNumber() + " " + m.getName()));
             }
@@ -66,9 +88,9 @@ public class GuiMaingroup {
         TextField tfMainGroopname = fieldHelper.getTextField("");
         grid.add(tfMainGroopname,x+1,y); // Todo adjust size
 
-        ListView<ChoiceBoxItem> list = new ListView<>();
-        list.getItems().addAll(this.mgroupItems());
-        grid.add(list,x+4,y,2,7);
+        this.list = new ListView<>();
+        this.list.getItems().addAll(this.mgroupItems());
+        grid.add(this.list,x+4,y,2,7);
 
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
