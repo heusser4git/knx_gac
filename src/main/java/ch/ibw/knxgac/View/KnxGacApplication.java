@@ -174,10 +174,12 @@ public class KnxGacApplication extends Application {
             Tab tabMaingroup = new Tab("Hauptgruppe");
             tabMaingroup.setClosable(false);
             tabMaingroup.setContent(gridMaingroup);
+            // add an eventhandler to the Maingroup-Tab, which actualizes the data of the Maingrouptab
             tabMaingroup.setOnSelectionChanged(new EventHandler<Event>() {
                 @Override
                 public void handle(Event event) {
                     if(tabMaingroup.isSelected()) {
+                        // TODO sys.out entfernen
                         System.out.println("middlegrouplist updated");
                         guiMaingroup.updateMaingroupList(KnxGacApplication.currentProjectID);
                     }
