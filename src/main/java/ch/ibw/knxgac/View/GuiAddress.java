@@ -106,6 +106,7 @@ public class GuiAddress {
             cbAdressStartNumber.getItems().add(i);
             
         }
+        //cbAdressStartNumber.
         grid.add(cbAdressStartNumber,x+1,y);
 
         y++;

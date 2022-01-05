@@ -49,55 +49,56 @@ public class GuiProject {
 
 
     public GridPane getProjectGrid() {
-        // TODO create the Project Grid with all Form
-        // Todo create middelline
-
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_LEFT);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(15,15,15,15));
-
         FieldHelper fieldHelper = new FieldHelper();
 
-        grid.add(fieldHelper.getLable("Projekt erstellen", "Tahoma", 14, FontWeight.BOLD), 2,1,3,1);
-        grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), 6,1,3,1);
+        int y = 0;
+        int x = 1;
 
+        y++;
+        grid.add(fieldHelper.getLable("Projekt erstellen", "Tahoma", 14, FontWeight.BOLD), x,y,2,1);
+        grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), x+4,y,2,1);
 
-        grid.add(fieldHelper.getLable("Projektname"), 2,2,2,1);
+        y++;
+        grid.add(fieldHelper.getLable("Projektname"), x,y);
         TextField tfProjektname = fieldHelper.getTextField("");
-        grid.add(tfProjektname,4,2,2,1); // Todo adjust size
+        grid.add(tfProjektname,x+1,y);
 
-        grid.add(fieldHelper.getLable("Projekte"), 6,2,2,1);
-
+        grid.add(fieldHelper.getLable("Projekte"), x+4,y);
         ChoiceBox<ChoiceBoxItem> selectProject = new ChoiceBox<>();
         // übergebe der ChoiceBox alle ChoiceBoxItems
         selectProject.getItems().addAll(this.projectItems());
-        grid.add(selectProject, 8,2,2,1);
+        grid.add(selectProject, x+6,y);
 
-
-        grid.add(fieldHelper.getLable("Projektnummer"), 2,3,2,1);
+        y++;
+        grid.add(fieldHelper.getLable("Projektnummer"), x,y);
         TextField tfProjektnummer = fieldHelper.getTextField("");
-        grid.add(tfProjektnummer,4,3,2,1); // Todo adjust size
-
-        Button btnCreate = new Button();
-        btnCreate.setText("erstellen");
-        grid.add(btnCreate,4,4,2,1);
+        grid.add(tfProjektnummer,x+1,y); // Todo adjust size
 
         Button btnUse = new Button();
         btnUse.setText("auswählen");
-        grid.add(btnUse,6,3,2,1);
+        grid.add(btnUse,x+4,y);
+
+        y++;
+        Button btnCreate = new Button();
+        btnCreate.setText("erstellen");
+        grid.add(btnCreate,x+1,y);
 
         Button btnDelete = new Button();
         btnDelete.setText("Projekt löschen");
-        grid.add(btnDelete,6,7,2,1);
+        grid.add(btnDelete,x+4,y,2,1);
 
+        y++;
         Button btnExport = new Button();
         btnExport.setText("CSV Export");
-        grid.add(btnExport,6,8,2,1);
+        grid.add(btnExport,x+4,y);
 
         Label laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
-        grid.add(laChosenProject,6,16,4,1);
+        grid.add(laChosenProject,x+4,16,4,1);
 
         //-- Eventhandling --//
         // Creat Projekt

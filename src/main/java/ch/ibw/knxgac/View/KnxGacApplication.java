@@ -179,8 +179,6 @@ public class KnxGacApplication extends Application {
                 @Override
                 public void handle(Event event) {
                     if(tabMaingroup.isSelected()) {
-                        // TODO sys.out entfernen
-                        System.out.println("middlegrouplist updated");
                         guiMaingroup.updateMaingroupList(KnxGacApplication.currentProjectID);
                     }
                 }
@@ -192,6 +190,15 @@ public class KnxGacApplication extends Application {
             Tab tabMiddlegroup = new Tab("Mittelgruppe");
             tabMiddlegroup.setClosable(false);
             tabMiddlegroup.setContent(gridMiddlegroup);
+
+            tabMiddlegroup.setOnSelectionChanged(new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                    if (tabMiddlegroup.isSelected()){
+                        //guiMiddlegroup.update(KnxGacApplication.currentProjectID);
+                    }
+                }
+            });
 
             // Tab Address
             GuiAddress guiAddress = new GuiAddress(this.controller);

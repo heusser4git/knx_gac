@@ -27,7 +27,6 @@ public class GuiMaingroup {
 
     public GuiMaingroup(Controller controller){
         this.controller = controller;
-        updateMaingroops();
     }
 
     private void updateMaingroups(int idProject) {
@@ -41,13 +40,13 @@ public class GuiMaingroup {
     }
 
     // TODO diese Methode würde ich mit meiner Methode "updateMaingroupList(int idProject)" ersetzen - immer nur die Maingroups des ausgewählten Projekts
-    private void updateMaingroops() {
+    /*private void updateMaingroops() {
         try{
             this.mainGroups = this.controller.selectObject(new MainGroup());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void updateMaingroupList(int idProject) {
         // data update
@@ -94,7 +93,7 @@ public class GuiMaingroup {
 
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
-        TextField tfMainGroopNummer = fieldHelper.getTextField("");
+        //TextField tfMainGroopNummer = fieldHelper.getTextField("");
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(0,1,2,3,4
         ,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31));
         grid.add(cb,x+1,y);
@@ -108,6 +107,9 @@ public class GuiMaingroup {
         Button btnUpdate = new Button();
         btnUpdate.setText("Update");
         grid.add(btnUpdate,x+1,y);
+
+        Label laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
+        grid.add(laChosenProject,x+4,16,4,1);
 
         // Eventheandler
         btnCreate.setOnAction(new EventHandler<ActionEvent>() {
@@ -123,16 +125,14 @@ public class GuiMaingroup {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                updateMaingroops();
-                list.getItems().clear();
-                list.getItems().addAll(mgroupItems());
+                updateMaingroupList(KnxGacApplication.currentProjectID);
             }
         });
 
         btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                updateMaingroops();
+                //updateMaingroups();
                 list.getItems().clear();
                 list.getItems().addAll(mgroupItems());
             }

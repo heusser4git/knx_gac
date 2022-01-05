@@ -26,7 +26,7 @@ public class GuiMiddlegroup {
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
     int idMaingroup;
 
-    private void update(){
+    public void update(){
         try {
             this.mainGroups = this.controller.selectObject(new MainGroup());
             this.middleGroups = this.controller.selectObject(new MiddleGroup());
