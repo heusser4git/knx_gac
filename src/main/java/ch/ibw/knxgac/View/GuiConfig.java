@@ -78,12 +78,14 @@ public class GuiConfig {
         y++;
         grid.add(fieldHelper.getLable("Server Port"), x,y);
         TextField tfServerPort = fieldHelper.getTextField(String.valueOf(configuration.getDbServerPort()));
+        tfServerPort.setTooltip(new Tooltip("Bitte geben Sie für den Port nur Zahlen ein.\nDer MySQL Standardport ist 3306."));
         grid.add(tfServerPort, x+1, y);
 
         // add a lable and a TextField for Formfield DB Name
         y++;
         grid.add(fieldHelper.getLable("Datenbank-Name"), x,y);
         TextField tfDbName = fieldHelper.getTextField(configuration.getDbName());
+        tfDbName.setTooltip(new Tooltip("Bitte geben Sie für den Datenbank-Namen nur Buchstaben ein. \nZum Beispiel \"KNXGAC\""));
         grid.add(tfDbName, x+1, y);
         y++;
 
