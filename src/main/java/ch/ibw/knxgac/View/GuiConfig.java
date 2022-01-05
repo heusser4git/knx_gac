@@ -1,6 +1,7 @@
 package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
+import ch.ibw.knxgac.Control.StringChecker;
 import ch.ibw.knxgac.Model.Configuration;
 import ch.ibw.knxgac.Model.Servertyp;
 import javafx.collections.FXCollections;
@@ -125,76 +126,89 @@ public class GuiConfig {
         btnSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                boolean errorOccurred = false;
                 // create a new configuration-object to save the formdata in it
                 Configuration config = new Configuration();
                 // get the servertyp-object of the servertyp-field-string out of the form
                 config.setDbServertyp(Servertyp.valueOf(cBservertyp.getSelectionModel().getSelectedItem().getName()));
                 // set data from fx-form to the configuration form
                 config.setDbServer(tfServer.getText());
-                config.setDbServerPort(Integer.parseInt(tfServerPort.getText()));
-                config.setDbName(tfDbName.getText());
+                if(StringChecker.checkStringOnlyNumbers(tfServerPort.getText())) {
+                    config.setDbServerPort(Integer.parseInt(tfServerPort.getText()));
+                } else {
+                    errorOccurred = true;
+                    wrongInput("Server Port", "Bitte korrigieren Sie die Port-Angabe. \nEs sind nur Zahlen erlaubt.").showAndWait();
+                }
+                if(StringChecker.checkStringOnlyLettersNoUmlaute(tfDbName.getText())) {
+                    config.setDbName(tfDbName.getText());
+                } else {
+                    errorOccurred = true;
+                    wrongInput("Datenbank Name", "Prüfen Sie den Dankbanknamen. \nEs sind nur Buchstaben erlaubt - keine Umlaute.").showAndWait();
+                }
                 config.setDbUsername(tfUser.getText());
                 config.setDbPassword(tfPassword.getText());
                 config.setCsvOutputpath(csvpath.getText());
-                try {
-                    // save the config
-                    controller.saveConfiguration(config);
-                    // load the config out of the file again
-                    Configuration newConfiguration = controller.getConfiguration();
-                    // check config against database
-                    if(controller.checkConfiguration(newConfiguration)) {
-                        new Dialog().getInformation(
-                                "Information",
-                                "Erfolgreich gespeichert",
-                                "Die Konfiguration wurde erfolgreich gespeichert."
-                        ).showAndWait();
-                        for (Tab tab : tabPane.getTabs()) {
-                            tab.setDisable(false);
-                        }
-                        tabPane.getSelectionModel().selectFirst();
-                    } else {
-                        new Dialog().getInformation(
-                                "Information",
-                                "Speichern nicht möglich",
-                                "Bitte füllen Sie die Felder korrekt aus."
-                        ).showAndWait();
-                    }
-                } catch (SQLException exception) {
-                    if(exception.getErrorCode()== 1007) {
-                        // datenbank existiert schon, deshalb konnte nicht geschrieben werden - timingproblem...
-                        new Dialog().getInformation(
-                                "Information",
-                                "Die Datenbank wurde erstellt",
-                                "Bitte klicken Sie nochmals speichern \num die notwendigen Einstellungen zu speichern."
-                        ).showAndWait();
-                    } else {
-                        // deactivate all tabs except the selected one
-                        Tab actualTab = tabPane.getSelectionModel().getSelectedItem();
-                        for (Tab tab : tabPane.getTabs()) {
-                            if (!tab.equals(actualTab)) {
-                                tab.setDisable(true);
+                if(!errorOccurred) {
+                    try {
+                        // save the config
+                        controller.saveConfiguration(config);
+                        // load the config out of the file again
+                        Configuration newConfiguration = controller.getConfiguration();
+                        // check config against database
+                        if (controller.checkConfiguration(newConfiguration)) {
+                            new Dialog().getInformation(
+                                    "Information",
+                                    "Erfolgreich gespeichert",
+                                    "Die Konfiguration wurde erfolgreich gespeichert."
+                            ).showAndWait();
+                            for (Tab tab : tabPane.getTabs()) {
+                                tab.setDisable(false);
                             }
+                            tabPane.getSelectionModel().selectFirst();
+                        } else {
+                            new Dialog().getInformation(
+                                    "Information",
+                                    "Speichern nicht möglich",
+                                    "Bitte füllen Sie die Felder korrekt aus."
+                            ).showAndWait();
                         }
-                        // alert an error because of the SQLException
-                        new Dialog().getException(
-                                "SQL Exception",
-                                "Fehler bei der Datenbankverbindung",
-                                "Bitte prüfen Sie ihre Datenbankverbindungsangaben.\n" +
-                                        "Es konnte keine Verbindung zur Datenbank aufgebaut werden.",
-                                exception
+                    } catch (SQLException exception) {
+                        if (exception.getErrorCode() == 1007) {
+                            // datenbank existiert schon, deshalb konnte nicht geschrieben werden - timingproblem...
+                            new Dialog().getInformation(
+                                    "Information",
+                                    "Die Datenbank wurde erstellt",
+                                    "Bitte klicken Sie nochmals speichern \num die notwendigen Einstellungen zu speichern."
+                            ).showAndWait();
+                        } else {
+                            // deactivate all tabs except the selected one
+                            Tab actualTab = tabPane.getSelectionModel().getSelectedItem();
+                            for (Tab tab : tabPane.getTabs()) {
+                                if (!tab.equals(actualTab)) {
+                                    tab.setDisable(true);
+                                }
+                            }
+                            // alert an error because of the SQLException
+                            new Dialog().getException(
+                                    "SQL Exception",
+                                    "Fehler bei der Datenbankverbindung",
+                                    "Bitte prüfen Sie ihre Datenbankverbindungsangaben.\n" +
+                                            "Es konnte keine Verbindung zur Datenbank aufgebaut werden.",
+                                    exception
 
+                            ).showAndWait();
+                        }
+                    } catch (IOException exception) {
+                        // alert an error because of the IOException
+                        new Dialog().getException(
+                                "IO Exception",
+                                "Fehler beim Speichern",
+                                "Die Konfiguration konnte nicht gespeichert werden.\n" +
+                                        "Löschen Sie die Datei configuration.txt und \n" +
+                                        "starten Sie die Applikation erneut.",
+                                exception
                         ).showAndWait();
                     }
-                } catch (IOException exception) {
-                    // alert an error because of the IOException
-                    new Dialog().getException(
-                            "IO Exception",
-                            "Fehler beim Speichern",
-                            "Die Konfiguration konnte nicht gespeichert werden.\n" +
-                                    "Löschen Sie die Datei configuration.txt und \n" +
-                                    "starten Sie die Applikation erneut.",
-                            exception
-                    ).showAndWait();
                 }
             }
         });
@@ -203,5 +217,13 @@ public class GuiConfig {
 
         // return the grid with all the form
         return grid;
+    }
+
+    private Alert wrongInput(String field, String text) {
+        return new Dialog().getError(
+                "Eingabefehler",
+                field,
+                text
+        );
     }
 }
