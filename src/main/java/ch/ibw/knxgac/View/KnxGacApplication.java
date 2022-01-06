@@ -177,6 +177,10 @@ public class KnxGacApplication extends Application {
                     if(tabProject.isSelected()) {
                         if(!configGui)
                             guiProject.updateProjectChoiceBox();
+
+                        if(KnxGacApplication.currentProjectID>0)
+                            // set currentProject as selected
+                            guiProject.selectProjectFromChoiceBox();
                     }
                 }
             });
@@ -260,7 +264,7 @@ public class KnxGacApplication extends Application {
                 }
             });
 
-            Scene scene = new Scene(tabPane, 520, 440);
+            Scene scene = new Scene(tabPane, 560, 440);
             stage.setScene(scene);
         }
         stage.setTitle("KNX Group Address Creator  /  Kein Projekt gewählt");

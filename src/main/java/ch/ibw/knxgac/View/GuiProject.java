@@ -55,6 +55,17 @@ public class GuiProject {
         return items;
     }
 
+    public void selectProjectFromChoiceBox() {
+        System.out.println("go to select the project");
+        for(ChoiceBoxItem cbi : selectProject.getItems()) {
+            if(cbi.getId()==KnxGacApplication.currentProjectID) {
+                selectProject.getSelectionModel().clearSelection();
+                selectProject.getSelectionModel().select(cbi);
+                System.out.println(cbi.getName() + " is selected");
+                break;
+            }
+        }
+    }
     /**
      * Sets the Project choosen in the Project-ChoiceBox
      * onto the static Variables on KnxGacApplication
@@ -176,10 +187,9 @@ public class GuiProject {
                     KnxGacApplication.currentProjectName = "";
                     KnxGacApplication.currentProjectID = 0;
                     laChosenProject.setText("Kein Projekt gewählt.");
-
+                    // disable buttons
                     btnDelete.setDisable(true);
                     btnExport.setDisable(true);
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
