@@ -248,6 +248,7 @@ public class KnxGacApplication extends Application {
                     // set the actual project onto guiMaingroup
                     guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
 
+                    // actual Project in stage.title
                     String title = stage.getTitle();
                     int pos = title.indexOf("  /  ");
                     if(pos>0)
