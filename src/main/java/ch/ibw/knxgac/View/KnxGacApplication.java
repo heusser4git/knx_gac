@@ -21,6 +21,7 @@ public class KnxGacApplication extends Application {
     private Configuration configuration = null;
     private Controller controller = null;
     private TabPane tabPane;
+    protected static boolean configGui = false;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -140,7 +141,6 @@ public class KnxGacApplication extends Application {
 
 
         // Check if DB-Connection ok, otherwise open config-Tab
-        boolean configGui;
         if(noDbError) {// if a DB-Exception occurs, we cannot check or get the configuration
             try {
                 // check if the configuration-data are complete and the
@@ -168,7 +168,16 @@ public class KnxGacApplication extends Application {
             Tab tabProject = new Tab("Projekt");
             tabProject.setClosable(false);
             tabProject.setContent(gridProject);
-
+            // add an eventhandler to the Project-Tab, which actualizes the data of the Projecttab
+            tabProject.setOnSelectionChanged(new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                    if(tabProject.isSelected()) {
+                        if(!configGui)
+                            guiProject.updateProjectChoiceBox();
+                    }
+                }
+            });
 
             // Tab Maingroup
             GuiMaingroup guiMaingroup = new GuiMaingroup(this.controller);

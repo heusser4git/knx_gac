@@ -27,9 +27,13 @@ public class GuiProject {
 
     public GuiProject(Controller controller) {
         this.controller = controller;
-        updateProjects();
+//        updateProjects();
     }
-
+    public void updateProjectChoiceBox() {
+        updateProjects();
+        selectProject.getItems().clear();
+        selectProject.getItems().addAll(this.projectItems());
+    }
     private void updateProjects() {
         try {
             // get all projects out of the DB
