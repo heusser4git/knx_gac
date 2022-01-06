@@ -243,11 +243,14 @@ public class KnxGacApplication extends Application {
                         tabMaingroup.setDisable(false);
                         tabMiddlegroup.setDisable(false);
                         tabAddress.setDisable(false);
+
+                        // activate delete and export buttons
+                        guiProject.btnDelete.setDisable(false);
+                        guiProject.btnExport.setDisable(false);
                     }
 
                     // set the actual project onto guiMaingroup
                     guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
-
                     // actual Project in stage.title
                     String title = stage.getTitle();
                     int pos = title.indexOf("  /  ");

@@ -24,6 +24,8 @@ public class GuiProject {
     ArrayList<Project> projects = new ArrayList<>();
     ChoiceBox<ChoiceBoxItem> selectProject = new ChoiceBox<>();
     Label laChosenProject = new Label();
+    Button btnDelete = new Button();
+    Button btnExport = new Button();
 
     public GuiProject(Controller controller) {
         this.controller = controller;
@@ -88,7 +90,6 @@ public class GuiProject {
         grid.add(tfProjektname,x+1,y);
 
         grid.add(fieldHelper.getLable("Projekte"), x+4,y);
-        selectProject = new ChoiceBox<>();
         selectProject.setId("selectProject");
         // übergebe der ChoiceBox alle ChoiceBoxItems
         selectProject.getItems().addAll(this.projectItems());
@@ -109,13 +110,13 @@ public class GuiProject {
         btnCreate.setText("erstellen");
         grid.add(btnCreate,x+1,y);
 
-        Button btnDelete = new Button();
         btnDelete.setText("Projekt löschen");
+        btnDelete.setDisable(true);
         grid.add(btnDelete,x+4,y,2,1);
 
         y++;
-        Button btnExport = new Button();
         btnExport.setText("CSV Export");
+        btnExport.setDisable(true);
         grid.add(btnExport,x+4,y);
 
         laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
@@ -175,6 +176,9 @@ public class GuiProject {
                     KnxGacApplication.currentProjectName = "";
                     KnxGacApplication.currentProjectID = 0;
                     laChosenProject.setText("Kein Projekt gewählt.");
+
+                    btnDelete.setDisable(true);
+                    btnExport.setDisable(true);
 
                 } catch (SQLException e) {
                     e.printStackTrace();
