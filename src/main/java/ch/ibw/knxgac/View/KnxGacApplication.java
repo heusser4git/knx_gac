@@ -3,6 +3,8 @@ package ch.ibw.knxgac.View;
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.*;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -237,9 +239,9 @@ public class KnxGacApplication extends Application {
                 tabPane.getSelectionModel().select(tabConfig);
             }
             // if project ist choosen, show all tabs
-            tabProject.getContent().lookup("#btnUse").addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+            guiProject.selectProject.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ChoiceBoxItem>() {
                 @Override
-                public void handle(ActionEvent actionEvent) {
+                public void changed(ObservableValue<? extends ChoiceBoxItem> observableValue, ChoiceBoxItem choiceBoxItem, ChoiceBoxItem t1) {
                     guiProject.setChoosenProjectFromChoiceBox();
 
                     if(KnxGacApplication.currentProjectID>0) {
@@ -263,6 +265,32 @@ public class KnxGacApplication extends Application {
                     stage.setTitle(title + "  /  " + KnxGacApplication.currentProjectName);
                 }
             });
+//            tabProject.getContent().lookup("#btnUse").addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent actionEvent) {
+//                    guiProject.setChoosenProjectFromChoiceBox();
+//
+//                    if(KnxGacApplication.currentProjectID>0) {
+//                        // show all tabs
+//                        tabMaingroup.setDisable(false);
+//                        tabMiddlegroup.setDisable(false);
+//                        tabAddress.setDisable(false);
+//
+//                        // activate delete and export buttons
+//                        guiProject.btnDelete.setDisable(false);
+//                        guiProject.btnExport.setDisable(false);
+//                    }
+//
+//                    // set the actual project onto guiMaingroup
+//                    guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
+//                    // actual Project in stage.title
+//                    String title = stage.getTitle();
+//                    int pos = title.indexOf("  /  ");
+//                    if(pos>0)
+//                        title = title.substring(0, pos);
+//                    stage.setTitle(title + "  /  " + KnxGacApplication.currentProjectName);
+//                }
+//            });
 
             Scene scene = new Scene(tabPane, 560, 440);
             stage.setScene(scene);

@@ -56,12 +56,10 @@ public class GuiProject {
     }
 
     public void selectProjectFromChoiceBox() {
-        System.out.println("go to select the project");
         for(ChoiceBoxItem cbi : selectProject.getItems()) {
             if(cbi.getId()==KnxGacApplication.currentProjectID) {
                 selectProject.getSelectionModel().clearSelection();
                 selectProject.getSelectionModel().select(cbi);
-                System.out.println(cbi.getName() + " is selected");
                 break;
             }
         }
@@ -111,10 +109,10 @@ public class GuiProject {
         TextField tfProjektnummer = fieldHelper.getTextField("");
         grid.add(tfProjektnummer,x+1,y); // Todo adjust size
 
-        Button btnUse = new Button();
-        btnUse.setId("btnUse");
-        btnUse.setText("auswählen");
-        grid.add(btnUse,x+4,y);
+//        Button btnUse = new Button();
+//        btnUse.setId("btnUse");
+//        btnUse.setText("auswählen");
+//        grid.add(btnUse,x+4,y);
 
         y++;
         Button btnCreate = new Button();
