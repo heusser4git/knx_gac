@@ -22,6 +22,8 @@ import java.util.ArrayList;
 public class GuiProject {
     private Controller controller;
     ArrayList<Project> projects = new ArrayList<>();
+    ChoiceBox<ChoiceBoxItem> selectProject = new ChoiceBox<>();
+    Label laChosenProject = new Label();
 
     public GuiProject(Controller controller) {
         this.controller = controller;
@@ -47,6 +49,19 @@ public class GuiProject {
         return items;
     }
 
+    /**
+     * Sets the Project choosen in the Project-ChoiceBox
+     * onto the static Variables on KnxGacApplication
+     */
+    public void setChoosenProjectFromChoiceBox() {
+        if(!selectProject.getSelectionModel().isEmpty() && selectProject.getSelectionModel().getSelectedItem().getId()>0) {
+            KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
+            String s = selectProject.getSelectionModel().getSelectedItem().getName();
+
+            KnxGacApplication.currentProjectName = "Aktuelles Projekt: " + s;
+            laChosenProject.setText(KnxGacApplication.currentProjectName);
+        }
+    }
 
     public GridPane getProjectGrid() {
         GridPane grid = new GridPane();
@@ -69,7 +84,8 @@ public class GuiProject {
         grid.add(tfProjektname,x+1,y);
 
         grid.add(fieldHelper.getLable("Projekte"), x+4,y);
-        ChoiceBox<ChoiceBoxItem> selectProject = new ChoiceBox<>();
+        selectProject = new ChoiceBox<>();
+        selectProject.setId("selectProject");
         // übergebe der ChoiceBox alle ChoiceBoxItems
         selectProject.getItems().addAll(this.projectItems());
         grid.add(selectProject, x+6,y);
@@ -80,6 +96,7 @@ public class GuiProject {
         grid.add(tfProjektnummer,x+1,y); // Todo adjust size
 
         Button btnUse = new Button();
+        btnUse.setId("btnUse");
         btnUse.setText("auswählen");
         grid.add(btnUse,x+4,y);
 
@@ -97,7 +114,7 @@ public class GuiProject {
         btnExport.setText("CSV Export");
         grid.add(btnExport,x+4,y);
 
-        Label laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
+        laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
         grid.add(laChosenProject,x+4,16,4,1);
 
         //-- Eventhandling --//
@@ -122,20 +139,20 @@ public class GuiProject {
         });
 
         // choose Project
-        btnUse.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
-                String s = selectProject.getSelectionModel().getSelectedItem().getName();
-
-                KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
-                laChosenProject.setText(KnxGacApplication.currentProjectName);
-
-                System.out.println(KnxGacApplication.currentProjectName);
-                System.out.println(KnxGacApplication.currentProjectID);
-
-            }
-        });
+//        btnUse.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
+//                String s = selectProject.getSelectionModel().getSelectedItem().getName();
+//
+//                KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
+//                laChosenProject.setText(KnxGacApplication.currentProjectName);
+//
+//                System.out.println(KnxGacApplication.currentProjectName);
+//                System.out.println(KnxGacApplication.currentProjectID);
+//
+//            }
+//        });
 
         // delete Project
         btnDelete.setOnAction(new EventHandler<ActionEvent>() {

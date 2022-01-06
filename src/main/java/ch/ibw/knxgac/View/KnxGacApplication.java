@@ -3,6 +3,7 @@ package ch.ibw.knxgac.View;
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.*;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -168,10 +169,12 @@ public class KnxGacApplication extends Application {
             tabProject.setClosable(false);
             tabProject.setContent(gridProject);
 
+
             // Tab Maingroup
             GuiMaingroup guiMaingroup = new GuiMaingroup(this.controller);
             GridPane gridMaingroup = guiMaingroup.getMaingroupGrid();
             Tab tabMaingroup = new Tab("Hauptgruppe");
+            tabMaingroup.setDisable(true);
             tabMaingroup.setClosable(false);
             tabMaingroup.setContent(gridMaingroup);
             // add an eventhandler to the Maingroup-Tab, which actualizes the data of the Maingrouptab
@@ -188,6 +191,7 @@ public class KnxGacApplication extends Application {
             GuiMiddlegroup guiMiddlegroup = new GuiMiddlegroup(this.controller);
             GridPane gridMiddlegroup = guiMiddlegroup.getMiddlegroupGrid();
             Tab tabMiddlegroup = new Tab("Mittelgruppe");
+            tabMiddlegroup.setDisable(true);
             tabMiddlegroup.setClosable(false);
             tabMiddlegroup.setContent(gridMiddlegroup);
 
@@ -204,6 +208,7 @@ public class KnxGacApplication extends Application {
             GuiAddress guiAddress = new GuiAddress(this.controller);
             GridPane gridAddress = guiAddress.getAddressGrid();
             Tab tabAddress = new Tab("Adressen");
+            tabAddress.setDisable(true);
             tabAddress.setClosable(false);
             tabAddress.setContent(gridAddress);
 
@@ -215,13 +220,26 @@ public class KnxGacApplication extends Application {
             tabPane.getTabs().add(tabConfig);
             if (configGui) {
                 tabProject.setDisable(true);
-                tabMaingroup.setDisable(true);
-                tabMiddlegroup.setDisable(true);
-                tabAddress.setDisable(true);
+//                tabMaingroup.setDisable(false);
+//                tabMiddlegroup.setDisable(false);
+//                tabAddress.setDisable(false);
 //                tabObject.setDisable(true);
                 tabPane.getSelectionModel().select(tabConfig);
             }
+            // if project ist choosen, show all tabs
+            tabProject.getContent().lookup("#btnUse").addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    guiProject.setChoosenProjectFromChoiceBox();
 
+                    if(KnxGacApplication.currentProjectID>0) {
+                        // show all tabs
+                        tabMaingroup.setDisable(false);
+                        tabMiddlegroup.setDisable(false);
+                        tabAddress.setDisable(false);
+                    }
+                }
+            });
             Scene scene = new Scene(tabPane, 520, 440);
             stage.setScene(scene);
         }
