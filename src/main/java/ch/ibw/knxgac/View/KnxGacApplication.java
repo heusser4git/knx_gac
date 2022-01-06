@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -225,14 +227,9 @@ public class KnxGacApplication extends Application {
             tabPane.getTabs().add(tabMaingroup);
             tabPane.getTabs().add(tabMiddlegroup);
             tabPane.getTabs().add(tabAddress);
-//            tabPane.getTabs().add(tabObject);
             tabPane.getTabs().add(tabConfig);
             if (configGui) {
                 tabProject.setDisable(true);
-//                tabMaingroup.setDisable(false);
-//                tabMiddlegroup.setDisable(false);
-//                tabAddress.setDisable(false);
-//                tabObject.setDisable(true);
                 tabPane.getSelectionModel().select(tabConfig);
             }
             // if project ist choosen, show all tabs
@@ -250,12 +247,19 @@ public class KnxGacApplication extends Application {
 
                     // set the actual project onto guiMaingroup
                     guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
+
+                    String title = stage.getTitle();
+                    int pos = title.indexOf("  /  ");
+                    if(pos>0)
+                        title = title.substring(0, pos);
+                    stage.setTitle(title + "  /  " + KnxGacApplication.currentProjectName);
                 }
             });
+
             Scene scene = new Scene(tabPane, 520, 440);
             stage.setScene(scene);
         }
-        stage.setTitle("KNX Group Address Creator");
+        stage.setTitle("KNX Group Address Creator  /  Kein Projekt gewählt");
         stage.show();
         // if a alert exists, show the alert
         if(alert!=null)
