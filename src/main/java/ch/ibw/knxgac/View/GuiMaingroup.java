@@ -24,6 +24,7 @@ public class GuiMaingroup {
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     private ListView<ChoiceBoxItem> list = null;
+    Label laChosenProject = new Label();
 
     public GuiMaingroup(Controller controller){
         this.controller = controller;
@@ -108,7 +109,7 @@ public class GuiMaingroup {
         btnUpdate.setText("Update");
         grid.add(btnUpdate,x+1,y);
 
-        Label laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
+        laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
         grid.add(laChosenProject,x+4,16,4,1);
 
         // Eventheandler

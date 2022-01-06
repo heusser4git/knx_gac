@@ -238,6 +238,9 @@ public class KnxGacApplication extends Application {
                         tabMiddlegroup.setDisable(false);
                         tabAddress.setDisable(false);
                     }
+
+                    // set the actual project onto guiMaingroup
+                    guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
                 }
             });
             Scene scene = new Scene(tabPane, 520, 440);
