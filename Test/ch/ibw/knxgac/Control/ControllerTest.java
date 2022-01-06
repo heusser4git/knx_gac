@@ -36,12 +36,12 @@ class ControllerTest {
         // Arrange
         Database db = mock(Database.class);
         Configuration configuration = mock(Configuration.class);
-        // TODO CSV Output is null so it crashes at Controller:115
-        configuration.setCsvOutputpath(Iterables.firstOf(FileSystems.getDefault().getRootDirectories()).toString());
+        String path = Iterables.firstOf(FileSystems.getDefault().getRootDirectories()).toString();
         Controller controller = new Controller(db);
 
         doReturn(true).when(configuration).configComplete();
         doReturn(true).when(db).isConnected();
+        doReturn(path).when(configuration).getCsvOutputpath();
 
         // Act
         boolean result = controller.checkConfiguration(configuration);

@@ -47,7 +47,7 @@ class MiddleGroupTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = '' , number = 0 , idMaingroup = 0", s);
+        assertEquals("name = '', number = 0", s);
     }
     @Test
     void getUpdateClause_onlyWithName() {
@@ -57,7 +57,7 @@ class MiddleGroupTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = 'MiddleGroup 1' , number = 0 , idMaingroup = 0", s);
+        assertEquals("name = 'MiddleGroup 1', number = 0", s);
     }
     @Test
     void getUpdateClause_WithidMaingroup() {
@@ -67,7 +67,7 @@ class MiddleGroupTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = '' , number = 0 , idMaingroup = 1", s);
+        assertEquals("name = '', number = 0, idMaingroup = 1", s);
     }
     @Test
     void getUpdateClause_WithNumber() {
@@ -77,7 +77,7 @@ class MiddleGroupTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = '' , number = 123456 , idMaingroup = 0", s);
+        assertEquals("name = '', number = 123456", s);
     }
 
     @Test
@@ -90,6 +90,6 @@ class MiddleGroupTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = 'MiddleGroup 1' , number = 123456 , idMaingroup = 1", s);
+        assertEquals("name = 'MiddleGroup 1', number = 123456, idMaingroup = 1", s);
     }
 }

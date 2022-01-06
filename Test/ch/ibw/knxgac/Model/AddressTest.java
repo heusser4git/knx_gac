@@ -46,7 +46,7 @@ class AddressTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = '' , startaddress = 0", s);
+        assertEquals("name = '', startaddress = 0", s);
     }
     @Test
     void getUpdateClause_onlyWithName() {
@@ -56,7 +56,7 @@ class AddressTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = 'Address 1' , startaddress = 0", s);
+        assertEquals("name = 'Address 1', startaddress = 0", s);
     }
     @Test
     void getUpdateClause_WithIdProject() {
@@ -66,7 +66,7 @@ class AddressTest {
         // Act
         String s = a.getUpdateClause();
         // Assert
-        assertEquals("name = '' , startaddress = 0 , idMiddlegroup = 1", s);
+        assertEquals("name = '', startaddress = 0, idMiddlegroup = 1", s);
     }
     @Test
     void getUpdateClause_WithStartaddress() {
@@ -76,7 +76,7 @@ class AddressTest {
         // Act
         String s = a.getUpdateClause();
         // Assert
-        assertEquals("name = '' , startaddress = 123456", s);
+        assertEquals("name = '', startaddress = 123456", s);
     }
 
     @Test
@@ -89,6 +89,6 @@ class AddressTest {
         // Act
         String s = a.getUpdateClause();
         // Assert
-        assertEquals("name = 'Address 1' , startaddress = 123456 , idMiddlegroup = 1", s);
+        assertEquals("name = 'Address 1', startaddress = 123456, idMiddlegroup = 1", s);
     }
 }

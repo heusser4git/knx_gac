@@ -46,7 +46,7 @@ class AttributeTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = '' , idObjectTemplate = 0", s);
+        assertEquals("name = ''", s);
     }
     @Test
     void getUpdateClause_onlyWithName() {
@@ -56,7 +56,7 @@ class AttributeTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = 'Attribute 1' , idObjectTemplate = 0", s);
+        assertEquals("name = 'Attribute 1'", s);
     }
     @Test
     void getUpdateClause_WithIdObjectTemplate() {
@@ -66,7 +66,7 @@ class AttributeTest {
         // Act
         String s = a.getUpdateClause();
         // Assert
-        assertEquals("name = '' , idObjectTemplate = 1", s);
+        assertEquals("name = '', idObjectTemplate = 1", s);
     }
 
 }

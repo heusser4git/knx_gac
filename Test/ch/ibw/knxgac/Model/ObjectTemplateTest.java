@@ -47,7 +47,7 @@ class ObjectTemplateTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = '' , idAddress = 0", s);
+        assertEquals("name = ''", s);
     }
 
     @Test
@@ -58,7 +58,7 @@ class ObjectTemplateTest {
         // Act
         String s = m.getUpdateClause();
         // Assert
-        assertEquals("name = 'ObjectTemplate 1' , idAddress = 0", s);
+        assertEquals("name = 'ObjectTemplate 1'", s);
     }
 
     @Test
@@ -69,7 +69,7 @@ class ObjectTemplateTest {
         // Act
         String s = o.getUpdateClause();
         // Assert
-        assertEquals("name = '' , idAddress = 1", s);
+        assertEquals("name = '', idAddress = 1", s);
     }
 
     @Test
@@ -81,6 +81,6 @@ class ObjectTemplateTest {
         // Act
         String s = o.getUpdateClause();
         // Assert
-        assertEquals("name = 'ObjectTemplate 1' , idAddress = 1", s);
+        assertEquals("name = 'ObjectTemplate 1', idAddress = 1", s);
     }
 }
