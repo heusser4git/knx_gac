@@ -120,16 +120,18 @@ public class GuiProject {
         grid.add(btnCreate,x+1,y);
 
         btnDelete.setText("Projekt löschen");
+        btnDelete.setPrefWidth(80);
         btnDelete.setDisable(true);
         grid.add(btnDelete,x+4,y,2,1);
 
         y++;
         btnExport.setText("CSV Export");
+        btnExport.setPrefWidth(80);
         btnExport.setDisable(true);
         grid.add(btnExport,x+4,y);
 
-        laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
-        grid.add(laChosenProject,x+4,16,4,1);
+        //laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
+        //grid.add(laChosenProject,x+4,16,4,1);
 
         //-- Eventhandling --//
         // Creat Projekt

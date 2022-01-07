@@ -24,27 +24,40 @@ public class GuiMiddlegroup {
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
+    private ChoiceBox<ChoiceBoxItem> list = null;
     int idMaingroup;
-
-    public void update(){
-        try {
-            this.mainGroups = this.controller.selectObject(new MainGroup());
-            this.middleGroups = this.controller.selectObject(new MiddleGroup());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public GuiMiddlegroup(Controller controller){
         this.controller = controller;
     }
 
+    private void updateMaingroupList(int idProject){
+        try {
+            MainGroup filterMaingroup = new MainGroup();
+            filterMaingroup.setIdProject(idProject);
+            this.mainGroups = this.controller.selectObject(filterMaingroup);
+            //this.cbmaingroup.getItems().clear();
+            //this.cbmaingroup.getItems().addAll(maingroupItems());
+ //           this.mainGroups = this.controller.selectObject(new MainGroup())
+            // this.middleGroups = this.controller.selectObject(new MiddleGroup());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(int idProject){
+        this.updateMaingroupList(idProject);
+
+        this.list.getItems().clear();
+        this.list.getItems().addAll(this.maingroupItems());
+    }
+
     private ObservableList<ChoiceBoxItem> maingroupItems(){
         ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
         for (MainGroup m : this.mainGroups){
-            if(m.getIdProject() == KnxGacApplication.currentProjectID){
+            //if(m.getIdProject() == KnxGacApplication.currentProjectID){
                 items.add(new ChoiceBoxItem(m.getId(),m.getNumber() +" " + m.getName()));
-            }
+            //}
         }
         return items;
     }
@@ -75,9 +88,9 @@ public class GuiMiddlegroup {
 
         y++;
         grid.add(fieldHelper.getLable("Hauptgruppe"),x,y);
-        ChoiceBox<ChoiceBoxItem> cbmaingroup = new ChoiceBox();
-        cbmaingroup.getItems().addAll(this.maingroupItems());
-        grid.add(cbmaingroup,x+1,y);
+        this.list = new ChoiceBox();
+        this.list.getItems().addAll(this.maingroupItems());
+        grid.add(this.list,x+1,y);
 
         ListView<ChoiceBoxItem> middelGroupList = new ListView<>();
         middelGroupList.getItems().addAll(this.middelgroupItems());
@@ -109,9 +122,9 @@ public class GuiMiddlegroup {
         btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                update();
-                cbmaingroup.getItems().clear();
-                cbmaingroup.getItems().addAll(maingroupItems());
+                updateMaingroupList(KnxGacApplication.currentProjectID);
+                //cbmaingroup.getItems().clear();
+                //cbmaingroup.getItems().addAll(maingroupItems());
             }
         });
 
@@ -127,15 +140,15 @@ public class GuiMiddlegroup {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                update();
+                updateMaingroupList(KnxGacApplication.currentProjectID);
                 middelGroupList.getItems().clear();
                 middelGroupList.getItems().addAll(middelgroupItems());
             }
         });
 
-        cbmaingroup.setOnAction((event) -> {
-                idMaingroup = cbmaingroup.getSelectionModel().getSelectedItem().getId();
-                update();
+        this.list.setOnAction((event) -> {
+                idMaingroup = this.list.getSelectionModel().getSelectedItem().getId();
+                updateMaingroupList(KnxGacApplication.currentProjectID);
                 middelGroupList.getItems().clear();
                 middelGroupList.getItems().addAll(middelgroupItems());
         });

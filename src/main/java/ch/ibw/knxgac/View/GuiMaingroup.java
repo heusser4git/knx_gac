@@ -104,14 +104,6 @@ public class GuiMaingroup {
         btnCreate.setText("erstellen");
         grid.add(btnCreate,x+1,y);
 
-        y++;
-        Button btnUpdate = new Button();
-        btnUpdate.setText("Update");
-        grid.add(btnUpdate,x+1,y);
-
-        laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
-        grid.add(laChosenProject,x+4,16,4,1);
-
         // Eventheandler
         btnCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -130,14 +122,6 @@ public class GuiMaingroup {
             }
         });
 
-        btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                //updateMaingroups();
-                list.getItems().clear();
-                list.getItems().addAll(mgroupItems());
-            }
-        });
         return grid;
 
     }

@@ -5,11 +5,8 @@ import ch.ibw.knxgac.Model.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -216,7 +213,7 @@ public class KnxGacApplication extends Application {
                 @Override
                 public void handle(Event event) {
                     if (tabMiddlegroup.isSelected()){
-                        //guiMiddlegroup.update(KnxGacApplication.currentProjectID);
+                        guiMiddlegroup.update(KnxGacApplication.currentProjectID);
                     }
                 }
             });
