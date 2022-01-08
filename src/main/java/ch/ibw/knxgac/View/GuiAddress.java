@@ -9,10 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
 
@@ -101,12 +98,12 @@ public class GuiAddress {
 
         y++;
         grid.add(fieldHelper.getLable("Startadresse"),x,y);
-        ChoiceBox cbAdressStartNumber = new ChoiceBox();
+        ComboBox cbAdressStartNumber =new ComboBox<>();
         for (int i = 0; i < 255; i++) {
             cbAdressStartNumber.getItems().add(i);
             
         }
-        //cbAdressStartNumber.
+
         grid.add(cbAdressStartNumber,x+1,y);
 
         y++;

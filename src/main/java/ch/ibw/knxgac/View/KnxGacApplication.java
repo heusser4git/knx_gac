@@ -9,9 +9,11 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -253,7 +255,7 @@ public class KnxGacApplication extends Application {
                     }
 
                     // set the actual project onto guiMaingroup
-                    guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
+                   // guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
                     // actual Project in stage.title
                     String title = stage.getTitle();
                     int pos = title.indexOf("  /  ");
@@ -293,6 +295,7 @@ public class KnxGacApplication extends Application {
             stage.setScene(scene);
         }
         stage.setTitle("KNX Group Address Creator  /  Kein Projekt gewählt");
+
         stage.show();
         // if a alert exists, show the alert
         if(alert!=null)

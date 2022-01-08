@@ -24,7 +24,6 @@ public class GuiMaingroup {
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     private ListView<ChoiceBoxItem> list = null;
-    Label laChosenProject = new Label();
 
     public GuiMaingroup(Controller controller){
         this.controller = controller;
@@ -39,15 +38,6 @@ public class GuiMaingroup {
             e.printStackTrace();
         }
     }
-
-    // TODO diese Methode würde ich mit meiner Methode "updateMaingroupList(int idProject)" ersetzen - immer nur die Maingroups des ausgewählten Projekts
-    /*private void updateMaingroops() {
-        try{
-            this.mainGroups = this.controller.selectObject(new MainGroup());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public void updateMaingroupList(int idProject) {
         // data update
@@ -88,13 +78,13 @@ public class GuiMaingroup {
         TextField tfMainGroopname = fieldHelper.getTextField("");
         grid.add(tfMainGroopname,x+1,y); // Todo adjust size
 
-        this.list = new ListView<>();
-        this.list.getItems().addAll(this.mgroupItems());
-        grid.add(this.list,x+4,y,2,7);
+        list = new ListView<>();
+        list.getItems().addAll(this.mgroupItems());
+
+        grid.add(list,x+4,y,2,7);
 
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
-        //TextField tfMainGroopNummer = fieldHelper.getTextField("");
         ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(0,1,2,3,4
         ,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31));
         grid.add(cb,x+1,y);
@@ -105,26 +95,18 @@ public class GuiMaingroup {
         grid.add(btnCreate,x+1,y);
 
         // Eventheandler
-        btnCreate.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                MainGroup mainGroup = new MainGroup();
-                mainGroup.setName(tfMainGroopname.getText());
-                mainGroup.setIdProject(KnxGacApplication.currentProjectID);
-                mainGroup.setNumber((Integer) cb.getSelectionModel().getSelectedItem());
-
-                try {
-                    controller.insertObject(mainGroup);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                updateMaingroupList(KnxGacApplication.currentProjectID);
+        btnCreate.setOnAction(actionEvent -> {
+            MainGroup mainGroup = new MainGroup();
+            mainGroup.setName(tfMainGroopname.getText());
+            mainGroup.setIdProject(KnxGacApplication.currentProjectID);
+            mainGroup.setNumber((Integer) cb.getSelectionModel().getSelectedItem());
+            try {
+                controller.insertObject(mainGroup);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+            updateMaingroupList(KnxGacApplication.currentProjectID);
         });
-
         return grid;
-
     }
-
-
 }
