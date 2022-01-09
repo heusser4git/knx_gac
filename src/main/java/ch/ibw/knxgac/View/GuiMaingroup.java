@@ -4,26 +4,20 @@ import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.MainGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
-import org.w3c.dom.events.MouseEvent;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class GuiMaingroup {
 
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
-    private ListView<ChoiceBoxItem> list = null;
+    private ListView<ComboBoxItem> list = null;
 
     public GuiMaingroup(Controller controller){
         this.controller = controller;
@@ -48,12 +42,12 @@ public class GuiMaingroup {
         this.list.getItems().addAll(this.mgroupItems());
     }
 
-    private ObservableList<ChoiceBoxItem> mgroupItems(){
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+    private ObservableList<ComboBoxItem> mgroupItems(){
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (MainGroup m : this.mainGroups){
             // TODO wenn du meine methode "updateMaingroupList(int idProject)" nutzt erübrigt sich die prüfung mit der currendProjectID, da nur diese aus der DB geholt werden
             if (m.getIdProject() == KnxGacApplication.currentProjectID){
-                items.add(new ChoiceBoxItem(m.getId(), m.getNumber() + " " + m.getName()));
+                items.add(new ComboBoxItem(m.getId(), m.getNumber() + " " + m.getName()));
             }
         }
         return items;

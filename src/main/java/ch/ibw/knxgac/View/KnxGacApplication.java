@@ -9,11 +9,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -177,11 +175,11 @@ public class KnxGacApplication extends Application {
                 public void handle(Event event) {
                     if(tabProject.isSelected()) {
                         if(!configGui)
-                            guiProject.updateProjectChoiceBox();
+                            guiProject.updateProjectComboBox();
 
                         if(KnxGacApplication.currentProjectID>0)
                             // set currentProject as selected
-                            guiProject.selectProjectFromChoiceBox();
+                            guiProject.selectProjectFromComboBox();
                     }
                 }
             });
@@ -238,10 +236,10 @@ public class KnxGacApplication extends Application {
                 tabPane.getSelectionModel().select(tabConfig);
             }
             // if project ist choosen, show all tabs
-            guiProject.selectProject.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ChoiceBoxItem>() {
+            guiProject.selectProject.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ComboBoxItem>() {
                 @Override
-                public void changed(ObservableValue<? extends ChoiceBoxItem> observableValue, ChoiceBoxItem choiceBoxItem, ChoiceBoxItem t1) {
-                    guiProject.setChoosenProjectFromChoiceBox();
+                public void changed(ObservableValue<? extends ComboBoxItem> observableValue, ComboBoxItem comboBoxItem, ComboBoxItem t1) {
+                    guiProject.setChoosenProjectFromComboBox();
 
                     if(KnxGacApplication.currentProjectID>0) {
                         // show all tabs
@@ -264,32 +262,6 @@ public class KnxGacApplication extends Application {
                     stage.setTitle(title + "  /  " + KnxGacApplication.currentProjectName);
                 }
             });
-//            tabProject.getContent().lookup("#btnUse").addEventHandler(ActionEvent.ANY, new EventHandler<ActionEvent>() {
-//                @Override
-//                public void handle(ActionEvent actionEvent) {
-//                    guiProject.setChoosenProjectFromChoiceBox();
-//
-//                    if(KnxGacApplication.currentProjectID>0) {
-//                        // show all tabs
-//                        tabMaingroup.setDisable(false);
-//                        tabMiddlegroup.setDisable(false);
-//                        tabAddress.setDisable(false);
-//
-//                        // activate delete and export buttons
-//                        guiProject.btnDelete.setDisable(false);
-//                        guiProject.btnExport.setDisable(false);
-//                    }
-//
-//                    // set the actual project onto guiMaingroup
-//                    guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
-//                    // actual Project in stage.title
-//                    String title = stage.getTitle();
-//                    int pos = title.indexOf("  /  ");
-//                    if(pos>0)
-//                        title = title.substring(0, pos);
-//                    stage.setTitle(title + "  /  " + KnxGacApplication.currentProjectName);
-//                }
-//            });
 
             Scene scene = new Scene(tabPane, 560, 440);
             stage.setScene(scene);

@@ -5,26 +5,22 @@ import ch.ibw.knxgac.Model.MainGroup;
 import ch.ibw.knxgac.Model.MiddleGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class GuiMiddlegroup {
 
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
-    private ComboBox<ChoiceBoxItem> cbMaingroup = null;
-    ListView<ChoiceBoxItem> middelGroupList = new ListView<>();
+    private ComboBox<ComboBoxItem> cbMaingroup = null;
+    ListView<ComboBoxItem> middelGroupList = new ListView<>();
     int idMaingroup;
 
     public GuiMiddlegroup(Controller controller){
@@ -59,19 +55,19 @@ public class GuiMiddlegroup {
 
     }
 
-    private ObservableList<ChoiceBoxItem> maingroupItems(){
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+    private ObservableList<ComboBoxItem> maingroupItems(){
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (MainGroup m : this.mainGroups){
-                items.add(new ChoiceBoxItem(m.getId(),m.getNumber() +" " + m.getName()));
+                items.add(new ComboBoxItem(m.getId(),m.getNumber() +" " + m.getName()));
         }
         return items;
     }
 
-    private ObservableList<ChoiceBoxItem> middelgroupItems(){
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+    private ObservableList<ComboBoxItem> middelgroupItems(){
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (MiddleGroup m : this.middleGroups){
             if(m.getIdMaingroup() == idMaingroup){
-                items.add(new ChoiceBoxItem(m.getId(), m.getNumber() + " "+ m.getName()));
+                items.add(new ComboBoxItem(m.getId(), m.getNumber() + " "+ m.getName()));
             }
         }
         return items;

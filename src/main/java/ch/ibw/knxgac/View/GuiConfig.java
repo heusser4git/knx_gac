@@ -49,15 +49,15 @@ public class GuiConfig {
 
 
 
-        // Setting up the ChoiceBox for the DB Servertyp
+        // Setting up the ComboBox for the DB Servertyp
         y++;
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for(Servertyp s : Servertyp.values()) {
-            items.add(new ChoiceBoxItem(s.ordinal(), s.name()));
+            items.add(new ComboBoxItem(s.ordinal(), s.name()));
         }
-        ChoiceBox<ChoiceBoxItem> cBservertyp = new ChoiceBox<>();
+        ComboBox<ComboBoxItem> cBservertyp = new ComboBox<>();
         cBservertyp.getItems().addAll(items);
-        // Add the Enum Servertyp Values to the ChoiceBox
+        // Add the Enum Servertyp Values to the ComboBox
         // if no choosen servertyp in config, select the first available typ
         if(configuration.getDbServertyp() == null) {
             // no servertype choosen -> select the first

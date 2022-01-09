@@ -31,26 +31,26 @@ public class GuiAddress {
         this.controller = controller;
     }
     
-    private ObservableList<ChoiceBoxItem> maingroupItems(){
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+    private ObservableList<ComboBoxItem> maingroupItems(){
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         // Todo Impelent Code
         return items;
     }
 
-    private ObservableList<ChoiceBoxItem> middelgroupItems(){
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+    private ObservableList<ComboBoxItem> middelgroupItems(){
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         // Todo Impelent Code
         return items;
     }
 
-    private ObservableList<ChoiceBoxItem> attributesItems(){
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+    private ObservableList<ComboBoxItem> attributesItems(){
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         // Todo Impelent Code
         return items;
     }
 
-    private ObservableList<ChoiceBoxItem> adressesItems(){
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+    private ObservableList<ComboBoxItem> adressesItems(){
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         // Todo Impelent Code
         return items;
     }
@@ -71,23 +71,23 @@ public class GuiAddress {
         
         y++;
         grid.add(fieldHelper.getLable("Hauptgruppe"),x,y);
-        ChoiceBox<ChoiceBoxItem> cbmaingroup = new ChoiceBox();
+        ChoiceBox<ComboBoxItem> cbmaingroup = new ChoiceBox();
         cbmaingroup.getItems().addAll(this.maingroupItems());
         grid.add(cbmaingroup,x+1,y);
 
-        ListView<ChoiceBoxItem> adressesGroupList = new ListView<>();
+        ListView<ComboBoxItem> adressesGroupList = new ListView<>();
         adressesGroupList.getItems().addAll(this.adressesItems());
         grid.add(adressesGroupList, x+4,y,2,7);
 
         y++;
         grid.add(fieldHelper.getLable("Mittelgruppe"),x,y);
-        ChoiceBox<ChoiceBoxItem> cbmiddelgroup = new ChoiceBox();
+        ChoiceBox<ComboBoxItem> cbmiddelgroup = new ChoiceBox();
         cbmiddelgroup.getItems().addAll(this.middelgroupItems());
         grid.add(cbmiddelgroup,x+1,y);
 
         y++;
         grid.add(fieldHelper.getLable("Objekt"),x,y);
-        ChoiceBox<ChoiceBoxItem> cbattributes = new ChoiceBox();
+        ChoiceBox<ComboBoxItem> cbattributes = new ChoiceBox();
         cbattributes.getItems().addAll(this.attributesItems());
         grid.add(cbattributes,x+1,y);
 

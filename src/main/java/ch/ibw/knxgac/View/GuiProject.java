@@ -8,21 +8,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GuiProject {
     private Controller controller;
     ArrayList<Project> projects = new ArrayList<>();
-    ChoiceBox<ChoiceBoxItem> selectProject = new ChoiceBox<>();
+    ComboBox<ComboBoxItem> selectProject = new ComboBox<>();
     Label laChosenProject = new Label();
     Button btnDelete = new Button();
     Button btnExport = new Button();
@@ -31,7 +27,7 @@ public class GuiProject {
         this.controller = controller;
 //        updateProjects();
     }
-    public void updateProjectChoiceBox() {
+    public void updateProjectComboBox() {
         updateProjects();
         selectProject.getItems().clear();
         selectProject.getItems().addAll(this.projectItems());
@@ -45,18 +41,18 @@ public class GuiProject {
         }
     }
 
-    private ObservableList<ChoiceBoxItem> projectItems() {
-        ObservableList<ChoiceBoxItem> items = FXCollections.observableArrayList();
+    private ObservableList<ComboBoxItem> projectItems() {
+        ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (Project p : this.projects) {
-            // mache ChoiceBoxItems, jeweils mit der ID und dem Namen, welcher im GUI angezeigt werden soll
-            // ChoiceBoxItem ist eine neue Hilfsklasse unter View - damit wir diese für jede ChoiceBox nutzen können
-            items.add(new ChoiceBoxItem(p.getId(), p.getName() + " (" + p.getNumber() + ")"));
+            // mache ComboBoxItems, jeweils mit der ID und dem Namen, welcher im GUI angezeigt werden soll
+            // ComboBoxItem ist eine neue Hilfsklasse unter View - damit wir diese für jede ComboBox nutzen können
+            items.add(new ComboBoxItem(p.getId(), p.getName() + " (" + p.getNumber() + ")"));
         }
         return items;
     }
 
-    public void selectProjectFromChoiceBox() {
-        for(ChoiceBoxItem cbi : selectProject.getItems()) {
+    public void selectProjectFromComboBox() {
+        for(ComboBoxItem cbi : selectProject.getItems()) {
             if(cbi.getId()==KnxGacApplication.currentProjectID) {
                 selectProject.getSelectionModel().clearSelection();
                 selectProject.getSelectionModel().select(cbi);
@@ -65,10 +61,10 @@ public class GuiProject {
         }
     }
     /**
-     * Sets the Project choosen in the Project-ChoiceBox
+     * Sets the Project choosen in the Project-ComboBox
      * onto the static Variables on KnxGacApplication
      */
-    public void setChoosenProjectFromChoiceBox() {
+    public void setChoosenProjectFromComboBox() {
         if(!selectProject.getSelectionModel().isEmpty() && selectProject.getSelectionModel().getSelectedItem().getId()>0) {
             KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
             String s = selectProject.getSelectionModel().getSelectedItem().getName();
@@ -100,7 +96,7 @@ public class GuiProject {
 
         grid.add(fieldHelper.getLable("Projekte"), x+4,y);
         selectProject.setId("selectProject");
-        // übergebe der ChoiceBox alle ChoiceBoxItems
+        // übergebe der ComboBox alle ComboBoxItems
         selectProject.getItems().addAll(this.projectItems());
         grid.add(selectProject, x+6,y);
 
@@ -108,11 +104,6 @@ public class GuiProject {
         grid.add(fieldHelper.getLable("Projektnummer"), x,y);
         TextField tfProjektnummer = fieldHelper.getTextField("");
         grid.add(tfProjektnummer,x+1,y); // Todo adjust size
-
-//        Button btnUse = new Button();
-//        btnUse.setId("btnUse");
-//        btnUse.setText("auswählen");
-//        grid.add(btnUse,x+4,y);
 
         y++;
         Button btnCreate = new Button();
@@ -130,9 +121,6 @@ public class GuiProject {
         btnExport.setDisable(true);
         grid.add(btnExport,x+4,y);
 
-        //laChosenProject = fieldHelper.getLable("Kein Projekt ausgewählt","Tahoma",10,FontWeight.BOLD);
-        //grid.add(laChosenProject,x+4,16,4,1);
-
         //-- Eventhandling --//
         // Creat Projekt
         btnCreate.setOnAction(new EventHandler<ActionEvent>() {
@@ -147,28 +135,12 @@ public class GuiProject {
                     e.printStackTrace();
                 }
                 updateProjects();
-                // empty the choiceBox
+                // empty the ComboBox
                 selectProject.getItems().clear();
-                // add the project-items new to the choiceBox
+                // add the project-items new to the ComboBox
                 selectProject.getItems().addAll(projectItems());
             }
         });
-
-        // choose Project
-//        btnUse.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
-//                String s = selectProject.getSelectionModel().getSelectedItem().getName();
-//
-//                KnxGacApplication.currentProjectName = "Aktuelles Projekt: "+s;
-//                laChosenProject.setText(KnxGacApplication.currentProjectName);
-//
-//                System.out.println(KnxGacApplication.currentProjectName);
-//                System.out.println(KnxGacApplication.currentProjectID);
-//
-//            }
-//        });
 
         // delete Project
         btnDelete.setOnAction(new EventHandler<ActionEvent>() {
@@ -180,9 +152,9 @@ public class GuiProject {
                     controller.deleteObject(project);
                     // update the projects from db
                     updateProjects();
-                    // empty the choiceBox
+                    // empty the ComboBox
                     selectProject.getItems().clear();
-                    // add the project-items new to the choiceBox
+                    // add the project-items new to the ComboBox
                     selectProject.getItems().addAll(projectItems());
                     KnxGacApplication.currentProjectName = "";
                     KnxGacApplication.currentProjectID = 0;
