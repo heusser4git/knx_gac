@@ -130,14 +130,16 @@ public class GuiMiddlegroup {
         });
 
         cbMaingroup.setOnAction((event) -> {
-            try {
+//            try {
+            if(!this.cbMaingroup.getSelectionModel().isEmpty()) {
                 idMaingroup = this.cbMaingroup.getSelectionModel().getSelectedItem().getId();
                 updateMiddelgroupList(idMaingroup);
                 middelGroupList.getItems().clear();
                 middelGroupList.getItems().addAll(middelgroupItems());
-            }catch (NullPointerException exception){
-                cbMaingroup.getSelectionModel().clearSelection();
             }
+//            }catch (NullPointerException exception){
+//                cbMaingroup.getSelectionModel().clearSelection();
+//            }
 
         });
         return grid;
