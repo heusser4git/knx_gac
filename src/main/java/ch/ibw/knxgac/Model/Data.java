@@ -32,6 +32,10 @@ public class Data {
         return "ID is not NULL";
     }
 
+    public String getOrderByClause() {
+        return "name ASC";
+    }
+
     public String getUpdateClause() {
         if(this.getName() != null)
             return "name = '" + this.getName() + "'";

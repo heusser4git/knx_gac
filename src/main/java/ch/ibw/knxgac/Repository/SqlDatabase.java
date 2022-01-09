@@ -85,7 +85,7 @@ public class SqlDatabase implements Database {
      */
     private ResultSet executeQuery(String sql) throws SQLException {
         Statement statement = this.connection.createStatement();
-//        System.out.println(sql);
+        System.out.println(sql);
         return statement.executeQuery(sql);
     }
 
@@ -109,11 +109,11 @@ public class SqlDatabase implements Database {
     /**
      * Generates the SQL-Query-String for Select Data Operation
      * @param table         String Name of the Table
-     * @param whereClause   String Where-Clause of the SQL-Query eg. "id IS NOT NULL"
+     * @param filter        Data    Object which filters and orders the select-query
      * @return              String The whole Query to retrieve Data out of the Table
      */
-    private String getSqlSelectQuery(String table, String whereClause) {
-        return "SELECT * FROM " + table + " WHERE " + whereClause;
+    private String getSqlSelectQuery(String table, Data filter) {
+        return "SELECT * FROM " + table + " WHERE " + filter.getWhereClause() + " ORDER BY " + filter.getOrderByClause();
     }
 
     /**
@@ -143,7 +143,7 @@ public class SqlDatabase implements Database {
 
     @Override
     public ArrayList<Project> selectProject(Project filter) throws SQLException {
-        String sql = this.getSqlSelectQuery("Project", filter.getWhereClause());
+        String sql = this.getSqlSelectQuery("Project", filter);
         ArrayList<Project> projects = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -192,7 +192,7 @@ public class SqlDatabase implements Database {
 
     @Override
     public ArrayList<MainGroup> selectMaingroup(MainGroup filter) throws SQLException {
-        String sql = this.getSqlSelectQuery("Maingroup", filter.getWhereClause());
+        String sql = this.getSqlSelectQuery("Maingroup", filter);
         ArrayList<MainGroup> maingroups = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -231,7 +231,7 @@ public class SqlDatabase implements Database {
 
     @Override
     public ArrayList<MiddleGroup> selectMiddlegroup(MiddleGroup filter) throws SQLException {
-        String sql = this.getSqlSelectQuery("Middlegroup", filter.getWhereClause());
+        String sql = this.getSqlSelectQuery("Middlegroup", filter);
         ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -270,7 +270,7 @@ public class SqlDatabase implements Database {
 
     @Override
     public ArrayList<Address> selectAddress(Address filter) throws SQLException {
-        String sql = this.getSqlSelectQuery("Address", filter.getWhereClause());
+        String sql = this.getSqlSelectQuery("Address", filter);
         ArrayList<Address> addresses = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -309,7 +309,7 @@ public class SqlDatabase implements Database {
 
     @Override
     public ArrayList<ObjectTemplate> selectObjectTemplate(ObjectTemplate filter) throws SQLException {
-        String sql = this.getSqlSelectQuery("ObjectTemplate", filter.getWhereClause());
+        String sql = this.getSqlSelectQuery("ObjectTemplate", filter);
         ArrayList<ObjectTemplate> objectTemplates = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {
@@ -347,7 +347,7 @@ public class SqlDatabase implements Database {
 
     @Override
     public ArrayList<Attribute> selectAttribute(Attribute filter) throws SQLException {
-        String sql = this.getSqlSelectQuery("Attribute", filter.getWhereClause());
+        String sql = this.getSqlSelectQuery("Attribute", filter);
         ArrayList<Attribute> attributes = new ArrayList<>();
         ResultSet resultSet = this.executeQuery(sql);
         while (resultSet.next()) {

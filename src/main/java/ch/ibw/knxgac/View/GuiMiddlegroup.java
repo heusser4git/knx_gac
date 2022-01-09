@@ -99,14 +99,14 @@ public class GuiMiddlegroup {
 
         y++;
         grid.add(fieldHelper.getLable("Name"),x,y);
-        TextField tfMiddelGroopname = fieldHelper.getTextField("");
-        grid.add(tfMiddelGroopname,x+1,y);
+        TextField tfMiddleGroupname = fieldHelper.getTextField("");
+        grid.add(tfMiddleGroupname,x+1,y);
 
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
-        ChoiceBox cbMiddelgroupNumber = new ChoiceBox(FXCollections.observableArrayList(0,1,2,3,4
+        ChoiceBox cbMiddlegroupNumber = new ChoiceBox(FXCollections.observableArrayList(0,1,2,3,4
                 ,5,6,7));
-        grid.add(cbMiddelgroupNumber,x+1,y);
+        grid.add(cbMiddlegroupNumber,x+1,y);
 
         y++;
         Button btnCreate = new Button();
@@ -115,9 +115,9 @@ public class GuiMiddlegroup {
 
         btnCreate.setOnAction(actionEvent -> {
             MiddleGroup middleGroup = new MiddleGroup();
-            middleGroup.setName(tfMiddelGroopname.getText());
+            middleGroup.setName(tfMiddleGroupname.getText());
             middleGroup.setIdMaingroup(idMaingroup);
-            middleGroup.setNumber((Integer) cbMiddelgroupNumber.getSelectionModel().getSelectedItem());
+            middleGroup.setNumber((Integer) cbMiddlegroupNumber.getSelectionModel().getSelectedItem());
             try{
                 controller.insertObject(middleGroup);
             } catch (SQLException e) {

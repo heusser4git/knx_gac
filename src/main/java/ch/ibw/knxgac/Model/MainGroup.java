@@ -65,6 +65,11 @@ public class MainGroup extends Data {
     }
 
     @Override
+    public String getOrderByClause() {
+        return "number ASC";
+    }
+
+    @Override
     public String getUpdateClause() {
         String update = super.getUpdateClause();
         if(this.getNumber()>=0) {

@@ -85,6 +85,11 @@ public class MiddleGroup extends Data {
     }
 
     @Override
+    public String getOrderByClause() {
+        return "number ASC";
+    }
+
+    @Override
     public String toString() {
         String result = "MiddleGroup{";
         result += "id: " + this.getId() + ", ";
