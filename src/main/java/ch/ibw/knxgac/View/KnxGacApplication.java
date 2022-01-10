@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class KnxGacApplication extends Application {
     public static String currentProjectName;
@@ -138,6 +139,46 @@ public class KnxGacApplication extends Application {
 //            e.printStackTrace();
 //        }
 
+// ObjectTemplate erstellen
+//        ObjectTemplate ot = new ObjectTemplate();
+//        ot.setName("Dimmen");
+//        try {
+//            controller.insertObject(ot);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+//        // Attribute erstellen
+//        Attribute a = new Attribute();
+//        a.setNumber(1);
+//        a.setName("E/A");
+//        a.setIdObjectTemplate(1);
+//        try {
+//            controller.insertObject(a);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+//        Address ad = new Address();
+//        ad.setName("Adressename");
+//        ad.setIdMiddlegroup(1);
+//        ad.setStartAddress(3);
+//        ad.setObjectTemplate(new ObjectTemplate(1));
+//        try {
+//            controller.insertObject(ad);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        // auslesen einer adresse mit der id 1
+//        try {
+//            ArrayList<Address> addresses = controller.selectObject(new Address(1));
+//            for (Address a : addresses) {
+//                System.out.println(a);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
 
 

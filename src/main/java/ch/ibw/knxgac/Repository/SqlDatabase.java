@@ -85,7 +85,7 @@ public class SqlDatabase implements Database {
      */
     private ResultSet executeQuery(String sql) throws SQLException {
         Statement statement = this.connection.createStatement();
-        System.out.println(sql);
+//        System.out.println(sql);
         return statement.executeQuery(sql);
     }
 
@@ -280,8 +280,11 @@ public class SqlDatabase implements Database {
             address.setIdMiddlegroup(resultSet.getInt("idMiddlegroup"));
             address.setStartAddress(resultSet.getInt("startaddress"));
             ObjectTemplate filterObjectTemplate = new ObjectTemplate();
-            filterObjectTemplate.setIdAddress(address.getId());
-            address.setObjectTemplates(this.selectObjectTemplate(filterObjectTemplate));
+            filterObjectTemplate.setId(resultSet.getInt("idObjecttemplate"));
+            ArrayList<ObjectTemplate> objectTemplates = this.selectObjectTemplate(filterObjectTemplate);
+            if(objectTemplates.size()==1) {
+                address.setObjectTemplate(objectTemplates.get(0));
+            }
             addresses.add(address);
         }
         return addresses;
@@ -290,7 +293,11 @@ public class SqlDatabase implements Database {
     @Override
     public int insertAddress(Address object) throws SQLException {
         int idAddress = this.getNextIdFromTable("Address");
-        String sql = this.getSqlInsertQuery("Address", "id=" + idAddress + ", name='" + object.getName() + "', startaddress=" + object.getStartAddress() + ", idMiddlegroup=" + object.getIdMiddlegroup());
+        String objectTemplate = "";
+        if(object.getObjectTemplate() instanceof ObjectTemplate && object.getObjectTemplate().getId()>0) {
+            objectTemplate = ", idObjectTemplate=" + object.getObjectTemplate().getId();
+        }
+        String sql = this.getSqlInsertQuery("Address", "id=" + idAddress + ", name='" + object.getName() + "', startaddress=" + object.getStartAddress() + ", idMiddlegroup=" + object.getIdMiddlegroup() + objectTemplate);
         this.executeQuery(sql);
         return idAddress;
     }
@@ -316,7 +323,6 @@ public class SqlDatabase implements Database {
             ObjectTemplate objectTemplate = new ObjectTemplate();
             objectTemplate.setId(resultSet.getInt("id"));
             objectTemplate.setName(resultSet.getString("name"));
-            objectTemplate.setIdAddress(resultSet.getInt("idAddress"));
             Attribute filterAttribute = new Attribute();
             filterAttribute.setIdObjectTemplate(objectTemplate.getId());
             objectTemplate.setAttributes(this.selectAttribute(filterAttribute));
@@ -328,7 +334,7 @@ public class SqlDatabase implements Database {
     @Override
     public int insertObjectTemplate(ObjectTemplate object) throws SQLException {
         int idObjectTemplate = this.getNextIdFromTable("ObjectTemplate");
-        String sql = this.getSqlInsertQuery("ObjectTemplate", "id=" + idObjectTemplate + ", name='" + object.getName() + "', idAddress="+ object.getIdAddress());
+        String sql = this.getSqlInsertQuery("ObjectTemplate", "id=" + idObjectTemplate + ", name='" + object.getName() + "'");
         this.executeQuery(sql);
         return idObjectTemplate;
     }
@@ -354,6 +360,7 @@ public class SqlDatabase implements Database {
             Attribute attribute = new Attribute();
             attribute.setId(resultSet.getInt("id"));
             attribute.setName(resultSet.getString("name"));
+            attribute.setNumber(resultSet.getInt("number"));
             attribute.setIdObjectTemplate(resultSet.getInt("idObjectTemplate"));
             attributes.add(attribute);
         }
@@ -363,7 +370,7 @@ public class SqlDatabase implements Database {
     @Override
     public int insertAttribute(Attribute object) throws SQLException {
         int idAttribute = this.getNextIdFromTable("Attribute");
-        String sql = this.getSqlInsertQuery("Attribute", "id=" + idAttribute + ", name='" + object.getName() + "', idObjectTemplate=" + object.getIdObjectTemplate());
+        String sql = this.getSqlInsertQuery("Attribute", "id=" + idAttribute + ", name='" + object.getName() + "', number=" + object.getNumber() + ", idObjectTemplate=" + object.getIdObjectTemplate());
         this.executeQuery(sql);
         return idAttribute;
     }
@@ -422,55 +429,90 @@ public class SqlDatabase implements Database {
     }
 
     private String getSqlCreateTableAddress() {
-        return "CREATE TABLE IF NOT EXISTS `address` (" +
-                "  `id` INT NOT NULL," +
-                "  `name` VARCHAR(255) NULL," +
-                "  `startaddress` INT(11) NULL," +
-                "  `idMiddlegroup` INT NOT NULL," +
-                "  `deleted` TINYINT NULL DEFAULT 0," +
-                "  PRIMARY KEY (`id`)," +
-                "  INDEX `fk_address_middlegroup1_idx` (`idMiddlegroup` ASC) VISIBLE," +
-                "  CONSTRAINT `fk_address_middlegroup1`" +
-                "    FOREIGN KEY (`idMiddlegroup`)" +
-                "    REFERENCES `middlegroup` (`id`)" +
+        return "CREATE TABLE IF NOT EXISTS address (\n" +
+                "  id INT NOT NULL,\n" +
+                "  name VARCHAR(255) NULL,\n" +
+                "  startaddress INT(11) NULL,\n" +
+                "  idMiddlegroup INT NOT NULL,\n" +
+                "  idObjecttemplate INT DEFAULT 0,\n" +
+                "  deleted TINYINT NULL DEFAULT 0,\n" +
+                "  PRIMARY KEY (id, idObjecttemplate),\n" +
+                "  INDEX fk_address_middlegroup1_idx (idMiddlegroup ASC) VISIBLE,\n" +
+                "  INDEX fk_address_objecttemplate1_idx (idObjecttemplate ASC) VISIBLE,\n" +
+                "  CONSTRAINT fk_address_middlegroup1\n" +
+                "    FOREIGN KEY (idMiddlegroup)\n" +
+                "    REFERENCES middlegroup (id),\n" +
+                "  CONSTRAINT fk_address_objecttemplate1\n" +
+                "    FOREIGN KEY (idObjecttemplate)\n" +
+                "    REFERENCES objecttemplate (id)\n" +
                 ");";
+
+//        return "CREATE TABLE IF NOT EXISTS `address` (" +
+//                "  `id` INT NOT NULL," +
+//                "  `name` VARCHAR(255) NULL," +
+//                "  `startaddress` INT(11) NULL," +
+//                "  `idMiddlegroup` INT NOT NULL," +
+//                "  `deleted` TINYINT NULL DEFAULT 0," +
+//                "  PRIMARY KEY (`id`)," +
+//                "  INDEX `fk_address_middlegroup1_idx` (`idMiddlegroup` ASC) VISIBLE," +
+//                "  CONSTRAINT `fk_address_middlegroup1`" +
+//                "    FOREIGN KEY (`idMiddlegroup`)" +
+//                "    REFERENCES `middlegroup` (`id`)" +
+//                ");";
     }
 
     private String getSqlCreateTableObjectTemplate() {
-        return "CREATE TABLE IF NOT EXISTS `objecttemplate` (" +
-                "  `id` INT NOT NULL," +
-                "  `name` VARCHAR(255) NULL," +
-                "  `idAddress` INT NOT NULL," +
-                "  `deleted` TINYINT NULL DEFAULT 0," +
-                "  PRIMARY KEY (`id`)," +
-                "  INDEX `fk_objecttemplate_address1_idx` (`idAddress` ASC) VISIBLE," +
-                "  CONSTRAINT `fk_objecttemplate_address1`" +
-                "    FOREIGN KEY (`idAddress`)" +
-                "    REFERENCES `address` (`id`)" +
-                ");";
+        return "CREATE TABLE IF NOT EXISTS objecttemplate (\n" +
+                "  id INT NOT NULL,\n" +
+                "  name VARCHAR(255) NULL,\n" +
+                "  deleted TINYINT NULL DEFAULT 0,\n" +
+                "  PRIMARY KEY (id));";
+//        return "CREATE TABLE IF NOT EXISTS `objecttemplate` (" +
+//                "  `id` INT NOT NULL," +
+//                "  `name` VARCHAR(255) NULL," +
+//                "  `idAddress` INT NOT NULL," +
+//                "  `deleted` TINYINT NULL DEFAULT 0," +
+//                "  PRIMARY KEY (`id`)," +
+//                "  INDEX `fk_objecttemplate_address1_idx` (`idAddress` ASC) VISIBLE," +
+//                "  CONSTRAINT `fk_objecttemplate_address1`" +
+//                "    FOREIGN KEY (`idAddress`)" +
+//                "    REFERENCES `address` (`id`)" +
+//                ");";
     }
 
     private String getSqlCreateTableAttribute() {
-        return "CREATE TABLE IF NOT EXISTS `attribute` (" +
-                "  `id` INT NOT NULL," +
-                "  `name` VARCHAR(255) NULL," +
-                "  `idObjectTemplate` INT NOT NULL," +
-                "  `deleted` TINYINT NULL DEFAULT 0," +
-                "  PRIMARY KEY (`id`)," +
-                "  INDEX `fk_attribute_objecttemplate_idx` (`idObjectTemplate` ASC) VISIBLE," +
-                "  CONSTRAINT `fk_attribute_objecttemplate`" +
-                "    FOREIGN KEY (`idObjectTemplate`)" +
-                "    REFERENCES `objecttemplate` (`id`)" +
-                "    );";
+        return "CREATE TABLE IF NOT EXISTS attribute (\n" +
+                "  id INT NOT NULL,\n" +
+                "  name VARCHAR(255) NULL,\n" +
+                "  number INT NULL,\n" +
+                "  idObjectTemplate INT NOT NULL,\n" +
+                "  deleted TINYINT NULL DEFAULT 0,\n" +
+                "  PRIMARY KEY (id),\n" +
+                "  INDEX fk_attribute_objecttemplate_idx (idObjectTemplate ASC) VISIBLE,\n" +
+                "  CONSTRAINT fk_attribute_objecttemplate\n" +
+                "    FOREIGN KEY (idObjectTemplate)\n" +
+                "    REFERENCES objecttemplate (id)\n" +
+                ");";
+//        return "CREATE TABLE IF NOT EXISTS `attribute` (" +
+//                "  `id` INT NOT NULL," +
+//                "  `name` VARCHAR(255) NULL," +
+//                "  `idObjectTemplate` INT NOT NULL," +
+//                "  `deleted` TINYINT NULL DEFAULT 0," +
+//                "  PRIMARY KEY (`id`)," +
+//                "  INDEX `fk_attribute_objecttemplate_idx` (`idObjectTemplate` ASC) VISIBLE," +
+//                "  CONSTRAINT `fk_attribute_objecttemplate`" +
+//                "    FOREIGN KEY (`idObjectTemplate`)" +
+//                "    REFERENCES `objecttemplate` (`id`)" +
+//                "    );";
     }
 
     public void createTablesToDb() throws SQLException {
         this.executeQuery(this.getSqlCreateTableProject());
         this.executeQuery(this.getSqlCreateTableMaingroup());
         this.executeQuery(this.getSqlCreateTableMiddlegroup());
-        this.executeQuery(this.getSqlCreateTableAddress());
         this.executeQuery(this.getSqlCreateTableObjectTemplate());
         this.executeQuery(this.getSqlCreateTableAttribute());
+        this.executeQuery(this.getSqlCreateTableAddress());
     }
 
 }

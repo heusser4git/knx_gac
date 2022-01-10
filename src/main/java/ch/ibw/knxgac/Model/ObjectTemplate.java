@@ -3,7 +3,6 @@ package ch.ibw.knxgac.Model;
 import java.util.ArrayList;
 
 public class ObjectTemplate extends Data {
-    private int idAddress;
     private ArrayList<Attribute> attributes = new ArrayList<>();
 
     public ObjectTemplate() {
@@ -11,14 +10,6 @@ public class ObjectTemplate extends Data {
 
     public ObjectTemplate(int idObjectTemplate) {
         this.setId(idObjectTemplate);
-    }
-
-    public int getIdAddress() {
-        return idAddress;
-    }
-
-    public void setIdAddress(int idAddress) {
-        this.idAddress = idAddress;
     }
 
     public ArrayList<Attribute> getAttributes() {
@@ -46,24 +37,9 @@ public class ObjectTemplate extends Data {
             if(this.name.length()>0) {
                 where += " AND name LIKE '" + this.name + "%'";
             }
-            if(this.idAddress>0) {
-                where += " AND idAddress = " + this.idAddress;
-            }
         }
         where += " AND deleted <> 1";
         return  where;
-    }
-
-    @Override
-    public String getUpdateClause() {
-        String update = super.getUpdateClause();
-        if(this.getIdAddress()>0) {
-            if (update.length() > 0) {
-                update += ", ";
-            }
-            update += "idAddress = " + this.getIdAddress();
-        }
-        return update;
     }
 
     @Override
@@ -71,10 +47,9 @@ public class ObjectTemplate extends Data {
         String result = "ObjectTemplate{";
         result += "id: " + this.getId() + ", ";
         result += "name: " + this.getName() + ", ";
-        result += "idAddress: " + this.getIdAddress() + ", ";
         result += "Attributes: \n";
         for(Attribute a : this.getAttributes()) {
-            result.concat(a.toString() + "\n");
+            result += a.toString() + "\n";
         }
         result += "}";
         return result;

@@ -92,6 +92,7 @@ public class MainGroup extends Data {
         String result = "MainGroup{";
         result += "id: " + this.getId() + ", ";
         result += "name: " + this.getName() + ", ";
+        result += "number: " + this.getNumber() + ", ";
         result += "idProject: " + this.getIdProject() + ", ";
         result += "Middlegroups: \n";
         for(MiddleGroup m : this.getMiddlegroups()) {

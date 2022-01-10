@@ -1,6 +1,7 @@
 package ch.ibw.knxgac.Model;
 
 public class Attribute extends Data {
+    private int number;
     private int idObjectTemplate;
 
 
@@ -16,6 +17,13 @@ public class Attribute extends Data {
         this.name = name;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
     public int getIdObjectTemplate() {
         return idObjectTemplate;
@@ -34,6 +42,9 @@ public class Attribute extends Data {
             if(this.name.length()>0) {
                 where += " AND name LIKE '" + this.name + "%'";
             }
+            if(this.number>0) {
+                where += " AND number = " + this.number;
+            }
             if(this.idObjectTemplate>0) {
                 where += " AND idObjectTemplate = " + this.idObjectTemplate;
             }
@@ -45,6 +56,12 @@ public class Attribute extends Data {
     @Override
     public String getUpdateClause() {
         String update = super.getUpdateClause();
+        if(this.getNumber()>=0) {
+            if (update.length() > 0) {
+                update += ", ";
+            }
+            update += "number = " + this.getNumber();
+        }
         if(this.idObjectTemplate>0) {
             if(update.length()>0) {
                 update += ", ";
@@ -59,6 +76,7 @@ public class Attribute extends Data {
         String result = "Attribute{";
         result += "id: " + this.getId() + ", ";
         result += "name: " + this.getName() + ", ";
+        result += "number: " + this.getNumber() + ", ";
         result += "idObjectTemplate: " + this.getIdObjectTemplate();
         result += "}";
         return result;

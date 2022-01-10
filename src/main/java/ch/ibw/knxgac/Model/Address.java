@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Address extends Data {
     private int idMiddlegroup;
     private int startAddress;
-    private ArrayList<ObjectTemplate> objectTemplates = new ArrayList<>();
+    private ObjectTemplate objectTemplate;
 
     public Address() {
     }
@@ -30,19 +30,12 @@ public class Address extends Data {
         this.startAddress = startAddress;
     }
 
-    public ArrayList<ObjectTemplate> getObjectTemplates() {
-        return objectTemplates;
+    public ObjectTemplate getObjectTemplate() {
+        return objectTemplate;
     }
 
-    public void setObjectTemplates(ArrayList<ObjectTemplate> objectTemplates) {
-        this.objectTemplates = objectTemplates;
-    }
-    public void addObjectTemplate(ObjectTemplate objectTemplate) {
-        this.objectTemplates.add(objectTemplate);
-    }
-
-    public void removeObjectTemplate(ObjectTemplate objectTemplate) {
-        this.objectTemplates.remove(objectTemplate);
+    public void setObjectTemplate(ObjectTemplate objectTemplate) {
+        this.objectTemplate = objectTemplate;
     }
 
     @Override
@@ -90,9 +83,9 @@ public class Address extends Data {
         result += "name: " + this.getName() + ", ";
         result += "startaddress: " + this.getStartAddress() + ", ";
         result += "idMiddlegroup: " + this.getIdMiddlegroup() + ", ";
-        result += "ObjectTemplates: \n";
-        for(ObjectTemplate o : this.getObjectTemplates()) {
-            result += o.toString() + "\n";
+        result += "ObjectTemplate: {\n";
+        if(this.objectTemplate instanceof ObjectTemplate) {
+            result += this.objectTemplate.toString() + "\n";
         }
         result += "}";
         return result;

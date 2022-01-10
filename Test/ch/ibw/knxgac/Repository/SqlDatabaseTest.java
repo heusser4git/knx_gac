@@ -299,41 +299,26 @@ class SqlDatabaseTest {
     }
 
     @Test
-    void getSqlUpdateQuery_ObjectTemplateWithIdAddress() {
+    void getSqlUpdateQuery_ObjectTemplate() {
         // Arrange
         SqlDatabase sql = new SqlDatabase();
         ObjectTemplate objectTemplate = new ObjectTemplate(1);
-        objectTemplate.setIdAddress(1);
         // Act
         String result = sql.getSqlUpdateQuery("ObjectTemplate", objectTemplate);
         // Assert
-        assertEquals("UPDATE ObjectTemplate SET name = '', idAddress = 1 WHERE id=1;", result);
+        assertEquals("UPDATE ObjectTemplate SET name = '' WHERE id=1;", result);
     }
 
     @Test
-    void getSqlUpdateQuery_ObjectTemplateWithNameAndIdAddress() {
-        // Arrange
-        SqlDatabase sql = new SqlDatabase();
-        ObjectTemplate objectTemplate = new ObjectTemplate(1);
-        objectTemplate.setName("Testname");
-        objectTemplate.setIdAddress(1);
-        // Act
-        String result = sql.getSqlUpdateQuery("ObjectTemplate", objectTemplate);
-        // Assert
-        assertEquals("UPDATE ObjectTemplate SET name = 'Testname', idAddress = 1 WHERE id=1;", result);
-    }
-
-    @Test
-    void getSqlUpdateQuery_ObjectTemplateWithNameEqualsNullAndIdAddress() {
+    void getSqlUpdateQuery_ObjectTemplateWithNameEqualsNull() {
         // Arrange
         SqlDatabase sql = new SqlDatabase();
         ObjectTemplate objectTemplate = new ObjectTemplate(1);
         objectTemplate.setName(null);
-        objectTemplate.setIdAddress(1);
         // Act
         String result = sql.getSqlUpdateQuery("ObjectTemplate", objectTemplate);
         // Assert
-        assertEquals("UPDATE ObjectTemplate SET idAddress = 1 WHERE id=1;", result);
+        assertEquals("UPDATE ObjectTemplate SET  WHERE id=1;", result);
     }
 
     @Test
@@ -345,7 +330,7 @@ class SqlDatabaseTest {
         // Act
         String result = sql.getSqlUpdateQuery("Attribute", attribute);
         // Assert
-        assertEquals("UPDATE Attribute SET name = 'Testname' WHERE id=1;", result);
+        assertEquals("UPDATE Attribute SET name = 'Testname', number = 0 WHERE id=1;", result);
     }
 
     @Test
@@ -357,7 +342,7 @@ class SqlDatabaseTest {
         // Act
         String result = sql.getSqlUpdateQuery("Attribute", attribute);
         // Assert
-        assertEquals("UPDATE Attribute SET name = '', idObjectTemplate = 1 WHERE id=1;", result);
+        assertEquals("UPDATE Attribute SET name = '', number = 0, idObjectTemplate = 1 WHERE id=1;", result);
     }
 
     @Test
@@ -370,7 +355,7 @@ class SqlDatabaseTest {
         // Act
         String result = sql.getSqlUpdateQuery("Attribute", attribute);
         // Assert
-        assertEquals("UPDATE Attribute SET name = 'Testname', idObjectTemplate = 1 WHERE id=1;", result);
+        assertEquals("UPDATE Attribute SET name = 'Testname', number = 0, idObjectTemplate = 1 WHERE id=1;", result);
     }
 
     @Test
@@ -383,7 +368,7 @@ class SqlDatabaseTest {
         // Act
         String result = sql.getSqlUpdateQuery("Attribute", attribute);
         // Assert
-        assertEquals("UPDATE Attribute SET idObjectTemplate = 1 WHERE id=1;", result);
+        assertEquals("UPDATE Attribute SET number = 0, idObjectTemplate = 1 WHERE id=1;", result);
     }
 
     @Test

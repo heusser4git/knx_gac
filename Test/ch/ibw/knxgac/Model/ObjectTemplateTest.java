@@ -18,17 +18,6 @@ class ObjectTemplateTest {
     }
 
     @Test
-    void getWhereClause_WithIdAddress() {
-        // Arrange
-        ObjectTemplate m = new ObjectTemplate();
-        m.setIdAddress(1);
-        // Act
-        String s = m.getWhereClause();
-        // Assert
-        assertEquals("ID is not NULL AND idAddress = 1 AND deleted <> 1", s);
-    }
-
-    @Test
     void getWhereClause_WithIdObjectTemplate() {
         // Arrange
         ObjectTemplate m = new ObjectTemplate();
@@ -62,25 +51,13 @@ class ObjectTemplateTest {
     }
 
     @Test
-    void getUpdateClause_WithIdAddress() {
-        // Arrange
-        ObjectTemplate o = new ObjectTemplate();
-        o.setIdAddress(1);
-        // Act
-        String s = o.getUpdateClause();
-        // Assert
-        assertEquals("name = '', idAddress = 1", s);
-    }
-
-    @Test
-    void getUpdateClause_WithNameAndIdAddress() {
+    void getUpdateClause_WithName() {
         // Arrange
         ObjectTemplate o = new ObjectTemplate();
         o.setName("ObjectTemplate 1");
-        o.setIdAddress(1);
         // Act
         String s = o.getUpdateClause();
         // Assert
-        assertEquals("name = 'ObjectTemplate 1', idAddress = 1", s);
+        assertEquals("name = 'ObjectTemplate 1'", s);
     }
 }

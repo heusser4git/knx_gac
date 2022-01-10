@@ -94,6 +94,7 @@ public class MiddleGroup extends Data {
         String result = "MiddleGroup{";
         result += "id: " + this.getId() + ", ";
         result += "name: " + this.getName() + ", ";
+        result += "number: " + this.getNumber() + ", ";
         result += "idMaingroup: " + this.getIdMaingroup() + ", ";
         result += "Adresses: \n";
         for(Address a : this.getAddresses()) {
