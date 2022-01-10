@@ -226,6 +226,15 @@ public class KnxGacApplication extends Application {
             tabAddress.setClosable(false);
             tabAddress.setContent(gridAddress);
 
+            tabAddress.setOnSelectionChanged(new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                    if(tabAddress.isSelected()){
+                        guiAddress.update(KnxGacApplication.currentProjectID);
+                    }
+                }
+            });
+
             tabPane.getTabs().add(tabProject);
             tabPane.getTabs().add(tabMaingroup);
             tabPane.getTabs().add(tabMiddlegroup);
