@@ -446,19 +446,6 @@ public class SqlDatabase implements Database {
                 "    FOREIGN KEY (idObjecttemplate)\n" +
                 "    REFERENCES objecttemplate (id)\n" +
                 ");";
-
-//        return "CREATE TABLE IF NOT EXISTS `address` (" +
-//                "  `id` INT NOT NULL," +
-//                "  `name` VARCHAR(255) NULL," +
-//                "  `startaddress` INT(11) NULL," +
-//                "  `idMiddlegroup` INT NOT NULL," +
-//                "  `deleted` TINYINT NULL DEFAULT 0," +
-//                "  PRIMARY KEY (`id`)," +
-//                "  INDEX `fk_address_middlegroup1_idx` (`idMiddlegroup` ASC) VISIBLE," +
-//                "  CONSTRAINT `fk_address_middlegroup1`" +
-//                "    FOREIGN KEY (`idMiddlegroup`)" +
-//                "    REFERENCES `middlegroup` (`id`)" +
-//                ");";
     }
 
     private String getSqlCreateTableObjectTemplate() {
@@ -467,17 +454,6 @@ public class SqlDatabase implements Database {
                 "  name VARCHAR(255) NULL,\n" +
                 "  deleted TINYINT NULL DEFAULT 0,\n" +
                 "  PRIMARY KEY (id));";
-//        return "CREATE TABLE IF NOT EXISTS `objecttemplate` (" +
-//                "  `id` INT NOT NULL," +
-//                "  `name` VARCHAR(255) NULL," +
-//                "  `idAddress` INT NOT NULL," +
-//                "  `deleted` TINYINT NULL DEFAULT 0," +
-//                "  PRIMARY KEY (`id`)," +
-//                "  INDEX `fk_objecttemplate_address1_idx` (`idAddress` ASC) VISIBLE," +
-//                "  CONSTRAINT `fk_objecttemplate_address1`" +
-//                "    FOREIGN KEY (`idAddress`)" +
-//                "    REFERENCES `address` (`id`)" +
-//                ");";
     }
 
     private String getSqlCreateTableAttribute() {
@@ -493,17 +469,6 @@ public class SqlDatabase implements Database {
                 "    FOREIGN KEY (idObjectTemplate)\n" +
                 "    REFERENCES objecttemplate (id)\n" +
                 ");";
-//        return "CREATE TABLE IF NOT EXISTS `attribute` (" +
-//                "  `id` INT NOT NULL," +
-//                "  `name` VARCHAR(255) NULL," +
-//                "  `idObjectTemplate` INT NOT NULL," +
-//                "  `deleted` TINYINT NULL DEFAULT 0," +
-//                "  PRIMARY KEY (`id`)," +
-//                "  INDEX `fk_attribute_objecttemplate_idx` (`idObjectTemplate` ASC) VISIBLE," +
-//                "  CONSTRAINT `fk_attribute_objecttemplate`" +
-//                "    FOREIGN KEY (`idObjectTemplate`)" +
-//                "    REFERENCES `objecttemplate` (`id`)" +
-//                "    );";
     }
 
     public void createTablesToDb() throws SQLException {

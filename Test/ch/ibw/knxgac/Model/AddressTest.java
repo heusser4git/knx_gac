@@ -8,10 +8,10 @@ class AddressTest {
     @Test
     void getWhereClause_WithNameWithoutIdAddress() {
         // Arrange
-        Address m = new Address();
-        m.setName("Address 1");
+        Address a = new Address();
+        a.setName("Address 1");
         // Act
-        String s = m.getWhereClause();
+        String s = a.getWhereClause();
         // Assert
         assertEquals("ID is not NULL AND name LIKE 'Address 1%' AND deleted <> 1", s);
     }
@@ -30,10 +30,10 @@ class AddressTest {
     @Test
     void getWhereClause_WithIdAddress() {
         // Arrange
-        Address m = new Address();
-        m.setId(1);
+        Address a = new Address();
+        a.setId(1);
         // Act
-        String s = m.getWhereClause();
+        String s = a.getWhereClause();
         // Assert
         assertEquals("ID = 1 AND deleted <> 1", s);
     }
@@ -41,25 +41,25 @@ class AddressTest {
     @Test
     void getUpdateClause_WithIdAddress() {
         // Arrange
-        Address m = new Address();
-        m.setId(1);
+        Address a = new Address();
+        a.setId(1);
         // Act
-        String s = m.getUpdateClause();
+        String s = a.getUpdateClause();
         // Assert
         assertEquals("name = '', startaddress = 0", s);
     }
     @Test
     void getUpdateClause_onlyWithName() {
         // Arrange
-        Address m = new Address();
-        m.setName("Address 1");
+        Address a = new Address();
+        a.setName("Address 1");
         // Act
-        String s = m.getUpdateClause();
+        String s = a.getUpdateClause();
         // Assert
         assertEquals("name = 'Address 1', startaddress = 0", s);
     }
     @Test
-    void getUpdateClause_WithIdProject() {
+    void getUpdateClause_WithIdMiddlegroup() {
         // Arrange
         Address a = new Address();
         a.setIdMiddlegroup(1);

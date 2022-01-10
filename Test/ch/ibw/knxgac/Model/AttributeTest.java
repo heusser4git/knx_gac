@@ -30,31 +30,56 @@ class AttributeTest {
     @Test
     void getWhereClause_WithIdAttribute() {
         // Arrange
-        Attribute m = new Attribute();
-        m.setId(1);
+        Attribute a = new Attribute();
+        a.setId(1);
         // Act
-        String s = m.getWhereClause();
+        String s = a.getWhereClause();
         // Assert
         assertEquals("ID = 1 AND deleted <> 1", s);
     }
 
     @Test
+    void getWhereClause_WithNumber() {
+        // Arrange
+        Attribute a = new Attribute();
+        a.setNumber(1);
+        // Act
+        String s = a.getWhereClause();
+        // Assert
+        assertEquals("ID is not NULL AND number = 1 AND deleted <> 1", s);
+    }
+
+    @Test
+    void getWhereClause_WithNameAndNumberAndIdObjectTemplate() {
+        // Arrange
+        Attribute a = new Attribute();
+        a.setName("Attribute 1");
+        a.setNumber(1);
+        a.setIdObjectTemplate(1);
+
+        // Act
+        String s = a.getWhereClause();
+        // Assert
+        assertEquals("ID is not NULL AND name LIKE 'Attribute 1%' AND number = 1 AND idObjectTemplate = 1 AND deleted <> 1", s);
+    }
+
+    @Test
     void getUpdateClause_WithIdAttribute() {
         // Arrange
-        Attribute m = new Attribute();
-        m.setId(1);
+        Attribute a = new Attribute();
+        a.setId(1);
         // Act
-        String s = m.getUpdateClause();
+        String s = a.getUpdateClause();
         // Assert
         assertEquals("name = '', number = 0", s);
     }
     @Test
     void getUpdateClause_onlyWithName() {
         // Arrange
-        Attribute m = new Attribute();
-        m.setName("Attribute 1");
+        Attribute a = new Attribute();
+        a.setName("Attribute 1");
         // Act
-        String s = m.getUpdateClause();
+        String s = a.getUpdateClause();
         // Assert
         assertEquals("name = 'Attribute 1', number = 0", s);
     }
@@ -68,5 +93,16 @@ class AttributeTest {
         // Assert
         assertEquals("name = '', number = 0, idObjectTemplate = 1", s);
     }
-
+    @Test
+    void getUpdateClause_withNameAndNumberAndIdObjectTemplate() {
+        // Arrange
+        Attribute a = new Attribute();
+        a.setName("Attribute 1");
+        a.setNumber(1);
+        a.setIdObjectTemplate(1);
+        // Act
+        String s = a.getUpdateClause();
+        // Assert
+        assertEquals("name = 'Attribute 1', number = 1, idObjectTemplate = 1", s);
+    }
 }
