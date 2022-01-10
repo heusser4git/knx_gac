@@ -104,7 +104,7 @@ public class GuiMiddlegroup {
 
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
-        ChoiceBox cbMiddlegroupNumber = new ChoiceBox(FXCollections.observableArrayList(0,1,2,3,4
+        ComboBox cbMiddlegroupNumber = new ComboBox(FXCollections.observableArrayList(0,1,2,3,4
                 ,5,6,7));
         grid.add(cbMiddlegroupNumber,x+1,y);
 

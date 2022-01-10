@@ -20,10 +20,12 @@ public class GuiAddress {
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
-//    ArrayList<Attribute> attributes = new ArrayList<>();
-//    ArrayList<Address> addresses = new ArrayList<>();
+    ArrayList<ObjectTemplate> attributes = new ArrayList<>();
+    ArrayList<Address> addresses = new ArrayList<>();
     private ComboBox<ComboBoxItem> cbMaingroup = null;
     private ComboBox<ComboBoxItem> cbMiddelgroup = null;
+    private ComboBox<ComboBoxItem> cbattributes = null;
+    private ListView<ComboBoxItem> adressesGroupList = null;
     int idMaingroup;
 
     public GuiAddress(Controller controller){
@@ -34,6 +36,9 @@ public class GuiAddress {
         this.upateMaingroupList(idProject);
         this.cbMaingroup.getItems().clear();
         this.cbMaingroup.getItems().addAll(this.maingroupItems());
+        this.updateAttributeList();
+        this.cbattributes.getItems().clear();
+        this.cbattributes.getItems().addAll(attributesItems());
     }
 
     private void upateMaingroupList(int idProject){
@@ -72,11 +77,30 @@ public class GuiAddress {
         return items;
     }
 
-    /*
+    private void updateAttributeList(){
+        try {
+            attributes = controller.selectObject(new ObjectTemplate());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     private ObservableList<ComboBoxItem> attributesItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
-        // Todo Impelent Code
+        for (ObjectTemplate ot : attributes ) {
+            items.add(new ComboBoxItem(ot.getId(), ot.getName()));
+        }
         return items;
+    }
+
+    private void updateAddressList(int idMiddelgroup){
+        try{
+            Address filterAddress = new Address();
+            filterAddress.setIdMiddlegroup(idMiddelgroup);
+            addresses = controller.selectObject(filterAddress);
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
     }
 
     private ObservableList<ComboBoxItem> adressesItems(){
@@ -84,8 +108,6 @@ public class GuiAddress {
         // Todo Impelent Code
         return items;
     }
-
-     */
 
     public GridPane getAddressGrid() {
         GridPane grid = new GridPane();
@@ -107,8 +129,8 @@ public class GuiAddress {
         cbMaingroup.getItems().addAll(this.maingroupItems());
         grid.add(cbMaingroup,x+1,y);
 
-        ListView<ComboBoxItem> adressesGroupList = new ListView<>();
-//        adressesGroupList.getItems().addAll(this.adressesItems());
+        adressesGroupList = new ListView<>();
+        adressesGroupList.getItems().addAll(this.adressesItems());
         grid.add(adressesGroupList, x+4,y,2,7);
 
         y++;
@@ -119,8 +141,8 @@ public class GuiAddress {
 
         y++;
         grid.add(fieldHelper.getLable("Objekt"),x,y);
-        ComboBox<ComboBoxItem> cbattributes = new ComboBox<>();
-//        cbattributes.getItems().addAll(this.attributesItems());
+        cbattributes = new ComboBox<>();
+        cbattributes.getItems().addAll(this.attributesItems());
         grid.add(cbattributes,x+1,y);
 
         y++;
@@ -148,6 +170,22 @@ public class GuiAddress {
                 updateMiddelgroupList(idMaingroup);
                 cbMiddelgroup.getItems().clear();
                 cbMiddelgroup.getItems().addAll(middelgroupItems());
+            }
+        });
+
+        btnCreate.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Address address = new Address();
+                address.setStartAddress((Integer) cbAdressStartNumber.getSelectionModel().getSelectedItem());
+                address.setName(tfAdressName.getText());
+                address.setIdMiddlegroup(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
+                address.setObjectTemplate(new ObjectTemplate(cbattributes.getSelectionModel().getSelectedItem().getId()));
+                try {
+                    controller.insertObject(address);
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
             }
         });
         return grid;
