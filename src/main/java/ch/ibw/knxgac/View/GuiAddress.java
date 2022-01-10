@@ -1,18 +1,18 @@
 package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
-import ch.ibw.knxgac.Model.Address;
-import ch.ibw.knxgac.Model.Attribute;
-import ch.ibw.knxgac.Model.MainGroup;
-import ch.ibw.knxgac.Model.MiddleGroup;
+import ch.ibw.knxgac.Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GuiAddress {
@@ -20,29 +20,59 @@ public class GuiAddress {
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
-    ArrayList<Attribute> attributes = new ArrayList<>();
-    ArrayList<Address> addresses = new ArrayList<>();
-    
-    private void update(){
-        
-    }
+//    ArrayList<Attribute> attributes = new ArrayList<>();
+//    ArrayList<Address> addresses = new ArrayList<>();
+    private ComboBox<ComboBoxItem> cbMaingroup = null;
+    private ComboBox<ComboBoxItem> cbMiddelgroup = null;
+    int idMaingroup;
 
     public GuiAddress(Controller controller){
         this.controller = controller;
     }
-    
+
+    public void update(int idProject){
+        this.upateMaingroupList(idProject);
+        this.cbMaingroup.getItems().clear();
+        this.cbMaingroup.getItems().addAll(this.maingroupItems());
+    }
+
+    private void upateMaingroupList(int idProject){
+        try {
+            MainGroup filterMaingroup = new MainGroup();
+            filterMaingroup.setIdProject(idProject);
+            this.mainGroups = this.controller.selectObject(filterMaingroup);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
     private ObservableList<ComboBoxItem> maingroupItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
-        // Todo Impelent Code
+        for (MainGroup m: mainGroups) {
+            items.add(new ComboBoxItem(m.getId(),m.getNumber() + " " + m.getName()));
+        }
         return items;
+    }
+
+    private void updateMiddelgroupList(int idMaingroup){
+        try {
+            MiddleGroup filterMiddelgroup = new MiddleGroup();
+            filterMiddelgroup.setIdMaingroup(idMaingroup);
+            middleGroups = controller.selectObject(filterMiddelgroup);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     private ObservableList<ComboBoxItem> middelgroupItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
-        // Todo Impelent Code
+        for (MiddleGroup ml: middleGroups) {
+            items.add(new ComboBoxItem(ml.getId(), ml.getNumber() + " " + ml.getName()));
+        }
         return items;
     }
 
+    /*
     private ObservableList<ComboBoxItem> attributesItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         // Todo Impelent Code
@@ -54,7 +84,9 @@ public class GuiAddress {
         // Todo Impelent Code
         return items;
     }
-    
+
+     */
+
     public GridPane getAddressGrid() {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_LEFT);
@@ -71,24 +103,24 @@ public class GuiAddress {
         
         y++;
         grid.add(fieldHelper.getLable("Hauptgruppe"),x,y);
-        ChoiceBox<ComboBoxItem> cbmaingroup = new ChoiceBox();
-        cbmaingroup.getItems().addAll(this.maingroupItems());
-        grid.add(cbmaingroup,x+1,y);
+        cbMaingroup = new ComboBox<>();
+        cbMaingroup.getItems().addAll(this.maingroupItems());
+        grid.add(cbMaingroup,x+1,y);
 
         ListView<ComboBoxItem> adressesGroupList = new ListView<>();
-        adressesGroupList.getItems().addAll(this.adressesItems());
+//        adressesGroupList.getItems().addAll(this.adressesItems());
         grid.add(adressesGroupList, x+4,y,2,7);
 
         y++;
         grid.add(fieldHelper.getLable("Mittelgruppe"),x,y);
-        ChoiceBox<ComboBoxItem> cbmiddelgroup = new ChoiceBox();
-        cbmiddelgroup.getItems().addAll(this.middelgroupItems());
-        grid.add(cbmiddelgroup,x+1,y);
+        cbMiddelgroup = new ComboBox<>();
+        cbMiddelgroup.getItems().addAll(this.middelgroupItems());
+        grid.add(cbMiddelgroup,x+1,y);
 
         y++;
         grid.add(fieldHelper.getLable("Objekt"),x,y);
-        ChoiceBox<ComboBoxItem> cbattributes = new ChoiceBox();
-        cbattributes.getItems().addAll(this.attributesItems());
+        ComboBox<ComboBoxItem> cbattributes = new ComboBox<>();
+//        cbattributes.getItems().addAll(this.attributesItems());
         grid.add(cbattributes,x+1,y);
 
         y++;
@@ -101,7 +133,6 @@ public class GuiAddress {
         ComboBox cbAdressStartNumber =new ComboBox<>();
         for (int i = 0; i < 255; i++) {
             cbAdressStartNumber.getItems().add(i);
-            
         }
 
         grid.add(cbAdressStartNumber,x+1,y);
@@ -111,11 +142,14 @@ public class GuiAddress {
         btnCreate.setText("erstellen");
         grid.add(btnCreate,x+1,y);
 
-        y++;
-        Button btnUpdate = new Button();
-        btnUpdate.setText("Update");
-        grid.add(btnUpdate,x+1,y);
-        
+        cbMaingroup.setOnAction(actionEvent -> {
+            if(!cbMaingroup.getSelectionModel().isEmpty()){
+                idMaingroup = cbMaingroup.getSelectionModel().getSelectedItem().getId();
+                updateMiddelgroupList(idMaingroup);
+                cbMiddelgroup.getItems().clear();
+                cbMiddelgroup.getItems().addAll(middelgroupItems());
+            }
+        });
         return grid;
     }
 }
