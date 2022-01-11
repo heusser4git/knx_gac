@@ -26,6 +26,7 @@ public class GuiAddress {
     ArrayList<Address> addresses = new ArrayList<>();
     ArrayList<Attribute> attributes = new ArrayList<>();
     ArrayList<Integer> addressstartnumber = new ArrayList<>();
+    ArrayList<Integer> usedaddresses = new ArrayList<>();
     private ComboBox<ComboBoxItem> cbMaingroup = null;
     private ComboBox<ComboBoxItem> cbMiddelgroup = null;
     private ComboBox<ComboBoxItem> cbObjectTemplates = null;
@@ -114,9 +115,11 @@ public class GuiAddress {
 
     private ObservableList<ComboBoxItem> adressesItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
+        usedaddresses.clear();
         for (Address ad: addresses) {
             for (Attribute at : attributes){
                 if(at.getIdObjectTemplate() == ad.getObjectTemplate().getId()){
+                    usedaddresses.add(ad.getStartAddress()+at.getNumber());
                     items.add(new ComboBoxItem(ad.getId(),(ad.getStartAddress() + at.getNumber())+" " +
                             ad.getName()+" " + at.getName()));
                 }
@@ -128,6 +131,9 @@ public class GuiAddress {
     private void updateAddressstartnumber(){
         for (int i = 0; i < 255; i++) {
             addressstartnumber.add(i);
+        }
+        for (Integer in: usedaddresses) {
+            addressstartnumber.remove(in);
         }
     }
 
@@ -223,8 +229,6 @@ public class GuiAddress {
 
             }
         });
-
-
         return grid;
     }
 }
