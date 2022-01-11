@@ -14,18 +14,23 @@ import javafx.scene.text.FontWeight;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GuiAddress {
 
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
-    ArrayList<ObjectTemplate> attributes = new ArrayList<>();
+    ArrayList<ObjectTemplate> objectTemplates = new ArrayList<>();
     ArrayList<Address> addresses = new ArrayList<>();
+    ArrayList<Attribute> attributes = new ArrayList<>();
+    ArrayList<Integer> addressstartnumber = new ArrayList<>();
     private ComboBox<ComboBoxItem> cbMaingroup = null;
     private ComboBox<ComboBoxItem> cbMiddelgroup = null;
-    private ComboBox<ComboBoxItem> cbattributes = null;
+    private ComboBox<ComboBoxItem> cbObjectTemplates = null;
     private ListView<ComboBoxItem> adressesGroupList = null;
+    private ComboBox cbAdressStartNumber= null;
     int idMaingroup;
 
     public GuiAddress(Controller controller){
@@ -36,9 +41,9 @@ public class GuiAddress {
         this.upateMaingroupList(idProject);
         this.cbMaingroup.getItems().clear();
         this.cbMaingroup.getItems().addAll(this.maingroupItems());
-        this.updateAttributeList();
-        this.cbattributes.getItems().clear();
-        this.cbattributes.getItems().addAll(attributesItems());
+        this.updateObjectTemplates();
+        this.cbObjectTemplates.getItems().clear();
+        this.cbObjectTemplates.getItems().addAll(objectTemplateItems());
     }
 
     private void upateMaingroupList(int idProject){
@@ -77,17 +82,17 @@ public class GuiAddress {
         return items;
     }
 
-    private void updateAttributeList(){
+    private void updateObjectTemplates(){
         try {
-            attributes = controller.selectObject(new ObjectTemplate());
+            objectTemplates = controller.selectObject(new ObjectTemplate());
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
     
-    private ObservableList<ComboBoxItem> attributesItems(){
+    private ObservableList<ComboBoxItem> objectTemplateItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
-        for (ObjectTemplate ot : attributes ) {
+        for (ObjectTemplate ot : objectTemplates) {
             items.add(new ComboBoxItem(ot.getId(), ot.getName()));
         }
         return items;
@@ -98,6 +103,10 @@ public class GuiAddress {
             Address filterAddress = new Address();
             filterAddress.setIdMiddlegroup(idMiddelgroup);
             addresses = controller.selectObject(filterAddress);
+            Collections.sort(addresses);
+            Attribute filterAttribute = new Attribute();
+            attributes = controller.selectObject(filterAttribute);
+            Collections.sort(attributes);
         }catch (SQLException ex){
             ex.printStackTrace();
         }
@@ -105,8 +114,21 @@ public class GuiAddress {
 
     private ObservableList<ComboBoxItem> adressesItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
-        // Todo Impelent Code
+        for (Address ad: addresses) {
+            for (Attribute at : attributes){
+                if(at.getIdObjectTemplate() == ad.getObjectTemplate().getId()){
+                    items.add(new ComboBoxItem(ad.getId(),(ad.getStartAddress() + at.getNumber())+" " +
+                            ad.getName()+" " + at.getName()));
+                }
+            }
+        }
         return items;
+    }
+
+    private void updateAddressstartnumber(){
+        for (int i = 0; i < 255; i++) {
+            addressstartnumber.add(i);
+        }
     }
 
     public GridPane getAddressGrid() {
@@ -141,9 +163,9 @@ public class GuiAddress {
 
         y++;
         grid.add(fieldHelper.getLable("Objekt"),x,y);
-        cbattributes = new ComboBox<>();
-        cbattributes.getItems().addAll(this.attributesItems());
-        grid.add(cbattributes,x+1,y);
+        cbObjectTemplates = new ComboBox<>();
+        cbObjectTemplates.getItems().addAll(this.objectTemplateItems());
+        grid.add(cbObjectTemplates,x+1,y);
 
         y++;
         grid.add(fieldHelper.getLable("Name"),x,y);
@@ -152,11 +174,11 @@ public class GuiAddress {
 
         y++;
         grid.add(fieldHelper.getLable("Startadresse"),x,y);
-        ComboBox cbAdressStartNumber =new ComboBox<>();
-        for (int i = 0; i < 255; i++) {
-            cbAdressStartNumber.getItems().add(i);
-        }
-
+        //for (int i = 0; i < 255; i++) {
+        //    cbAdressStartNumber.getItems().add(i);
+        //}
+        cbAdressStartNumber =new ComboBox<>();
+        cbAdressStartNumber.getItems().addAll(addressstartnumber);
         grid.add(cbAdressStartNumber,x+1,y);
 
         y++;
@@ -173,21 +195,36 @@ public class GuiAddress {
             }
         });
 
-        btnCreate.setOnAction(new EventHandler<ActionEvent>() {
+        btnCreate.setOnAction(actionEvent -> {
+            Address address = new Address();
+            address.setStartAddress((Integer) cbAdressStartNumber.getSelectionModel().getSelectedItem());
+            address.setName(tfAdressName.getText());
+            address.setIdMiddlegroup(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
+            address.setObjectTemplate(new ObjectTemplate(cbObjectTemplates.getSelectionModel().getSelectedItem().getId()));
+            try {
+                controller.insertObject(address);
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+            updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
+            adressesGroupList.getItems().clear();
+            adressesGroupList.getItems().addAll(adressesItems());
+        });
+
+        cbMiddelgroup.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Address address = new Address();
-                address.setStartAddress((Integer) cbAdressStartNumber.getSelectionModel().getSelectedItem());
-                address.setName(tfAdressName.getText());
-                address.setIdMiddlegroup(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
-                address.setObjectTemplate(new ObjectTemplate(cbattributes.getSelectionModel().getSelectedItem().getId()));
-                try {
-                    controller.insertObject(address);
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
+                updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
+                adressesGroupList.getItems().clear();
+                adressesGroupList.getItems().addAll(adressesItems());
+                updateAddressstartnumber();
+                cbAdressStartNumber.getItems().clear();
+                cbAdressStartNumber.getItems().addAll(addressstartnumber);
+
             }
         });
+
+
         return grid;
     }
 }

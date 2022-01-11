@@ -6,7 +6,7 @@ public class Address extends Data {
     private int idMiddlegroup;
     private int startAddress;
     private ObjectTemplate objectTemplate;
-
+    
 
     public Address() {
     }
@@ -31,7 +31,7 @@ public class Address extends Data {
         this.startAddress = startAddress;
     }
 
-
+    
     public ObjectTemplate getObjectTemplate() {
         return objectTemplate;
     }
@@ -39,7 +39,7 @@ public class Address extends Data {
     public void setObjectTemplate(ObjectTemplate objectTemplate) {
         this.objectTemplate = objectTemplate;
     }
-
+     
 
     @Override
     public String getWhereClause() {
@@ -79,7 +79,6 @@ public class Address extends Data {
         return update;
     }
 
-
     @Override
     public String toString() {
         String result = "Address{";
@@ -95,5 +94,9 @@ public class Address extends Data {
         return result;
     }
 
-
+    @Override
+    public int compareTo(Object o) {
+        int comparenumber = ((Address) o).getStartAddress();
+        return this.startAddress-comparenumber;
+    }
 }

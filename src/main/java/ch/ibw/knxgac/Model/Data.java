@@ -4,7 +4,7 @@ package ch.ibw.knxgac.Model;
  * Any Data-Object has to implement this DataInterface,
  * otherwise it won't be able to use the Repository
  */
-public class Data {
+public class Data implements Comparable{
     protected int id = 0;
     protected String name = "";
 
@@ -40,5 +40,10 @@ public class Data {
         if(this.getName() != null)
             return "name = '" + this.getName() + "'";
         return "";
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }
