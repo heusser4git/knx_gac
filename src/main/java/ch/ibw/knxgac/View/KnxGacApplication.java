@@ -5,6 +5,7 @@ import ch.ibw.knxgac.Model.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -310,6 +311,41 @@ public class KnxGacApplication extends Application {
                     if(pos>0)
                         title = title.substring(0, pos);
                     stage.setTitle(title + "  /  " + KnxGacApplication.currentProjectName);
+                }
+            });
+
+            guiProject.btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    Project project = new Project(KnxGacApplication.currentProjectID);
+                    try {
+                        // delete the actual project
+                        controller.deleteObject(project);
+                        // update the projects from db
+                        guiProject.updateProjects();
+                        // empty the ComboBox
+                        guiProject.selectProject.getItems().clear();
+                        // add the project-items new to the ComboBox
+                        guiProject.selectProject.getItems().addAll(guiProject.projectItems());
+                        KnxGacApplication.currentProjectName = "";
+                        KnxGacApplication.currentProjectID = 0;
+                        // Windowtitle
+                        // actual Project in stage.title
+                        String title = stage.getTitle();
+                        int pos = title.indexOf("  /  ");
+                        if(pos>0)
+                            title = title.substring(0, pos);
+                        stage.setTitle(title + "  /  Kein Projekt gewählt");
+                        // disable tabs
+                        tabMaingroup.setDisable(true);
+                        tabMiddlegroup.setDisable(true);
+                        tabAddress.setDisable(true);
+                        // disable buttons
+                        guiProject.btnDelete.setDisable(true);
+                        guiProject.btnExport.setDisable(true);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 

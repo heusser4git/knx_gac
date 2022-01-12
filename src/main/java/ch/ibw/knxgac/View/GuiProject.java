@@ -32,7 +32,7 @@ public class GuiProject {
         selectProject.getItems().clear();
         selectProject.getItems().addAll(this.projectItems());
     }
-    private void updateProjects() {
+    protected void updateProjects() {
         try {
             // get all projects out of the DB
             this.projects = this.controller.selectObject(new Project());
@@ -41,7 +41,7 @@ public class GuiProject {
         }
     }
 
-    private ObservableList<ComboBoxItem> projectItems() {
+    protected ObservableList<ComboBoxItem> projectItems() {
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (Project p : this.projects) {
             // mache ComboBoxItems, jeweils mit der ID und dem Namen, welcher im GUI angezeigt werden soll
@@ -111,6 +111,7 @@ public class GuiProject {
         grid.add(btnCreate,x+1,y);
 
         btnDelete.setText("Projekt löschen");
+        btnDelete.setId("btnDelete");
         btnDelete.setPrefWidth(80);
         btnDelete.setDisable(true);
         grid.add(btnDelete,x+4,y,2,1);
@@ -142,31 +143,7 @@ public class GuiProject {
             }
         });
 
-        // delete Project
-        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Project project = new Project(KnxGacApplication.currentProjectID);
-                try {
-                    // delete the actual project
-                    controller.deleteObject(project);
-                    // update the projects from db
-                    updateProjects();
-                    // empty the ComboBox
-                    selectProject.getItems().clear();
-                    // add the project-items new to the ComboBox
-                    selectProject.getItems().addAll(projectItems());
-                    KnxGacApplication.currentProjectName = "";
-                    KnxGacApplication.currentProjectID = 0;
-                    laChosenProject.setText("Kein Projekt gewählt.");
-                    // disable buttons
-                    btnDelete.setDisable(true);
-                    btnExport.setDisable(true);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
 
         // CSV Export Project
         btnExport.setOnAction(new EventHandler<ActionEvent>() {
