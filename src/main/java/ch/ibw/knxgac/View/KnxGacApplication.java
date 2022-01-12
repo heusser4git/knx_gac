@@ -21,7 +21,7 @@ public class KnxGacApplication extends Application {
     public static String currentProjectName;
     public static int currentProjectID;
     private Stage stage = null;
-    private Configuration configuration = null;
+    protected static Configuration configuration = null;
     private Controller controller = null;
     private TabPane tabPane;
     protected static boolean configGui = false;
@@ -303,8 +303,6 @@ public class KnxGacApplication extends Application {
                         guiProject.btnExport.setDisable(false);
                     }
 
-                    // set the actual project onto guiMaingroup
-                   // guiMaingroup.laChosenProject.setText(KnxGacApplication.currentProjectName);
                     // actual Project in stage.title
                     String title = stage.getTitle();
                     int pos = title.indexOf("  /  ");

@@ -2,6 +2,7 @@ package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Model.Project;
+import ch.ibw.knxgac.Repository.CsvWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,14 +13,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class GuiProject {
     private Controller controller;
     protected ArrayList<Project> projects = new ArrayList<>();
     protected ComboBox<ComboBoxItem> selectProject = new ComboBox<>();
-    protected Label laChosenProject = new Label();
     protected Button btnDelete = new Button();
     protected Button btnExport = new Button();
 
@@ -67,10 +70,7 @@ public class GuiProject {
     protected void setChoosenProjectFromComboBox() {
         if(!selectProject.getSelectionModel().isEmpty() && selectProject.getSelectionModel().getSelectedItem().getId()>0) {
             KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
-            String s = selectProject.getSelectionModel().getSelectedItem().getName();
-
-            KnxGacApplication.currentProjectName = "Aktuelles Projekt: " + s;
-            laChosenProject.setText(KnxGacApplication.currentProjectName);
+            KnxGacApplication.currentProjectName = selectProject.getSelectionModel().getSelectedItem().getName();
         }
     }
 
@@ -121,7 +121,7 @@ public class GuiProject {
         btnExport.setPrefWidth(80);
         btnExport.setDisable(true);
         // hide because its not done yet
-        btnExport.setVisible(false);
+//        btnExport.setVisible(false);
         grid.add(btnExport,x+4,y);
 
         //-- Eventhandling --//
@@ -151,7 +151,37 @@ public class GuiProject {
         btnExport.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //TODO implements export code
+                Project filterProject = new Project(KnxGacApplication.currentProjectID);
+                ArrayList<Project> actualProjects = null;
+                try {
+                     actualProjects = controller.selectObject(filterProject);
+                } catch (SQLException e) {
+                    // Todo Exception Handling
+                    e.printStackTrace();
+                }
+                if(actualProjects!=null && actualProjects.size()==1 && actualProjects.get(0) instanceof Project) {
+                    String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"));
+                    String path = KnxGacApplication.configuration.getCsvOutputpath() + "/";
+                    String file = date +"_KNXGAC_Projekt_" + actualProjects.get(0).getName() + "_" +actualProjects.get(0).getNumber() + ".csv";
+                    CsvWriter csvWriter = new CsvWriter(path+file);
+                    try {
+                        if(csvWriter.writeProjectToCsv(actualProjects.get(0))) {
+                            new Dialog().getInformation("File erstellt",
+                                    "Export erfolgreich",
+                                    "Das Projekt " + actualProjects.get(0).getName() +
+                                            "wurde erfolgreich in die Datei \n" +
+                                            path + "\n" + file + "\ngeschrieben.").showAndWait();
+                        }
+                    } catch (IOException e) {
+                        // Todo Exception Handling
+                        e.printStackTrace();
+                    }
+                } else {
+                    new Dialog().getInformation(
+                            "Projekt nicht gefunden",
+                            "Projekt nicht gefunden",
+                            "Projekt konnte nicht ausgegeben werden.").showAndWait();
+                }
             }
         });
 

@@ -163,6 +163,7 @@ public class GuiConfig {
                                     "Erfolgreich gespeichert",
                                     "Die Konfiguration wurde erfolgreich gespeichert."
                             ).showAndWait();
+                            KnxGacApplication.configuration = newConfiguration;
                             KnxGacApplication.configGui = false;
                             for (Tab tab : tabPane.getTabs()) {
                                 tab.setDisable(false);
