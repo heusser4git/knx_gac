@@ -314,6 +314,7 @@ public class KnxGacApplication extends Application {
                 }
             });
 
+            // Handler for DELETE Project
             guiProject.btnDelete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {

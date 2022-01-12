@@ -17,17 +17,17 @@ import java.util.ArrayList;
 
 public class GuiProject {
     private Controller controller;
-    ArrayList<Project> projects = new ArrayList<>();
-    ComboBox<ComboBoxItem> selectProject = new ComboBox<>();
-    Label laChosenProject = new Label();
-    Button btnDelete = new Button();
-    Button btnExport = new Button();
+    protected ArrayList<Project> projects = new ArrayList<>();
+    protected ComboBox<ComboBoxItem> selectProject = new ComboBox<>();
+    protected Label laChosenProject = new Label();
+    protected Button btnDelete = new Button();
+    protected Button btnExport = new Button();
 
     public GuiProject(Controller controller) {
         this.controller = controller;
 //        updateProjects();
     }
-    public void updateProjectComboBox() {
+    protected  void updateProjectComboBox() {
         updateProjects();
         selectProject.getItems().clear();
         selectProject.getItems().addAll(this.projectItems());
@@ -51,7 +51,7 @@ public class GuiProject {
         return items;
     }
 
-    public void selectProjectFromComboBox() {
+    protected void selectProjectFromComboBox() {
         for(ComboBoxItem cbi : selectProject.getItems()) {
             if(cbi.getId()==KnxGacApplication.currentProjectID) {
                 selectProject.getSelectionModel().clearSelection();
@@ -64,7 +64,7 @@ public class GuiProject {
      * Sets the Project choosen in the Project-ComboBox
      * onto the static Variables on KnxGacApplication
      */
-    public void setChoosenProjectFromComboBox() {
+    protected void setChoosenProjectFromComboBox() {
         if(!selectProject.getSelectionModel().isEmpty() && selectProject.getSelectionModel().getSelectedItem().getId()>0) {
             KnxGacApplication.currentProjectID = selectProject.getSelectionModel().getSelectedItem().getId();
             String s = selectProject.getSelectionModel().getSelectedItem().getName();
@@ -120,6 +120,8 @@ public class GuiProject {
         btnExport.setText("CSV Export");
         btnExport.setPrefWidth(80);
         btnExport.setDisable(true);
+        // hide because its not done yet
+        btnExport.setVisible(false);
         grid.add(btnExport,x+4,y);
 
         //-- Eventhandling --//
@@ -143,7 +145,7 @@ public class GuiProject {
             }
         });
 
-
+        // delete handler is situated in KnxGacApplication.start()
 
         // CSV Export Project
         btnExport.setOnAction(new EventHandler<ActionEvent>() {
