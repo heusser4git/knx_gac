@@ -96,7 +96,7 @@ public class Address extends Data {
 
     @Override
     public int compareTo(Object o) {
-        int comparenumber = ((Address) o).getStartAddress();
-        return this.startAddress-comparenumber;
+        return this.startAddress-((Address) o).getStartAddress();
     }
+
 }

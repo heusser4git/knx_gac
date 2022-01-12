@@ -84,7 +84,6 @@ public class Attribute extends Data {
 
     @Override
     public int compareTo(Object o) {
-        int comparenumber = ((Attribute) o).getNumber();
-        return this.number-comparenumber;
+        return this.number-((Attribute) o).getNumber();
     }
 }
