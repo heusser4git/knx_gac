@@ -115,11 +115,9 @@ public class GuiAddress {
 
     private ObservableList<ComboBoxItem> adressesItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
-        usedaddresses.clear();
         for (Address ad: addresses) {
             for (Attribute at : attributes){
                 if(at.getIdObjectTemplate() == ad.getObjectTemplate().getId()){
-                    usedaddresses.add(ad.getStartAddress()+at.getNumber());
                     items.add(new ComboBoxItem(ad.getId(),(ad.getStartAddress() + at.getNumber())+" " +
                             ad.getName()+" " + at.getName()));
                 }
@@ -129,10 +127,20 @@ public class GuiAddress {
     }
 
     private void updateAddressstartnumber(){
+        addressstartnumber.clear();
+        usedaddresses.clear();
         for (int i = 0; i < 255; i++) {
             addressstartnumber.add(i);
         }
+        for (Address ad : addresses) {
+            for (Attribute at : attributes) {
+                if(at.getIdObjectTemplate() == ad.getObjectTemplate().getId()){
+                    usedaddresses.add(ad.getStartAddress() + at.getNumber());
+                }
+            }
+        }
         for (Integer in: usedaddresses) {
+            System.out.println(in);
             addressstartnumber.remove(in);
         }
     }
@@ -180,9 +188,6 @@ public class GuiAddress {
 
         y++;
         grid.add(fieldHelper.getLable("Startadresse"),x,y);
-        //for (int i = 0; i < 255; i++) {
-        //    cbAdressStartNumber.getItems().add(i);
-        //}
         cbAdressStartNumber =new ComboBox<>();
         cbAdressStartNumber.getItems().addAll(addressstartnumber);
         grid.add(cbAdressStartNumber,x+1,y);
