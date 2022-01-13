@@ -17,7 +17,10 @@ public class GuiMaingroup {
 
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
+    ArrayList<Integer> maingroupnumber = new ArrayList<>();
+    ArrayList<Integer> usednumbers = new ArrayList<>();
     private ListView<ComboBoxItem> list = null;
+    private ComboBox cbMaingroupnumber = null;
 
     public GuiMaingroup(Controller controller){
         this.controller = controller;
@@ -33,13 +36,13 @@ public class GuiMaingroup {
         }
     }
 
-    public void updateMaingroupList(int idProject) {
-        // data update
+    public void update(int idProject) {
         this.updateMaingroups(idProject);
-        // delete all items from maingrouplist
         this.list.getItems().clear();
-        // add refreshed items to list
         this.list.getItems().addAll(this.mgroupItems());
+        updateMaingroupNumbers();
+        cbMaingroupnumber.getItems().clear();
+        cbMaingroupnumber.getItems().addAll(maingroupnumber);
     }
 
     private ObservableList<ComboBoxItem> mgroupItems(){
@@ -53,6 +56,20 @@ public class GuiMaingroup {
         return items;
     }
 
+    private void updateMaingroupNumbers(){
+        maingroupnumber.clear();
+        usednumbers.clear();
+        for (int i = 0; i < 31; i++) {
+            maingroupnumber.add(i);
+        }
+        for (MainGroup mg: mainGroups) {
+            usednumbers.add(mg.getNumber());
+        }
+        for (Integer in:usednumbers) {
+            maingroupnumber.remove(in);
+        }
+    }
+    
     public GridPane getMaingroupGrid() {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_LEFT);
@@ -79,9 +96,9 @@ public class GuiMaingroup {
 
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
-        ComboBox cb = new ComboBox(FXCollections.observableArrayList(0,1,2,3,4
-        ,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31));
-        grid.add(cb,x+1,y);
+        cbMaingroupnumber = new ComboBox();
+        cbMaingroupnumber.getItems().addAll(maingroupnumber);
+        grid.add(cbMaingroupnumber,x+1,y);
 
         y++;
         Button btnCreate = new Button();
@@ -93,13 +110,13 @@ public class GuiMaingroup {
             MainGroup mainGroup = new MainGroup();
             mainGroup.setName(tfMainGroopname.getText());
             mainGroup.setIdProject(KnxGacApplication.currentProjectID);
-            mainGroup.setNumber((Integer) cb.getSelectionModel().getSelectedItem());
+            mainGroup.setNumber((Integer) cbMaingroupnumber.getSelectionModel().getSelectedItem());
             try {
                 controller.insertObject(mainGroup);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            updateMaingroupList(KnxGacApplication.currentProjectID);
+            update(KnxGacApplication.currentProjectID);
         });
         return grid;
     }

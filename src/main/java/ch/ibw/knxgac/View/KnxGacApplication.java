@@ -238,7 +238,7 @@ public class KnxGacApplication extends Application {
                 @Override
                 public void handle(Event event) {
                     if(tabMaingroup.isSelected()) {
-                        guiMaingroup.updateMaingroupList(KnxGacApplication.currentProjectID);
+                        guiMaingroup.update(KnxGacApplication.currentProjectID);
                     }
                 }
             });

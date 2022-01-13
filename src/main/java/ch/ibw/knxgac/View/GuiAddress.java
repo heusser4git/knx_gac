@@ -140,7 +140,6 @@ public class GuiAddress {
             }
         }
         for (Integer in: usedaddresses) {
-            System.out.println(in);
             addressstartnumber.remove(in);
         }
     }
