@@ -124,13 +124,13 @@ public class GuiMaingroup {
                     new Dialog().getInformation(
                             "Nicht erlaubte Eingabe",
                             "Hauptgruppe wurde nicht angelegt",
-                            "Es sind keine Sonder Zeichen wie z.B. $/@ erlaubt").showAndWait();
+                            "Es sind keine Sonderzeichen wie z.B. $/@ erlaubt").showAndWait();
                 }
             }else {
                 new Dialog().getInformation(
                         "Leere Eingabefelder",
                         "Hauptgruppe wurde nicht angelegt",
-                        "Das Eingabefeld und die Combox darf nicht leer sein.").showAndWait();
+                        "Das Eingabefeld und die Combobox darf nicht leer sein.").showAndWait();
             }
         });
         return grid;

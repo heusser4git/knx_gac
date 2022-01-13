@@ -1,6 +1,7 @@
 package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
+import ch.ibw.knxgac.Control.StringChecker;
 import ch.ibw.knxgac.Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -206,31 +207,48 @@ public class GuiAddress {
         });
 
         btnCreate.setOnAction(actionEvent -> {
-            Address address = new Address();
-            address.setStartAddress((Integer) cbAdressStartNumber.getSelectionModel().getSelectedItem());
-            address.setName(tfAdressName.getText());
-            address.setIdMiddlegroup(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
-            address.setObjectTemplate(new ObjectTemplate(cbObjectTemplates.getSelectionModel().getSelectedItem().getId()));
-            try {
-                controller.insertObject(address);
-            }catch (SQLException e){
-                e.printStackTrace();
+            if(tfAdressName.getText().isEmpty() == false &&
+                cbMaingroup.getSelectionModel().isEmpty() == false &&
+                cbMiddelgroup.getSelectionModel().isEmpty() == false &&
+                cbObjectTemplates.getSelectionModel().isEmpty() == false &&
+                cbAdressStartNumber.getSelectionModel().isEmpty() == false){
+                if(StringChecker.checkStringLettersSpacesNumbersUmlaute(tfAdressName.getText())){
+                    Address address = new Address();
+                    address.setStartAddress((Integer) cbAdressStartNumber.getSelectionModel().getSelectedItem());
+                    address.setName(tfAdressName.getText());
+                    address.setIdMiddlegroup(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
+                    address.setObjectTemplate(new ObjectTemplate(cbObjectTemplates.getSelectionModel().getSelectedItem().getId()));
+                    try {
+                        controller.insertObject(address);
+                    }catch (SQLException e){
+                        e.printStackTrace();
+                    }
+                    updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
+                    adressesGroupList.getItems().clear();
+                    adressesGroupList.getItems().addAll(adressesItems());
+                }else {
+                    new Dialog().getInformation(
+                            "Nicht erlaubte Eingabe",
+                            "Adresse wurde nicht angelegt",
+                            "Es sind keine Sonderzeichen wie z.B. $/@ erlaubt").showAndWait();
+                }
+            }else{
+                new Dialog().getInformation(
+                        "Leere Eingabefelder",
+                        "Adresse wurde nicht angelegt",
+                        "Das Eingabefeld und die Comboboxen dürfen nicht leer sein.").showAndWait();
             }
-            updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
-            adressesGroupList.getItems().clear();
-            adressesGroupList.getItems().addAll(adressesItems());
+
         });
 
-        cbMiddelgroup.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        cbMiddelgroup.setOnAction(actionEvent -> {
+            if(!cbMiddelgroup.getSelectionModel().isEmpty()){
                 updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
                 adressesGroupList.getItems().clear();
                 adressesGroupList.getItems().addAll(adressesItems());
                 updateAddressstartnumber();
                 cbAdressStartNumber.getItems().clear();
                 cbAdressStartNumber.getItems().addAll(addressstartnumber);
-
             }
         });
         return grid;

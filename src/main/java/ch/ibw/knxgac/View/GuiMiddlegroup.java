@@ -1,6 +1,7 @@
 package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
+import ch.ibw.knxgac.Control.StringChecker;
 import ch.ibw.knxgac.Model.MainGroup;
 import ch.ibw.knxgac.Model.MiddleGroup;
 import javafx.collections.FXCollections;
@@ -130,22 +131,38 @@ public class GuiMiddlegroup {
         grid.add(btnCreate,x+1,y);
 
         btnCreate.setOnAction(actionEvent -> {
-            MiddleGroup middleGroup = new MiddleGroup();
-            middleGroup.setName(tfMiddleGroupname.getText());
-            middleGroup.setIdMaingroup(idMaingroup);
-            middleGroup.setNumber((Integer) cbMiddlegroupNumber.getSelectionModel().getSelectedItem());
-            try{
-                controller.insertObject(middleGroup);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if(tfMiddleGroupname.getText().isEmpty() == false &&
+                    cbMiddlegroupNumber.getSelectionModel().isEmpty() == false &&
+                    cbMaingroup.getSelectionModel().isEmpty() == false) {
+                if(StringChecker.checkStringLettersSpacesNumbersUmlaute(tfMiddleGroupname.getText())){
+                    MiddleGroup middleGroup = new MiddleGroup();
+                    middleGroup.setName(tfMiddleGroupname.getText());
+                    middleGroup.setIdMaingroup(idMaingroup);
+                    middleGroup.setNumber((Integer) cbMiddlegroupNumber.getSelectionModel().getSelectedItem());
+                    try{
+                        controller.insertObject(middleGroup);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    updateMaingroupList(KnxGacApplication.currentProjectID);
+                    updateMiddelgroupList(idMaingroup);
+                    middelGroupList.getItems().clear();
+                    middelGroupList.getItems().addAll(middelgroupItems());
+                    updateMiddelgroupNumber();
+                    cbMiddlegroupNumber.getItems().clear();
+                    cbMiddlegroupNumber.getItems().addAll(middelgroupnumber);
+                }else{
+                    new Dialog().getInformation(
+                            "Nicht erlaubte Eingabe",
+                            "Mittelgrppe wurde nicht angelegt",
+                            "Es sind keine Sonderzeichen wie z.B. $/@ erlaubt").showAndWait();
+                }
+            }else {
+                new Dialog().getInformation(
+                        "Leere Eingabefelder",
+                        "Mittelgruppe wurde nicht angelegt",
+                        "Das Eingabefeld und die Comboboxen dürfen nicht leer sein.").showAndWait();
             }
-            updateMaingroupList(KnxGacApplication.currentProjectID);
-            updateMiddelgroupList(idMaingroup);
-            middelGroupList.getItems().clear();
-            middelGroupList.getItems().addAll(middelgroupItems());
-            updateMiddelgroupNumber();
-            cbMiddlegroupNumber.getItems().clear();
-            cbMiddlegroupNumber.getItems().addAll(middelgroupnumber);
         });
 
         cbMaingroup.setOnAction((event) -> {
