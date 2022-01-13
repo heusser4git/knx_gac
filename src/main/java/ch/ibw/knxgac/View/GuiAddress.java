@@ -203,6 +203,7 @@ public class GuiAddress {
                 updateMiddelgroupList(idMaingroup);
                 cbMiddelgroup.getItems().clear();
                 cbMiddelgroup.getItems().addAll(middelgroupItems());
+                adressesGroupList.getItems().clear();
             }
         });
 
@@ -226,6 +227,9 @@ public class GuiAddress {
                     updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
                     adressesGroupList.getItems().clear();
                     adressesGroupList.getItems().addAll(adressesItems());
+                    updateAddressstartnumber();
+                    cbAdressStartNumber.getItems().clear();
+                    cbAdressStartNumber.getItems().addAll(addressstartnumber);
                 }else {
                     new Dialog().getInformation(
                             "Nicht erlaubte Eingabe",
