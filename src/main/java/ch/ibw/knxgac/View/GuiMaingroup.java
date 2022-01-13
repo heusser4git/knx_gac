@@ -1,6 +1,7 @@
 package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
+import ch.ibw.knxgac.Control.StringChecker;
 import ch.ibw.knxgac.Model.MainGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,7 +60,7 @@ public class GuiMaingroup {
     private void updateMaingroupNumbers(){
         maingroupnumber.clear();
         usednumbers.clear();
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 32; i++) {
             maingroupnumber.add(i);
         }
         for (MainGroup mg: mainGroups) {
@@ -107,16 +108,30 @@ public class GuiMaingroup {
 
         // Eventheandler
         btnCreate.setOnAction(actionEvent -> {
-            MainGroup mainGroup = new MainGroup();
-            mainGroup.setName(tfMainGroopname.getText());
-            mainGroup.setIdProject(KnxGacApplication.currentProjectID);
-            mainGroup.setNumber((Integer) cbMaingroupnumber.getSelectionModel().getSelectedItem());
-            try {
-                controller.insertObject(mainGroup);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if(cbMaingroupnumber.getSelectionModel().isEmpty() == false && tfMainGroopname.getText().isEmpty() == false){
+                if(StringChecker.checkStringLettersSpacesNumbersUmlaute(tfMainGroopname.getText())){
+                    MainGroup mainGroup = new MainGroup();
+                    mainGroup.setName(tfMainGroopname.getText());
+                    mainGroup.setIdProject(KnxGacApplication.currentProjectID);
+                    mainGroup.setNumber((Integer) cbMaingroupnumber.getSelectionModel().getSelectedItem());
+                    try {
+                        controller.insertObject(mainGroup);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    update(KnxGacApplication.currentProjectID);
+                }else {
+                    new Dialog().getInformation(
+                            "Nicht erlaubte Eingabe",
+                            "Hauptgruppe wurde nicht angelegt",
+                            "Es sind keine Sonder Zeichen wie z.B. $/@ erlaubt").showAndWait();
+                }
+            }else {
+                new Dialog().getInformation(
+                        "Leere Eingabefelder",
+                        "Hauptgruppe wurde nicht angelegt",
+                        "Das Eingabefeld und die Combox darf nicht leer sein.").showAndWait();
             }
-            update(KnxGacApplication.currentProjectID);
         });
         return grid;
     }

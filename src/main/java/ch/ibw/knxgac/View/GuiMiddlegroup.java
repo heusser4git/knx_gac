@@ -19,8 +19,11 @@ public class GuiMiddlegroup {
     private Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
+    ArrayList<Integer> middelgroupnumber = new ArrayList<>();
+    ArrayList<Integer> usednumbers = new ArrayList<>();
     private ComboBox<ComboBoxItem> cbMaingroup = null;
-    ListView<ComboBoxItem> middelGroupList = new ListView<>();
+    private ListView<ComboBoxItem> middelGroupList = new ListView<>();
+    private ComboBox cbMiddlegroupNumber = null;
     int idMaingroup;
 
     public GuiMiddlegroup(Controller controller){
@@ -72,6 +75,20 @@ public class GuiMiddlegroup {
         }
         return items;
     }
+    
+    private void updateMiddelgroupNumber(){
+        middelgroupnumber.clear();
+        usednumbers.clear();
+        for (int i = 0; i < 8; i++) {
+            middelgroupnumber.add(i);
+        }
+        for (MiddleGroup mg: middleGroups) {
+            usednumbers.add(mg.getNumber());
+        }
+        for (Integer in :usednumbers) {
+            middelgroupnumber.remove(in);
+        }
+    }
 
     public GridPane getMiddlegroupGrid() {
         GridPane grid = new GridPane();
@@ -104,8 +121,7 @@ public class GuiMiddlegroup {
 
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
-        ComboBox cbMiddlegroupNumber = new ComboBox(FXCollections.observableArrayList(0,1,2,3,4
-                ,5,6,7));
+        cbMiddlegroupNumber = new ComboBox();
         grid.add(cbMiddlegroupNumber,x+1,y);
 
         y++;
@@ -127,20 +143,21 @@ public class GuiMiddlegroup {
             updateMiddelgroupList(idMaingroup);
             middelGroupList.getItems().clear();
             middelGroupList.getItems().addAll(middelgroupItems());
+            updateMiddelgroupNumber();
+            cbMiddlegroupNumber.getItems().clear();
+            cbMiddlegroupNumber.getItems().addAll(middelgroupnumber);
         });
 
         cbMaingroup.setOnAction((event) -> {
-//            try {
             if(!this.cbMaingroup.getSelectionModel().isEmpty()) {
                 idMaingroup = this.cbMaingroup.getSelectionModel().getSelectedItem().getId();
                 updateMiddelgroupList(idMaingroup);
                 middelGroupList.getItems().clear();
                 middelGroupList.getItems().addAll(middelgroupItems());
+                updateMiddelgroupNumber();
+                cbMiddlegroupNumber.getItems().clear();
+                cbMiddlegroupNumber.getItems().addAll(middelgroupnumber);
             }
-//            }catch (NullPointerException exception){
-//                cbMaingroup.getSelectionModel().clearSelection();
-//            }
-
         });
         return grid;
     }
