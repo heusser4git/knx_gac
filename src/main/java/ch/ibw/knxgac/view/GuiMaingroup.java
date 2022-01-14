@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class GuiMaingroup {
 
-    private Controller controller;
+    private final Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<Integer> maingroupnumber = new ArrayList<>();
     ArrayList<Integer> usednumbers = new ArrayList<>();

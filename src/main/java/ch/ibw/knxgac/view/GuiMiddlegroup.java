@@ -17,13 +17,13 @@ import java.util.ArrayList;
 
 public class GuiMiddlegroup {
 
-    private Controller controller;
+    private final Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
     ArrayList<Integer> middelgroupnumber = new ArrayList<>();
     ArrayList<Integer> usednumbers = new ArrayList<>();
     private ComboBox<ComboBoxItem> cbMaingroup = null;
-    private ListView<ComboBoxItem> middelGroupList = new ListView<>();
+    private final ListView<ComboBoxItem> middelGroupList = new ListView<>();
     private ComboBox cbMiddlegroupNumber = null;
     int idMaingroup;
 

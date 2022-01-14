@@ -17,7 +17,7 @@ import java.util.Collections;
 
 public class GuiAddress {
 
-    private Controller controller;
+    private final Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
     ArrayList<ObjectTemplate> objectTemplates = new ArrayList<>();
@@ -145,7 +145,7 @@ public class GuiAddress {
                 }
             }
         }
-        // the you can't use the Address 0/0/0 because it's a KNX System Address
+        // you can't use the Address 0/0/0 because it's a KNX System Address
         if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 &&
                 cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
          addressstartnumber.remove(0);
