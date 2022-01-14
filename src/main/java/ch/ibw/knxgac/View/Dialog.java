@@ -61,7 +61,7 @@ public class Dialog {
         expContent.add(label, 0, 0);
         expContent.add(textArea, 0, 1);
 
-// Set expandable Exception into the dialog pane.
+        // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(expContent);
 
         return alert;

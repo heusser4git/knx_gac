@@ -54,7 +54,7 @@ public class GuiAddress {
             filterMaingroup.setIdProject(idProject);
             this.mainGroups = this.controller.selectObject(filterMaingroup);
         }catch (SQLException e){
-            e.printStackTrace();
+            new Dialog().getException("Datenbankfehler", "Hauptgruppen abrufen fehlgeschlagen", "Die Hauptgruppen können nicht abgerufen werden.", e).showAndWait();
         }
     }
 

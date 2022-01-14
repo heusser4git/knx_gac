@@ -349,6 +349,7 @@ public class KnxGacApplication extends Application {
                             guiProject.btnDelete.setDisable(true);
                             guiProject.btnExport.setDisable(true);
                         } catch (SQLException e) {
+                            // Todo Urs: Exception
                             e.printStackTrace();
                         }
                     }
