@@ -1,6 +1,10 @@
 package ch.ibw.knxgac.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class ObjectTemplate extends Data {
     private ArrayList<Attribute> attributes = new ArrayList<>();
@@ -55,4 +59,25 @@ public class ObjectTemplate extends Data {
         result.append("}");
         return result.toString();
     }
+
+    public int[] availableStartadresses(int[] usedStartadresses, int[]maxStartadresses) {
+        // berechne den unterschied von maxStartadresse und usedStartadresse
+        int[] uniqueAdresses = IntStream.concat(IntStream.of(maxStartadresses), IntStream.of(usedStartadresses))
+                .filter(x -> !IntStream.of(maxStartadresses).anyMatch(y -> y == x) || !IntStream.of(usedStartadresses).anyMatch(z -> z == x))
+                .toArray();
+
+        Integer anzAdr = this.getAttributes().size();
+        for (int i = 0; i < anzAdr; i++) {
+            // pruefe ob die aktelle und x-weitere verfuegbar sind
+
+        }
+        return uniqueAdresses;
+    }
+//    public  int[] intersectionSimple(int[] a, int[] b){
+//        IntStream.of(a).filter(Arrays.asList(IntStream.of(b)):con)
+//        return IntStream.of(a).filter(Arrays.asList(b)::contains);
+//    }
+
+
+
 }
