@@ -23,9 +23,9 @@ public class CsvWriter {
     public boolean writeProjectToCsv(Project project) throws IOException {
         // Templates for repeating strings
         String templatemag1 = " ; ;";
-        String templatemag2 = "\"\";\"\";\"\";\"\";\"AUTO\"";
-        String templatemig = "\"\";\"\";\"\";\"AUTO\"";
-        String templateadr = "\"\";\"\";\"AUTO\"";
+        String templatemag2 = "\"\";\"\";\"\";\"\";\"\";\"\";\"AUTO\"";
+        String templatemig = "\"\";\"\";\"\";\"\";\"\";\"AUTO\"";
+        String templateadr = "\"\";\"\";\"\";\"\";\"AUTO\"";
 
         // create a string-array with the csv-export lines
         ArrayList<String> export = new ArrayList<>();
