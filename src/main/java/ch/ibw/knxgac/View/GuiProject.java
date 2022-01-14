@@ -12,7 +12,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.FontWeight;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -20,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class GuiProject {
-    private Controller controller;
+    private final Controller controller;
     protected ArrayList<Project> projects = new ArrayList<>();
     protected ComboBox<ComboBoxItem> selectProject = new ComboBox<>();
     protected Button btnDelete = new Button();
@@ -124,7 +123,7 @@ public class GuiProject {
         btnExport.setText("CSV Export");
         btnExport.setPrefWidth(80);
         btnExport.setDisable(true);
-        // hide because its not done yet
+        // hide because it's not done yet
 //        btnExport.setVisible(false);
         grid.add(btnExport,x+4,y);
 
@@ -167,6 +166,7 @@ public class GuiProject {
         // delete handler is situated in KnxGacApplication.start()
 
         // CSV Export Project
+
         btnExport.setOnAction(actionEvent -> {
             Project filterProject = new Project(KnxGacApplication.currentProjectID);
             ArrayList<Project> actualProjects = null;
