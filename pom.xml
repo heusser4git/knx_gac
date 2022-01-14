@@ -92,7 +92,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ch.ibw.knxgac/ch.ibw.knxgac.View.KnxGacApplication</mainClass>
+                            <mainClass>ch.ibw.knxgac/ch.ibw.knxgac.view.KnxGacApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>

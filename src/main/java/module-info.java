@@ -8,5 +8,5 @@ module ch.ibw.knxgac {
     requires java.sql;
 
 
-    exports ch.ibw.knxgac.View;
+    exports ch.ibw.knxgac.view;
 }
