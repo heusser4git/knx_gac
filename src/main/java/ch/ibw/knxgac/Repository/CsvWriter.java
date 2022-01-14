@@ -28,27 +28,24 @@ public class CsvWriter {
         String templateadr = "\"\";\"\";\"\";\"\";\"AUTO\"";
 
         // create a string-array with the csv-export lines
-        ArrayList<String> export = new ArrayList<>();
+        StringBuilder csvString = new StringBuilder();
         for(MainGroup mainGroup : project.getMaingroups()) {
-             export.add("\"" + mainGroup.getName() + "\";" + templatemag1 + "\"" + mainGroup.getNumber() + "\";" + templatemag2);
+             csvString.append("\"" + mainGroup.getName() + "\";" + templatemag1 + "\"" + mainGroup.getNumber() + "\";" + templatemag2);
+             csvString.append("\n");
             for(MiddleGroup middleGroup : mainGroup.getMiddlegroups()) {
-                export.add(" ;\"" + middleGroup.getName() + "\";" + " ;" + "\"" + mainGroup.getNumber() + "\";" + "\"" + middleGroup.getNumber() + "\";" + templatemig);
+                csvString.append(" ;\"" + middleGroup.getName() + "\";" + " ;" + "\"" + mainGroup.getNumber() + "\";" + "\"" + middleGroup.getNumber() + "\";" + templatemig);
+                csvString.append("\n");
                 Collections.sort(middleGroup.getAddresses());
                 for (Address address: middleGroup.getAddresses()) {
                     Collections.sort(address.getObjectTemplate().getAttributes());
                     for (Attribute attribute : address.getObjectTemplate().getAttributes()) {
-                        export.add(" ; ;\"" + address.getName() + " " + attribute.getName() + "\";\"" + mainGroup.getNumber() + "\";\"" + middleGroup.getNumber() + "\";\"" + (address.getStartAddress() + attribute.getNumber()) + "\";" + templateadr);
+                        csvString.append(" ; ;\"" + address.getName() + " " + attribute.getName() + "\";\"" + mainGroup.getNumber() + "\";\"" + middleGroup.getNumber() + "\";\"" + (address.getStartAddress() + attribute.getNumber()) + "\";" + templateadr);
+                        csvString.append("\n");
                     }
                 }
             }
         }
-
-        // generate the csv-string to write to file
-        String csv = "";
-        for (String s : export) {
-            csv = csv + s + "\n";
-        }
-        return this.writeToFile(csv);
+        return this.writeToFile(csvString.toString());
     }
 
     public boolean writeToFile(String data) throws IOException {
