@@ -60,7 +60,7 @@ public class FieldHelper {
      * Get a HBox with an DirectoryChooser in it
      * @param stage
      * @param buttonText
-     * @param targetTextField   It is a targed Textfield (may be hidden) required to save the choosed value
+     * @param targetTextField   It is a targed Textfield (maybe hidden) required to save the chosen value
      * @return
      */
     public HBox getDirectoryChooser(Stage stage, String buttonText, TextField targetTextField) {

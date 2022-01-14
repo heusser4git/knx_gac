@@ -17,7 +17,7 @@ import java.util.Collections;
 
 public class GuiAddress {
 
-    private Controller controller;
+    private final Controller controller;
     ArrayList<MainGroup> mainGroups = new ArrayList<>();
     ArrayList<MiddleGroup> middleGroups = new ArrayList<>();
     ArrayList<ObjectTemplate> objectTemplates = new ArrayList<>();
@@ -31,6 +31,7 @@ public class GuiAddress {
     private ListView<ComboBoxItem> adressesGroupList = null;
     private ComboBox cbAdressStartNumber= null;
     int idMaingroup;
+    int objectsize;
 
     public GuiAddress(Controller controller){
         this.controller = controller;
@@ -69,7 +70,9 @@ public class GuiAddress {
             filterMiddelgroup.setIdMaingroup(idMaingroup);
             middleGroups = controller.selectObject(filterMiddelgroup);
         }catch (SQLException e){
-            e.printStackTrace();
+            new Dialog().getException("Datenbankfehler",
+                    "Mittelgruppen laden fehlgeschlagen",
+                    "Die gewünschten Mittelgruppen konnten nicht geladen werden.",e).showAndWait();
         }
     }
 
@@ -85,7 +88,9 @@ public class GuiAddress {
         try {
             objectTemplates = controller.selectObject(new ObjectTemplate());
         }catch (SQLException e){
-            e.printStackTrace();
+            new Dialog().getException("Datenbankfehler",
+                    "Objekte laden fehlgeschlagen",
+                    "Die gewünschten Objekte konnten nicht geladen werden.",e).showAndWait();
         }
     }
     
@@ -125,10 +130,13 @@ public class GuiAddress {
     }
 
     private void updateAddressstartnumber(){
+        ObjectTemplate objectTemplate = new ObjectTemplate(cbObjectTemplates.getSelectionModel().getSelectedItem().getId());
+        objectsize = objectTemplate.getAttributes().size();
         addressstartnumber.clear();
         usedaddresses.clear();
         for (int i = 0; i < 255; i++) {
             addressstartnumber.add(i);
+
         }
         for (Address ad : addresses) {
             for (Attribute at : attributes) {
@@ -137,13 +145,20 @@ public class GuiAddress {
                 }
             }
         }
-        // the you can't use the Address 0/0/0 because it's a KNX System Adress
+        // you can't use the Address 0/0/0 because it's a KNX System Address
         if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 &&
                 cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
          addressstartnumber.remove(0);
         }
         for (Integer in: usedaddresses) {
             addressstartnumber.remove(in);
+        }
+        for (int i = 0; i < objectsize; i++) {
+            for(Integer in: addressstartnumber){
+                if(in == i){
+
+                }
+            }
         }
     }
 
@@ -224,7 +239,9 @@ public class GuiAddress {
                     try {
                         controller.insertObject(address);
                     }catch (SQLException e){
-                        e.printStackTrace();
+                        new Dialog().getException("Datenbankfehler",
+                                "Addresse erstellen fehlgeschlagen",
+                                "Die gewünschten Addressen konnten nicht erstellt werden.",e).showAndWait();
                     }
                     updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
                     adressesGroupList.getItems().clear();
