@@ -1,6 +1,8 @@
 package ch.ibw.knxgac.View;
 
 import ch.ibw.knxgac.Control.Controller;
+import ch.ibw.knxgac.Control.StringChecker;
+import ch.ibw.knxgac.Control.StringHelper;
 import ch.ibw.knxgac.Model.Project;
 import ch.ibw.knxgac.Repository.CsvWriter;
 import javafx.collections.FXCollections;
@@ -90,7 +92,8 @@ public class GuiProject {
         grid.add(fieldHelper.getLable("Projekt wählen", "Tahoma", 14, FontWeight.BOLD), x+4,y,2,1);
 
         y++;
-        grid.add(fieldHelper.getLable("Projektname"), x,y);
+        Label lblProjektname = fieldHelper.getLable("Projektname");
+        grid.add(lblProjektname, x,y);
         TextField tfProjektname = fieldHelper.getTextField("");
         grid.add(tfProjektname,x+1,y);
 
@@ -101,7 +104,8 @@ public class GuiProject {
         grid.add(selectProject, x+6,y);
 
         y++;
-        grid.add(fieldHelper.getLable("Projektnummer"), x,y);
+        Label lblProjektnummer = fieldHelper.getLable("Projektnummer");
+        grid.add(lblProjektnummer, x,y);
         TextField tfProjektnummer = fieldHelper.getTextField("");
         grid.add(tfProjektnummer,x+1,y); // Todo adjust size
 
@@ -130,20 +134,36 @@ public class GuiProject {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Project project = new Project();
-                project.setName(tfProjektname.getText());
-                project.setNumber(Integer.parseInt(tfProjektnummer.getText()));
-                try {
-                    project.setId(controller.insertObject(project));
-                } catch (SQLException e) {
-                    new Dialog().getException("Datenbankfehler",
-                            "Projekt Erstellung fehlgeschlagen",
-                            "Das Projekt konnte nicht erstellt werden.", e).showAndWait();
+                ArrayList<String> errorsFields = new ArrayList<>();
+                if(tfProjektname.getText().length()>0 && StringChecker.checkStringFirstDigitIsLetter(tfProjektname.getText())) {
+                    project.setName(tfProjektname.getText());
+                } else {
+                    errorsFields.add(lblProjektname.getText());
                 }
-                getProjects();
-                // empty the ComboBox
-                selectProject.getItems().clear();
-                // add the project-items new to the ComboBox
-                selectProject.getItems().addAll(projectItems());
+                if(tfProjektnummer.getText().length()>0 && StringChecker.checkStringOnlyNumbers(tfProjektnummer.getText())) {
+                    project.setNumber(Integer.parseInt(tfProjektnummer.getText()));
+                } else {
+                    errorsFields.add(lblProjektnummer.getText());
+                }
+                if(errorsFields.size()>0) {
+                    new Dialog().getWarning("Falsche Eingabe",
+                            "Bitte Eingabe prüfen",
+                            "Folgende Felder müssen korrekt ausgefüllt werden:\n" +
+                                    StringHelper.implode(errorsFields, ", ")).showAndWait();
+                } else {
+                    try {
+                        project.setId(controller.insertObject(project));
+                    } catch (SQLException e) {
+                        new Dialog().getException("Datenbankfehler",
+                                "Projekt Erstellung fehlgeschlagen",
+                                "Das Projekt konnte nicht erstellt werden.", e).showAndWait();
+                    }
+                    getProjects();
+                    // empty the ComboBox
+                    selectProject.getItems().clear();
+                    // add the project-items new to the ComboBox
+                    selectProject.getItems().addAll(projectItems());
+                }
             }
         });
 
@@ -172,8 +192,14 @@ public class GuiProject {
                             new Dialog().getInformation("File erstellt",
                                     "Export erfolgreich",
                                     "Das Projekt " + actualProjects.get(0).getName() +
-                                            "wurde erfolgreich in die Datei \n" +
+                                            " wurde erfolgreich in die Datei \n" +
                                             path + "\n" + file + "\ngeschrieben.").showAndWait();
+                        } else {
+                            new Dialog().getWarning("File nicht erstellt",
+                                    "Export nicht erfolgreich",
+                                    "Das Projekt " + actualProjects.get(0).getName() +
+                                            " konnte nicht  in die Datei \n" +
+                                            path + "\n" + file + "\ngeschrieben werden.").showAndWait();
                         }
                     } catch (IOException e) {
                         new Dialog().getException("Ein-/Ausgabefehler",

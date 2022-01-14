@@ -32,6 +32,13 @@ public class Dialog {
         alert.setHeaderText(headerText);
         return alert;
     }
+    public Alert getWarning(String title, String headerText, String text) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.setHeaderText(headerText);
+        return alert;
+    }
     public Alert getException(String title, String headerText, String text, Exception exception) {
         // TODO Quelle: https://code.makery.ch/blog/javafx-dialogs-official/
         Alert alert = new Alert(Alert.AlertType.ERROR);

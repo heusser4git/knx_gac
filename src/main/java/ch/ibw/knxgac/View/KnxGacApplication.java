@@ -348,7 +348,6 @@ public class KnxGacApplication extends Application {
                             // disable buttons
                             guiProject.btnDelete.setDisable(true);
                             guiProject.btnExport.setDisable(true);
-                            throw new SQLException("test");
                         } catch (SQLException e) {
                             new Dialog().getException("Datenbankfehler",
                                     "Löschen fehlgeschlagen",

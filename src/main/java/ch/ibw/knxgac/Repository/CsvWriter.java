@@ -1,6 +1,7 @@
 package ch.ibw.knxgac.Repository;
 
 
+import ch.ibw.knxgac.Control.StringHelper;
 import ch.ibw.knxgac.Model.*;
 
 import java.io.BufferedWriter;
@@ -28,24 +29,21 @@ public class CsvWriter {
         String templateadr = "\"\";\"\";\"\";\"\";\"AUTO\"";
 
         // create a string-array with the csv-export lines
-        StringBuilder csvString = new StringBuilder();
+        ArrayList<String> csvString = new ArrayList<>();
         for(MainGroup mainGroup : project.getMaingroups()) {
-             csvString.append("\"" + mainGroup.getName() + "\";" + templatemag1 + "\"" + mainGroup.getNumber() + "\";" + templatemag2);
-             csvString.append("\n");
+             csvString.add("\"" + mainGroup.getName() + "\";" + templatemag1 + "\"" + mainGroup.getNumber() + "\";" + templatemag2);
             for(MiddleGroup middleGroup : mainGroup.getMiddlegroups()) {
-                csvString.append(" ;\"" + middleGroup.getName() + "\";" + " ;" + "\"" + mainGroup.getNumber() + "\";" + "\"" + middleGroup.getNumber() + "\";" + templatemig);
-                csvString.append("\n");
+                csvString.add(" ;\"" + middleGroup.getName() + "\";" + " ;" + "\"" + mainGroup.getNumber() + "\";" + "\"" + middleGroup.getNumber() + "\";" + templatemig);
                 Collections.sort(middleGroup.getAddresses());
                 for (Address address: middleGroup.getAddresses()) {
                     Collections.sort(address.getObjectTemplate().getAttributes());
                     for (Attribute attribute : address.getObjectTemplate().getAttributes()) {
-                        csvString.append(" ; ;\"" + address.getName() + " " + attribute.getName() + "\";\"" + mainGroup.getNumber() + "\";\"" + middleGroup.getNumber() + "\";\"" + (address.getStartAddress() + attribute.getNumber()) + "\";" + templateadr);
-                        csvString.append("\n");
+                        csvString.add(" ; ;\"" + address.getName() + " " + attribute.getName() + "\";\"" + mainGroup.getNumber() + "\";\"" + middleGroup.getNumber() + "\";\"" + (address.getStartAddress() + attribute.getNumber()) + "\";" + templateadr);
                     }
                 }
             }
         }
-        return this.writeToFile(csvString.toString());
+        return this.writeToFile(StringHelper.implode(csvString, "\n"));
     }
 
     public boolean writeToFile(String data) throws IOException {
