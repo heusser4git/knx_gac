@@ -59,6 +59,7 @@ public class ObjectTemplate extends Data {
         return result.toString();
     }
 
+
     public ArrayList<Integer> availableStartadresses(ArrayList<Integer> maxStartadresses, ArrayList<Integer> usedStartadresses) {
         // berechne den unterschied von maxStartadresse und usedStartadresse
         int[] uniqueAdresses = diff(this.arrayListToArray(maxStartadresses), this.arrayListToArray(usedStartadresses));
