@@ -33,7 +33,9 @@ public class GuiMaingroup {
             filterMaingroup.setIdProject(idProject);
             this.mainGroups = this.controller.selectObject(filterMaingroup);
         } catch (SQLException e) {
-            e.printStackTrace();
+            new Dialog().getException("Datenbankfehler",
+                    "Hauptgruppen laden fehlgeschlagen",
+                    "Die gewünschten Haupptgruppen konnten nicht geladen werden.",e).showAndWait();
         }
     }
 
@@ -117,7 +119,9 @@ public class GuiMaingroup {
                     try {
                         controller.insertObject(mainGroup);
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        new Dialog().getException("Datenbankfehler",
+                                "Hauptgruppe erstellen fehlgeschlagen",
+                                "Die Hauptgruppe konnte nicht erstellt werden.",e).showAndWait();
                     }
                     update(KnxGacApplication.currentProjectID);
                 }else {

@@ -37,7 +37,9 @@ public class GuiMiddlegroup {
             filterMaingroup.setIdProject(idProject);
             this.mainGroups = this.controller.selectObject(filterMaingroup);
         } catch (SQLException e) {
-            e.printStackTrace();
+            new Dialog().getException("Datenbankfehler",
+                    "Hauptgruppen laden fehlgeschlagen",
+                    "Die gewünschten Haupptgruppen konnten nicht geladen werden.",e).showAndWait();
         }
     }
 
@@ -47,7 +49,9 @@ public class GuiMiddlegroup {
             filterMiddelgroup.setIdMaingroup(idMaingroup);
             this.middleGroups = this.controller.selectObject(filterMiddelgroup);
         }catch (SQLException e){
-            e.printStackTrace();
+            new Dialog().getException("Datenbankfehler",
+                    "Mittelgruppen laden fehlgeschlagen",
+                    "Die gewünschten Mittelgruppen konnten nicht geladen werden.",e).showAndWait();
         }
     }
 
@@ -142,7 +146,9 @@ public class GuiMiddlegroup {
                     try{
                         controller.insertObject(middleGroup);
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        new Dialog().getException("Datenbankfehler",
+                                "Mittelgruppe erstellen fehlgeschlagen",
+                                "Die gewünschte Mittelgruppe konnte nicht erstellt werden.",e).showAndWait();
                     }
                     updateMaingroupList(KnxGacApplication.currentProjectID);
                     updateMiddelgroupList(idMaingroup);
