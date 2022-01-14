@@ -1,6 +1,9 @@
 package ch.ibw.knxgac.Model;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,5 +51,29 @@ class ObjectTemplateTest {
         String s = o.getUpdateClause();
         // Assert
         assertEquals("name = 'ObjectTemplate 1'", s);
+    }
+
+    @Test
+    void availableStartadresses() {
+        // Arrange
+        ObjectTemplate objectTemplate = new ObjectTemplate(1);
+        objectTemplate.addAttribute(new Attribute(1));
+        objectTemplate.addAttribute(new Attribute(2));
+        ArrayList<Integer> maxStartadresses = new ArrayList<>();
+        for (int i = 0; i <7; i++) {
+            maxStartadresses.add(i);
+        }
+        ArrayList<Integer> usedStartadresses = new ArrayList<>();
+        usedStartadresses.add(2);
+
+        // Act
+        ArrayList<Integer> result = objectTemplate.availableStartadresses(maxStartadresses, usedStartadresses);
+
+        // Assert
+        Assertions.assertEquals(4, result.size());
+        Assertions.assertEquals(0, result.get(0));
+        Assertions.assertEquals(3, result.get(1));
+        Assertions.assertEquals(4, result.get(2));
+        Assertions.assertEquals(5, result.get(3));
     }
 }

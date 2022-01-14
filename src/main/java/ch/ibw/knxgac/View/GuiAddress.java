@@ -5,8 +5,6 @@ import ch.ibw.knxgac.Control.StringChecker;
 import ch.ibw.knxgac.Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -32,7 +30,7 @@ public class GuiAddress {
     private ComboBox<ComboBoxItem> cbMiddelgroup = null;
     private ComboBox<ComboBoxItem> cbObjectTemplates = null;
     private ListView<ComboBoxItem> adressesGroupList = null;
-    private ComboBox cbAdressStartNumber= null;
+    private ComboBox<Integer> cbAdressStartNumber= null;
     int idMaingroup;
     int objectsize;
 
@@ -97,7 +95,10 @@ public class GuiAddress {
     private ObservableList<ComboBoxItem> objectTemplateItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (ObjectTemplate ot : objectTemplates) {
-            items.add(new ComboBoxItem(ot.getId(), ot.getName()));
+            // TODO habe hier noch die anzahl attribute an den templatenamen gehängt... kann auch wieder entfernt werden (urs)
+            items.add(new ComboBoxItem(ot.getId(), ot.getName() + " (" + ot.getAttributes().size() + ")"));
+            // ohne anzahl attribute:
+            // items.add(new ComboBoxItem(ot.getId(), ot.getName()));
         }
         return items;
     }
@@ -128,48 +129,83 @@ public class GuiAddress {
         }
         return items;
     }
+    // Todo habe deine implementation deaktivert. falls ok, kann diese gelöscht werden
+//    private void updateAddressstartnumber(){
+//       objectsize = 0;
+//       for (Attribute at: attributes){
+//           if(at.getIdObjectTemplate() == cbObjectTemplates.getSelectionModel().getSelectedItem().getId())
+//            objectsize++;
+//        }
+//        addressstartnumber.clear();
+//        usedaddresses.clear();
+//        for (int i = 0; i < 255; i++) {
+//            addressstartnumber.add(i);
+//
+//        }
+//        for (Address ad : addresses) {
+//            for (Attribute at : attributes) {
+//                if(at.getIdObjectTemplate() == ad.getObjectTemplate().getId()){
+//                    usedaddresses.add(ad.getStartAddress() + at.getNumber());
+//                }
+//            }
+//        }
+//        // you can't use the Address 0/0/0 because it's a KNX System Address
+//        if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 &&
+//                cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
+//         addressstartnumber.remove(0);
+//        }
+//        for (Integer in: usedaddresses) {
+//            addressstartnumber.remove(in);
+//        }
+//        for(Integer in: addressstartnumber){
+//            System.out.println(in);
+//            for (int i = 0; i < objectsize; i++) {
+//                if(addressstartnumber.contains((i+in))){
+////                    System.out.println("true"+ (i+in));
+//                }else {
+//                    usedaddresses.add(in);
+////                    System.out.println("add"+in);
+//                }
+//            }
+//        }
+//        for (Integer in: usedaddresses) {
+//            addressstartnumber.remove(in);
+//        }
+//    }
 
-    private void updateAddressstartnumber(){
-       objectsize = 0;
-       for (Attribute at: attributes){
-           if(at.getIdObjectTemplate() == cbObjectTemplates.getSelectionModel().getSelectedItem().getId())
-            objectsize++;
+    /**
+     * generates the available startaddresses
+     * considering the chosen template and
+     * the allready used addresses on the chosen middlegroup
+     *
+     * => updates the addressstartnumber-combobox
+     */
+    private void setAdressstartnumber() {
+        // generate all adresses
+        ArrayList<Integer> maxStartadresses = new ArrayList<>();
+        for (int i = 0; i <255; i++) {
+            maxStartadresses.add(i);
         }
+        int idTemplate = cbObjectTemplates.getSelectionModel().getSelectedItem().getId();
+        int idMiddlegroup = cbMiddelgroup.getSelectionModel().getSelectedItem().getId();
+        ArrayList<Integer> startadresses = new ArrayList<>();
+        try {
+            // get the used adresses in dies middlegroup
+            usedaddresses = controller.selectObject(new MiddleGroup(idMiddlegroup)).get(0).usedAddresses();
+            // get the chosen template
+            ObjectTemplate objectTemplate = controller.selectObject(new ObjectTemplate(idTemplate)).get(0);
+            // generate the available startadresses
+            startadresses = objectTemplate.availableStartadresses(maxStartadresses, usedaddresses);
+        } catch (SQLException exception) {
+            new Dialog().getException(
+                    "Datenbankfehler",
+                    "Datenabfrage fehlgeschlagen",
+                    "Daten für die Startadresse konnten nicht geladen werden!",
+                    exception).showAndWait();
+        }
+        // refresh combobox
         addressstartnumber.clear();
-        usedaddresses.clear();
-        for (int i = 0; i < 255; i++) {
-            addressstartnumber.add(i);
-
-        }
-        for (Address ad : addresses) {
-            for (Attribute at : attributes) {
-                if(at.getIdObjectTemplate() == ad.getObjectTemplate().getId()){
-                    usedaddresses.add(ad.getStartAddress() + at.getNumber());
-                }
-            }
-        }
-        // you can't use the Address 0/0/0 because it's a KNX System Address
-        if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 &&
-                cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
-         addressstartnumber.remove(0);
-        }
-        for (Integer in: usedaddresses) {
-            addressstartnumber.remove(in);
-        }
-        for(Integer in: addressstartnumber){
-            System.out.println(in);
-            for (int i = 0; i < objectsize; i++) {
-                if(addressstartnumber.contains((i+in))){
-                    System.out.println("true"+ (i+in));
-                }else {
-                    usedaddresses.add(in);
-                    System.out.println("add"+in);
-                }
-            }
-        }
-        for (Integer in: usedaddresses) {
-            addressstartnumber.remove(in);
-        }
+        addressstartnumber.addAll(startadresses);
     }
 
     public GridPane getAddressGrid() {
@@ -215,7 +251,7 @@ public class GuiAddress {
 
         y++;
         grid.add(fieldHelper.getLable("Startadresse"),x,y);
-        cbAdressStartNumber =new ComboBox<>();
+        cbAdressStartNumber = new ComboBox<>();
         cbAdressStartNumber.getItems().addAll(addressstartnumber);
         grid.add(cbAdressStartNumber,x+1,y);
 
@@ -235,14 +271,14 @@ public class GuiAddress {
         });
 
         btnCreate.setOnAction(actionEvent -> {
-            if(tfAdressName.getText().isEmpty() == false &&
-                cbMaingroup.getSelectionModel().isEmpty() == false &&
-                cbMiddelgroup.getSelectionModel().isEmpty() == false &&
-                cbObjectTemplates.getSelectionModel().isEmpty() == false &&
-                cbAdressStartNumber.getSelectionModel().isEmpty() == false){
+            if(!tfAdressName.getText().isEmpty() &&
+                !cbMaingroup.getSelectionModel().isEmpty() &&
+                !cbMiddelgroup.getSelectionModel().isEmpty() &&
+                !cbObjectTemplates.getSelectionModel().isEmpty() &&
+                !cbAdressStartNumber.getSelectionModel().isEmpty()){
                 if(StringChecker.checkStringLettersSpacesNumbersUmlaute(tfAdressName.getText())){
                     Address address = new Address();
-                    address.setStartAddress((Integer) cbAdressStartNumber.getSelectionModel().getSelectedItem());
+                    address.setStartAddress(cbAdressStartNumber.getSelectionModel().getSelectedItem());
                     address.setName(tfAdressName.getText());
                     address.setIdMiddlegroup(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
                     address.setObjectTemplate(new ObjectTemplate(cbObjectTemplates.getSelectionModel().getSelectedItem().getId()));
@@ -256,7 +292,9 @@ public class GuiAddress {
                     updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
                     adressesGroupList.getItems().clear();
                     adressesGroupList.getItems().addAll(adressesItems());
-                    updateAddressstartnumber();
+                    //updateAddressstartnumber();
+                    // Todo Urs: meine implementation
+                    setAdressstartnumber();
                     cbAdressStartNumber.getItems().clear();
                     cbAdressStartNumber.getItems().addAll(addressstartnumber);
                 }else {
@@ -287,7 +325,9 @@ public class GuiAddress {
 
         cbObjectTemplates.setOnAction(actionEvent -> {
             if(!cbObjectTemplates.getSelectionModel().isEmpty()){
-                updateAddressstartnumber();
+                // Todo Urs: meine implementation
+//                updateAddressstartnumber();
+                setAdressstartnumber();
                 cbAdressStartNumber.getItems().clear();
                 cbAdressStartNumber.getItems().addAll(addressstartnumber);
             }

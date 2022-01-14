@@ -59,15 +59,20 @@ public class ObjectTemplate extends Data {
         return result.toString();
     }
 
-
+    /**
+     * determined the available startadresses
+     * out of a set of maxStartadresses less usedStartadresses
+     */
     public ArrayList<Integer> availableStartadresses(ArrayList<Integer> maxStartadresses, ArrayList<Integer> usedStartadresses) {
+        // Todo Urs: kommentare in englisch
+        // Todo Urs: refactoring -> evtl. auf arrays verzichten und direkt mit arrayLists arbeiten
         // berechne den unterschied von maxStartadresse und usedStartadresse
         int[] uniqueAdresses = diff(this.arrayListToArray(maxStartadresses), this.arrayListToArray(usedStartadresses));
 
         ArrayList<Integer> digitsToCheck = new ArrayList<>();
         ArrayList<Integer> toDelete = new ArrayList<>();
         for(int checkAdr : uniqueAdresses) {
-            Integer anzAdr = this.getAttributes().size();
+            int anzAdr = this.getAttributes().size();
             int[] toCheck = new int[anzAdr];
             for (int i = 0; i < anzAdr; i++) {
                 // pruefe ob die aktelle und x-weitere verfuegbar sind
@@ -109,7 +114,7 @@ public class ObjectTemplate extends Data {
     private int[] diff(int[] a, int[] b){
         // Todo https://stackoverflow.com/questions/17863319/java-find-intersection-of-two-arrays
         return IntStream.concat(IntStream.of(a), IntStream.of(b))
-                .filter(x -> !IntStream.of(a).anyMatch(y -> y == x) || !IntStream.of(b).anyMatch(z -> z == x))
+                .filter(x -> IntStream.of(a).noneMatch(y -> y == x) || IntStream.of(b).noneMatch(z -> z == x))
                 .toArray();
     }
 

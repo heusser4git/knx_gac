@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class KnxGacApplication extends Application {
     public static String currentProjectName;
@@ -52,14 +53,6 @@ public class KnxGacApplication extends Application {
                 );
             }
         }
-
-//        ObjectTemplate o = new ObjectTemplate();
-//        int[] a = {1,2,3,4,5};
-//        int b[] = {1,2,5};
-//        int c[] = o.intersectionSimple(a, b);
-//        for (int i : o.availableStartadresses(a, b)) {
-//            System.out.println(i);
-//        }
 
         /**
          * Beispiel für das holen aller Projekte

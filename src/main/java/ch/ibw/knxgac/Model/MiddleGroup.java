@@ -104,4 +104,17 @@ public class MiddleGroup extends Data {
         result.append("}");
         return result.toString();
     }
+
+    /**
+     * determines the usedAddresses in this middlegroup
+     */
+    public ArrayList<Integer> usedAddresses() {
+        ArrayList<Integer> usedAdresses = new ArrayList<>();
+        for (Address ad : this.getAddresses()) {
+            for (Attribute at : ad.getObjectTemplate().getAttributes()) {
+                usedAdresses.add(ad.getStartAddress() + at.getNumber());
+            }
+        }
+        return usedAdresses;
+    }
 }

@@ -1,6 +1,10 @@
 package ch.ibw.knxgac.Model;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,5 +95,30 @@ class MiddleGroupTest {
         String s = m.getUpdateClause();
         // Assert
         assertEquals("name = 'MiddleGroup 1', number = 123456, idMaingroup = 1", s);
+    }
+
+    @Test
+    void usedAddresses() {
+        // Arrange
+        MiddleGroup middleGroup = new MiddleGroup(1);
+        Address address = new Address(1);
+        address.setStartAddress(4);
+        ObjectTemplate objectTemplate = new ObjectTemplate(1);
+        Attribute attribute = new Attribute(1);
+        attribute.setNumber(5);
+        objectTemplate.addAttribute(attribute);
+        Attribute attribute2 = new Attribute(2);
+        attribute2.setNumber(1);
+        objectTemplate.addAttribute(attribute2);
+        address.setObjectTemplate(objectTemplate);
+        middleGroup.addAddress(address);
+
+        // Act
+        ArrayList<Integer> usedAdresses = middleGroup.usedAddresses();
+
+        // Assert
+        Assertions.assertEquals(2, usedAdresses.size());
+        Assertions.assertEquals(9, usedAdresses.get(0));
+        Assertions.assertEquals(5, usedAdresses.get(1));
     }
 }

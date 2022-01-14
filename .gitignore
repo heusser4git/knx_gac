@@ -3,3 +3,4 @@ target/*
 lib/*
 pom.xml
 KNX-GAC.iml
+*.class
