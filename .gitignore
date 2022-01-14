@@ -1,5 +1,5 @@
-#target/*
-#.idea/*
-#lib/*
-#pom.xml
-#KNX-GAC.iml
+target/*
+.idea/*
+lib/*
+pom.xml
+KNX-GAC.iml
