@@ -61,7 +61,7 @@ public class GuiAddress {
     private ObservableList<ComboBoxItem> maingroupItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (MainGroup m: mainGroups) {
-            items.add(new ComboBoxItem(m.getId(),m.getNumber() + " " + m.getName()));
+            items.add(new ComboBoxItem(m.getId(), m.getNumber() + " " + m.getName(),m.getNumber()));
         }
         return items;
     }
@@ -79,7 +79,7 @@ public class GuiAddress {
     private ObservableList<ComboBoxItem> middelgroupItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (MiddleGroup ml: middleGroups) {
-            items.add(new ComboBoxItem(ml.getId(), ml.getNumber() + " " + ml.getName()));
+            items.add(new ComboBoxItem(ml.getId(), ml.getNumber() + " " + ml.getName(), ml.getNumber()));
         }
         return items;
     }
@@ -139,6 +139,11 @@ public class GuiAddress {
                     usedaddresses.add(ad.getStartAddress() + at.getNumber());
                 }
             }
+        }
+        // the you can't use the Address 0/0/0 because it's a KNX System Adress
+        if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 &&
+                cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
+         addressstartnumber.remove(0);
         }
         for (Integer in: usedaddresses) {
             addressstartnumber.remove(in);
