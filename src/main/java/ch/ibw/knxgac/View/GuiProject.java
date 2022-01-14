@@ -31,16 +31,16 @@ public class GuiProject {
 //        updateProjects();
     }
     protected  void updateProjectComboBox() {
-        updateProjects();
+        getProjects();
         selectProject.getItems().clear();
         selectProject.getItems().addAll(this.projectItems());
     }
-    protected void updateProjects() {
+    protected void getProjects() {
         try {
             // get all projects out of the DB
             this.projects = this.controller.selectObject(new Project());
         } catch (SQLException e) {
-            e.printStackTrace();
+            new Dialog().getException("Datenbankfehler", "Projekte laden", "Die vorhandenen Projekte konnten nicht geladen werden", e).showAndWait();
         }
     }
 
@@ -135,9 +135,9 @@ public class GuiProject {
                 try {
                     project.setId(controller.insertObject(project));
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    new Dialog().getException("Datenbankfehler", "Projekt Erstellung fehlgeschlagen", "Das Projekt konnte nicht erstellt werden.", e).showAndWait();
                 }
-                updateProjects();
+                getProjects();
                 // empty the ComboBox
                 selectProject.getItems().clear();
                 // add the project-items new to the ComboBox
@@ -156,8 +156,7 @@ public class GuiProject {
                 try {
                      actualProjects = controller.selectObject(filterProject);
                 } catch (SQLException e) {
-                    // Todo Exception Handling
-                    e.printStackTrace();
+                    new Dialog().getException("Datenbankfehler", "Projekt laden fehlgeschlagen", "Das gewählte Projekt konnte nicht geladen werden.", e).showAndWait();
                 }
                 if(actualProjects!=null && actualProjects.size()==1 && actualProjects.get(0) instanceof Project) {
                     String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"));
@@ -173,8 +172,7 @@ public class GuiProject {
                                             path + "\n" + file + "\ngeschrieben.").showAndWait();
                         }
                     } catch (IOException e) {
-                        // Todo Exception Handling
-                        e.printStackTrace();
+                        new Dialog().getException("Ein-/Ausgabefehler", "CSV-Datei nicht erstellt.","Die CSV-Datei konnte nicht erstellt werden.", e).showAndWait();
                     }
                 } else {
                     new Dialog().getInformation(

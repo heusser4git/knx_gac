@@ -327,7 +327,7 @@ public class KnxGacApplication extends Application {
                             // delete the actual project
                             controller.deleteObject(project);
                             // update the projects from db
-                            guiProject.updateProjects();
+                            guiProject.getProjects();
                             // empty the ComboBox
                             guiProject.selectProject.getItems().clear();
                             // add the project-items new to the ComboBox
@@ -348,9 +348,9 @@ public class KnxGacApplication extends Application {
                             // disable buttons
                             guiProject.btnDelete.setDisable(true);
                             guiProject.btnExport.setDisable(true);
+                            throw new SQLException("test");
                         } catch (SQLException e) {
-                            // Todo Urs: Exception
-                            e.printStackTrace();
+                            new Dialog().getException("Datenbankfehler", "Löschen fehlgeschlagen", "Das Projekt konnte nicht gelöscht werden.", e).showAndWait();
                         }
                     }
                 }
