@@ -350,7 +350,9 @@ public class KnxGacApplication extends Application {
                             guiProject.btnExport.setDisable(true);
                             throw new SQLException("test");
                         } catch (SQLException e) {
-                            new Dialog().getException("Datenbankfehler", "Löschen fehlgeschlagen", "Das Projekt konnte nicht gelöscht werden.", e).showAndWait();
+                            new Dialog().getException("Datenbankfehler",
+                                    "Löschen fehlgeschlagen",
+                                    "Das Projekt konnte nicht gelöscht werden.", e).showAndWait();
                         }
                     }
                 }

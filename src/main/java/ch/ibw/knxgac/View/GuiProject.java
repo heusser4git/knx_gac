@@ -135,7 +135,9 @@ public class GuiProject {
                 try {
                     project.setId(controller.insertObject(project));
                 } catch (SQLException e) {
-                    new Dialog().getException("Datenbankfehler", "Projekt Erstellung fehlgeschlagen", "Das Projekt konnte nicht erstellt werden.", e).showAndWait();
+                    new Dialog().getException("Datenbankfehler",
+                            "Projekt Erstellung fehlgeschlagen",
+                            "Das Projekt konnte nicht erstellt werden.", e).showAndWait();
                 }
                 getProjects();
                 // empty the ComboBox
@@ -156,7 +158,9 @@ public class GuiProject {
                 try {
                      actualProjects = controller.selectObject(filterProject);
                 } catch (SQLException e) {
-                    new Dialog().getException("Datenbankfehler", "Projekt laden fehlgeschlagen", "Das gewählte Projekt konnte nicht geladen werden.", e).showAndWait();
+                    new Dialog().getException("Datenbankfehler",
+                            "Projekt laden fehlgeschlagen",
+                            "Das gewählte Projekt konnte nicht geladen werden.", e).showAndWait();
                 }
                 if(actualProjects!=null && actualProjects.size()==1 && actualProjects.get(0) instanceof Project) {
                     String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"));
@@ -172,7 +176,9 @@ public class GuiProject {
                                             path + "\n" + file + "\ngeschrieben.").showAndWait();
                         }
                     } catch (IOException e) {
-                        new Dialog().getException("Ein-/Ausgabefehler", "CSV-Datei nicht erstellt.","Die CSV-Datei konnte nicht erstellt werden.", e).showAndWait();
+                        new Dialog().getException("Ein-/Ausgabefehler",
+                                "CSV-Datei nicht erstellt.",
+                                "Die CSV-Datei konnte nicht erstellt werden.", e).showAndWait();
                     }
                 } else {
                     new Dialog().getInformation(
