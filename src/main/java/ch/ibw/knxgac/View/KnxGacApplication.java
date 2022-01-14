@@ -17,15 +17,12 @@ import java.sql.SQLException;
 public class KnxGacApplication extends Application {
     public static String currentProjectName;
     public static int currentProjectID;
-    private Stage stage = null;
     protected static Configuration configuration = null;
     private Controller controller = null;
-    private TabPane tabPane;
     protected static boolean configGui = false;
 
     @Override
     public void start(Stage stage) throws IOException {
-        this.stage = stage;
         boolean noDbError = true;   // false, if a Database-Exception occurs
         Alert alert = null; // Dialog if an Exception occurs
         try {
@@ -201,12 +198,12 @@ public class KnxGacApplication extends Application {
             }
 
             // create a TabPane to place the Tabs
-            this.tabPane = new TabPane();
+            TabPane tabPane = new TabPane();
 
             // Tab for the Configuration-Information
-            GuiConfig guiConfig = new GuiConfig(this.stage, this.controller);
+            GuiConfig guiConfig = new GuiConfig(stage, this.controller);
             // get the GridPane from outsourced Class "gridConfig"
-            GridPane gridConfiguration = guiConfig.getConfigurationGrid(this.configuration, this.tabPane);
+            GridPane gridConfiguration = guiConfig.getConfigurationGrid(this.configuration, tabPane);
             Tab tabConfig = new Tab("Systemkonfiguration");
             tabConfig.setClosable(false);
             tabConfig.setContent(gridConfiguration);
@@ -355,7 +352,7 @@ public class KnxGacApplication extends Application {
         stage.getIcons().add(new Image("knxgac.png"));
 
         stage.show();
-        // if a alert exists, show the alert
+        // if an alert exists, show the alert
         if(alert!=null)
             alert.showAndWait();
 

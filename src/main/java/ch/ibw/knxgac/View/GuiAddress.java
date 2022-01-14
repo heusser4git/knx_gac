@@ -5,6 +5,8 @@ import ch.ibw.knxgac.Control.StringChecker;
 import ch.ibw.knxgac.Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -24,6 +26,7 @@ public class GuiAddress {
     ArrayList<Address> addresses = new ArrayList<>();
     ArrayList<Attribute> attributes = new ArrayList<>();
     ArrayList<Integer> addressstartnumber = new ArrayList<>();
+    ArrayList<Integer> temporaryadresses = new ArrayList<>();
     ArrayList<Integer> usedaddresses = new ArrayList<>();
     private ComboBox<ComboBoxItem> cbMaingroup = null;
     private ComboBox<ComboBoxItem> cbMiddelgroup = null;
@@ -41,9 +44,6 @@ public class GuiAddress {
         this.upateMaingroupList(idProject);
         this.cbMaingroup.getItems().clear();
         this.cbMaingroup.getItems().addAll(this.maingroupItems());
-        this.updateObjectTemplates();
-        this.cbObjectTemplates.getItems().clear();
-        this.cbObjectTemplates.getItems().addAll(objectTemplateItems());
     }
 
     private void upateMaingroupList(int idProject){
@@ -130,8 +130,11 @@ public class GuiAddress {
     }
 
     private void updateAddressstartnumber(){
-        ObjectTemplate objectTemplate = new ObjectTemplate(cbObjectTemplates.getSelectionModel().getSelectedItem().getId());
-        objectsize = objectTemplate.getAttributes().size();
+       objectsize = 0;
+       for (Attribute at: attributes){
+           if(at.getIdObjectTemplate() == cbObjectTemplates.getSelectionModel().getSelectedItem().getId())
+            objectsize++;
+        }
         addressstartnumber.clear();
         usedaddresses.clear();
         for (int i = 0; i < 255; i++) {
@@ -153,12 +156,19 @@ public class GuiAddress {
         for (Integer in: usedaddresses) {
             addressstartnumber.remove(in);
         }
-        for (int i = 0; i < objectsize; i++) {
-            for(Integer in: addressstartnumber){
-                if(in == i){
-
+        for(Integer in: addressstartnumber){
+            System.out.println(in);
+            for (int i = 0; i < objectsize; i++) {
+                if(addressstartnumber.contains((i+in))){
+                    System.out.println("true"+ (i+in));
+                }else {
+                    usedaddresses.add(in);
+                    System.out.println("add"+in);
                 }
             }
+        }
+        for (Integer in: usedaddresses) {
+            addressstartnumber.remove(in);
         }
     }
 
@@ -269,6 +279,14 @@ public class GuiAddress {
                 updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
                 adressesGroupList.getItems().clear();
                 adressesGroupList.getItems().addAll(adressesItems());
+                updateObjectTemplates();
+                cbObjectTemplates.getItems().clear();
+                cbObjectTemplates.getItems().addAll(objectTemplateItems());
+            }
+        });
+
+        cbObjectTemplates.setOnAction(actionEvent -> {
+            if(!cbObjectTemplates.getSelectionModel().isEmpty()){
                 updateAddressstartnumber();
                 cbAdressStartNumber.getItems().clear();
                 cbAdressStartNumber.getItems().addAll(addressstartnumber);
