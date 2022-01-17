@@ -1,8 +1,8 @@
 package ch.ibw.knxgac.Control;
 
 import ch.ibw.knxgac.Model.*;
-import ch.ibw.knxgac.Repository.Database;
-import ch.ibw.knxgac.Repository.SqlDatabase;
+import ch.ibw.knxgac.Model.Repository.Database;
+import ch.ibw.knxgac.Model.Repository.SqlDatabase;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

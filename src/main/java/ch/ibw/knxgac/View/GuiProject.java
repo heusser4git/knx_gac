@@ -4,7 +4,7 @@ import ch.ibw.knxgac.Control.Controller;
 import ch.ibw.knxgac.Control.StringChecker;
 import ch.ibw.knxgac.Control.StringHelper;
 import ch.ibw.knxgac.Model.Project;
-import ch.ibw.knxgac.Repository.CsvWriter;
+import ch.ibw.knxgac.Model.Repository.CsvWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

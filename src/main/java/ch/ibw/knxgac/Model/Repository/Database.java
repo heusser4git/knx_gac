@@ -1,4 +1,4 @@
-package ch.ibw.knxgac.Repository;
+package ch.ibw.knxgac.Model.Repository;
 
 import ch.ibw.knxgac.Model.*;
 

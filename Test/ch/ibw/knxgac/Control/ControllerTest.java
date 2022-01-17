@@ -1,7 +1,7 @@
 package ch.ibw.knxgac.Control;
 
 import ch.ibw.knxgac.Model.Configuration;
-import ch.ibw.knxgac.Repository.Database;
+import ch.ibw.knxgac.Model.Repository.Database;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Iterables;
