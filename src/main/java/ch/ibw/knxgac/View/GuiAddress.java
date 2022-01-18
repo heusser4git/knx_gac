@@ -24,7 +24,6 @@ public class GuiAddress {
     ArrayList<Address> addresses = new ArrayList<>();
     ArrayList<Attribute> attributes = new ArrayList<>();
     ArrayList<Integer> addressstartnumber = new ArrayList<>();
-    ArrayList<Integer> temporaryadresses = new ArrayList<>();
     ArrayList<Integer> usedaddresses = new ArrayList<>();
     private ComboBox<ComboBoxItem> cbMaingroup = null;
     private ComboBox<ComboBoxItem> cbMiddelgroup = null;
@@ -95,10 +94,7 @@ public class GuiAddress {
     private ObservableList<ComboBoxItem> objectTemplateItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (ObjectTemplate ot : objectTemplates) {
-            // TODO habe hier noch die anzahl attribute an den templatenamen gehängt... kann auch wieder entfernt werden (urs)
             items.add(new ComboBoxItem(ot.getId(), ot.getName() + " (" + ot.getAttributes().size() + ")"));
-            // ohne anzahl attribute:
-            // items.add(new ComboBoxItem(ot.getId(), ot.getName()));
         }
         return items;
     }
@@ -129,49 +125,6 @@ public class GuiAddress {
         }
         return items;
     }
-    // Todo habe deine implementation deaktivert. falls ok, kann diese gelöscht werden
-//    private void updateAddressstartnumber(){
-//       objectsize = 0;
-//       for (Attribute at: attributes){
-//           if(at.getIdObjectTemplate() == cbObjectTemplates.getSelectionModel().getSelectedItem().getId())
-//            objectsize++;
-//        }
-//        addressstartnumber.clear();
-//        usedaddresses.clear();
-//        for (int i = 0; i < 255; i++) {
-//            addressstartnumber.add(i);
-//
-//        }
-//        for (Address ad : addresses) {
-//            for (Attribute at : attributes) {
-//                if(at.getIdObjectTemplate() == ad.getObjectTemplate().getId()){
-//                    usedaddresses.add(ad.getStartAddress() + at.getNumber());
-//                }
-//            }
-//        }
-//        // you can't use the Address 0/0/0 because it's a KNX System Address
-//        if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 &&
-//                cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
-//         addressstartnumber.remove(0);
-//        }
-//        for (Integer in: usedaddresses) {
-//            addressstartnumber.remove(in);
-//        }
-//        for(Integer in: addressstartnumber){
-//            System.out.println(in);
-//            for (int i = 0; i < objectsize; i++) {
-//                if(addressstartnumber.contains((i+in))){
-////                    System.out.println("true"+ (i+in));
-//                }else {
-//                    usedaddresses.add(in);
-////                    System.out.println("add"+in);
-//                }
-//            }
-//        }
-//        for (Integer in: usedaddresses) {
-//            addressstartnumber.remove(in);
-//        }
-//    }
 
     /**
      * generates the available startaddresses
@@ -293,8 +246,6 @@ public class GuiAddress {
                         updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
                         adressesGroupList.getItems().clear();
                         adressesGroupList.getItems().addAll(adressesItems());
-                        //updateAddressstartnumber();
-                        // Todo Urs: meine implementation
                         setAdressstartnumber();
                         cbAdressStartNumber.getItems().clear();
                         cbAdressStartNumber.getItems().addAll(addressstartnumber);
@@ -332,8 +283,6 @@ public class GuiAddress {
 
         cbObjectTemplates.setOnAction(actionEvent -> {
             if(!cbObjectTemplates.getSelectionModel().isEmpty() && !cbMiddelgroup.getSelectionModel().isEmpty()){
-                // Todo Urs: meine implementation
-//                updateAddressstartnumber();
                 setAdressstartnumber();
                 cbAdressStartNumber.getItems().clear();
                 cbAdressStartNumber.getItems().addAll(addressstartnumber);
