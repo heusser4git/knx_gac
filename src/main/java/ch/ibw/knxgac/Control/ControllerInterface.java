@@ -30,7 +30,7 @@ public interface ControllerInterface  {
     boolean checkConfiguration(Configuration configuration) throws SQLException;
 
     int insertObject(Data object) throws SQLException;
-    <T>  ArrayList<T> selectObject(T filter) throws SQLException;
+    <T extends Data> ArrayList<T> selectObject(T filter) throws SQLException;
     void updateObject(Data object) throws SQLException;
     void deleteObject(Data object) throws SQLException;
 }

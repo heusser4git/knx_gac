@@ -133,7 +133,7 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public <T> ArrayList<T> selectObject(T filter) throws SQLException {
+    public <T extends Data> ArrayList<T> selectObject(T filter) throws SQLException {
         if(filter instanceof Project) {
             return (ArrayList<T>) this.db.selectProject((Project) filter);
         } else if(filter instanceof MainGroup) {
