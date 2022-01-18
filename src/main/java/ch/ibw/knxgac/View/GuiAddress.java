@@ -277,26 +277,33 @@ public class GuiAddress {
                 !cbObjectTemplates.getSelectionModel().isEmpty() &&
                 !cbAdressStartNumber.getSelectionModel().isEmpty()){
                 if(StringChecker.checkStringLettersSpacesNumbersUmlaute(tfAdressName.getText())){
-                    Address address = new Address();
-                    address.setStartAddress(cbAdressStartNumber.getSelectionModel().getSelectedItem());
-                    address.setName(tfAdressName.getText());
-                    address.setIdMiddlegroup(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
-                    address.setObjectTemplate(new ObjectTemplate(cbObjectTemplates.getSelectionModel().getSelectedItem().getId()));
-                    try {
-                        controller.insertObject(address);
-                    }catch (SQLException e){
-                        new Dialog().getException("Datenbankfehler",
-                                "Addresse erstellen fehlgeschlagen",
-                                "Die gewünschten Addressen konnten nicht erstellt werden.",e).showAndWait();
+                    if(StringChecker.checkStringFirstDigitIsLetter(tfAdressName.getText())){
+                        Address address = new Address();
+                        address.setStartAddress(cbAdressStartNumber.getSelectionModel().getSelectedItem());
+                        address.setName(tfAdressName.getText());
+                        address.setIdMiddlegroup(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
+                        address.setObjectTemplate(new ObjectTemplate(cbObjectTemplates.getSelectionModel().getSelectedItem().getId()));
+                        try {
+                            controller.insertObject(address);
+                        }catch (SQLException e){
+                            new Dialog().getException("Datenbankfehler",
+                                    "Addresse erstellen fehlgeschlagen",
+                                    "Die gewünschten Addressen konnten nicht erstellt werden.",e).showAndWait();
+                        }
+                        updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
+                        adressesGroupList.getItems().clear();
+                        adressesGroupList.getItems().addAll(adressesItems());
+                        //updateAddressstartnumber();
+                        // Todo Urs: meine implementation
+                        setAdressstartnumber();
+                        cbAdressStartNumber.getItems().clear();
+                        cbAdressStartNumber.getItems().addAll(addressstartnumber);
+                    }else {
+                        new Dialog().getInformation(
+                                "Nicht erlaubte Eingabe",
+                                "Adresse wurde nicht angelegt",
+                                "Es sind keine Zahlen an erster Stelle erlaubt").showAndWait();
                     }
-                    updateAddressList(cbMiddelgroup.getSelectionModel().getSelectedItem().getId());
-                    adressesGroupList.getItems().clear();
-                    adressesGroupList.getItems().addAll(adressesItems());
-                    //updateAddressstartnumber();
-                    // Todo Urs: meine implementation
-                    setAdressstartnumber();
-                    cbAdressStartNumber.getItems().clear();
-                    cbAdressStartNumber.getItems().addAll(addressstartnumber);
                 }else {
                     new Dialog().getInformation(
                             "Nicht erlaubte Eingabe",
