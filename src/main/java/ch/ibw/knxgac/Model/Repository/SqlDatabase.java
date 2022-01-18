@@ -471,6 +471,52 @@ public class SqlDatabase implements Database {
                 ");";
     }
 
+    /**
+     * As long as the GUI is not implemented for
+     * Managing the ObjectTemplates, insert them
+     * automatically into the Database
+     */
+    private String getSqlInsertObjectTemplates() {
+        return "INSERT INTO objecttemplate (id, name) \n" +
+                "VALUES \n" +
+                "(1, 'Licht Dimmen'),\n" +
+                "(2, 'Licht Ein/Aus'),\n" +
+                "(3, 'Jalousie'),\n" +
+                "(4, 'Heizen');";
+    }
+    /**
+     * As long as the GUI is not implemented for
+     * Managing the ObjectTemplate-Attributes, insert them
+     * automatically into the Database
+     */
+    private String getSqlInsertAttributes() {
+        return "INSERT INTO attribute (id, name, number, idObjectTemplate) \n" +
+                "VALUES \n" +
+                "(1, 'E/A', 0, 1),\n" +
+                "(2, 'H/D', 1, 1),\n" +
+                "(3, 'Wert %', 2, 1),\n" +
+                "(4, 'RM', 3, 1),\n" +
+                "(5, 'RM Wert %', 4, 1),\n" +
+                "(6, 'E/A', 0, 2),\n" +
+                "(7, 'RM', 1, 2),\n" +
+                "(8, '-', 2, 2),\n" +
+                "(9, '-', 3, 2),\n" +
+                "(10, '-', 4, 2),\n" +
+                "(11, 'Auf/Zu', 0, 3),\n" +
+                "(12, 'Auf/Ab', 1, 3),\n" +
+                "(13, 'Position Jalousie', 2, 3),\n" +
+                "(14, 'Position Lamellen', 3, 3),\n" +
+                "(15, 'Sperren', 4, 3),\n" +
+                "(16, 'Status Jalousie', 5, 3),\n" +
+                "(17, 'Status Lamellen', 6, 3),\n" +
+                "(18, 'Stellgrösse', 0, 4),\n" +
+                "(19, 'RM Ist Wert', 1, 4),\n" +
+                "(20, 'Basis-Soll', 2, 4),\n" +
+                "(21, 'RM Soll Wert', 3, 4),\n" +
+                "(22, 'Betriebsart', 4, 4),\n" +
+                "(23, 'Sperren', 5, 4);";
+    }
+
     public void createTablesToDb() throws SQLException {
         this.executeQuery(this.getSqlCreateTableProject());
         this.executeQuery(this.getSqlCreateTableMaingroup());
@@ -478,6 +524,10 @@ public class SqlDatabase implements Database {
         this.executeQuery(this.getSqlCreateTableObjectTemplate());
         this.executeQuery(this.getSqlCreateTableAttribute());
         this.executeQuery(this.getSqlCreateTableAddress());
+
+        // Insert Data for ObjectTemplates and Attributes
+        this.executeQuery(this.getSqlInsertObjectTemplates());
+        this.executeQuery(this.getSqlInsertAttributes());
     }
 
 }
