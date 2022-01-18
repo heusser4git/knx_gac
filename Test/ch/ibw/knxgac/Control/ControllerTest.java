@@ -13,25 +13,6 @@ import java.sql.SQLException;
 import static org.mockito.Mockito.*;
 
 class ControllerTest {
-    @Test
-    void saveConfiguration() {
-        // TODO Urs
-        // Arrange
-
-        // Act
-
-        // Assert
-    }
-
-    @Test
-    void getConfiguration() {
-        // TODO Urs
-        // Arrange
-
-        // Act
-
-        // Assert
-    }
 
     @Test
     void checkConfiguration() throws SQLException, IOException {
