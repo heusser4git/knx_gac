@@ -106,7 +106,7 @@ public class GuiProject {
         grid.add(lblProjektnummer, x,y);
         TextField tfProjektnummer = fieldHelper.getTextField("");
         tfProjektnummer.setTooltip(new Tooltip("Bitte geben Sie als Projektnummer nur Zahlen ein. \nZum Beispiel 1234"));
-        grid.add(tfProjektnummer,x+1,y); // Todo adjust size
+        grid.add(tfProjektnummer,x+1,y);
 
         y++;
         Button btnCreate = new Button();

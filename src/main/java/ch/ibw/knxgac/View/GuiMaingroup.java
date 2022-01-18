@@ -89,7 +89,7 @@ public class GuiMaingroup {
         y++;
         grid.add(fieldHelper.getLable("Name"),x,y);
         TextField tfMainGroopname = fieldHelper.getTextField("");
-        grid.add(tfMainGroopname,x+1,y); // Todo adjust size
+        grid.add(tfMainGroopname,x+1,y);
 
         list = new ListView<>();
         list.getItems().addAll(this.mgroupItems());
