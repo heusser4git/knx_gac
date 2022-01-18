@@ -64,14 +64,12 @@ public class ObjectTemplate extends Data {
      * out of a set of maxStartadresses less usedStartadresses
      */
     public ArrayList<Integer> availableStartadresses(ArrayList<Integer> maxStartadresses, ArrayList<Integer> usedStartadresses) {
-        // Todo Urs: kommentare in englisch
-        // Todo Urs: refactoring -> evtl. auf arrays verzichten und direkt mit arrayLists arbeiten
-        // berechne den unterschied von maxStartadresse und usedStartadresse
-        int[] uniqueAdresses = diff(this.arrayListToArray(maxStartadresses), this.arrayListToArray(usedStartadresses));
+        // calculate the difference between maxStartaddress und used Startaddress
+        int[] uniqueAddresses = diff(this.arrayListToArray(maxStartadresses), this.arrayListToArray(usedStartadresses));
 
         ArrayList<Integer> digitsToCheck = new ArrayList<>();
         ArrayList<Integer> toDelete = new ArrayList<>();
-        for(int checkAdr : uniqueAdresses) {
+        for(int checkAdr : uniqueAddresses) {
             int anzAdr = this.getAttributes().size();
             int[] toCheck = new int[anzAdr];
             for (int i = 0; i < anzAdr; i++) {
@@ -79,18 +77,18 @@ public class ObjectTemplate extends Data {
                 digitsToCheck.add(checkAdr+i);
                 toCheck[i] = checkAdr+i;
             }
-            // sind die toCheck im uniqueAdresses -> dann ok
-            int[] uebereinstimmung = this.intersection(uniqueAdresses, toCheck);
+            // are the toCheck in uniqueAddresses? if, then ok
+            int[] uebereinstimmung = this.intersection(uniqueAddresses, toCheck);
             if(uebereinstimmung.length!=anzAdr) {
                 toDelete.add(checkAdr);
             }
         }
-        // von arraylist zu array
+        // from arraylist to array
         int[] toDeleteArray = new int[toDelete.size()];
         for (int i = 0; i < toDelete.size(); i++) {
             toDeleteArray[i] = toDelete.get(i);
         }
-        int[] availableArray = this.diff(uniqueAdresses, toDeleteArray);
+        int[] availableArray = this.diff(uniqueAddresses, toDeleteArray);
         ArrayList<Integer> available = new ArrayList<>();
         for (int x : availableArray) {
             available.add(x);
@@ -99,7 +97,7 @@ public class ObjectTemplate extends Data {
     }
 
     /**
-     * wandelt eine int-arraylist in ein array um
+     * moves a int-arraylist to a array
      */
     private int[] arrayListToArray(ArrayList<Integer> arrayList) {
         int[] array = new int[arrayList.size()];
@@ -109,7 +107,7 @@ public class ObjectTemplate extends Data {
         return array;
     }
     /**
-     * holt die differenz zweier int-arrays
+     * gets the difference of two int-arrays
      */
     private int[] diff(int[] a, int[] b){
         // Quelle https://stackoverflow.com/questions/17863319/java-find-intersection-of-two-arrays
@@ -119,7 +117,7 @@ public class ObjectTemplate extends Data {
     }
 
     /**
-     * holt die übereinstimmenden werte aus zwei int-arrays
+     * fetches the matching values from two int arrays
      */
     private int[] intersection(int[] a, int[] b){
         // Quelle https://stackoverflow.com/questions/17863319/java-find-intersection-of-two-arrays
@@ -128,7 +126,4 @@ public class ObjectTemplate extends Data {
                 .filter(x -> Arrays.stream(b).anyMatch(y -> y == x))
                 .toArray();
     }
-
-
-
 }
