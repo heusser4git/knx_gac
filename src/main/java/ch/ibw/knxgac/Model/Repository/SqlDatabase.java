@@ -526,8 +526,12 @@ public class SqlDatabase implements Database {
         this.executeQuery(this.getSqlCreateTableAddress());
 
         // Insert Data for ObjectTemplates and Attributes
-        this.executeQuery(this.getSqlInsertObjectTemplates());
-        this.executeQuery(this.getSqlInsertAttributes());
+        if(this.getNextIdFromTable("ObjectTemplate")==1) {
+            this.executeQuery(this.getSqlInsertObjectTemplates());
+        }
+        if(this.getNextIdFromTable("Attribute")==1) {
+            this.executeQuery(this.getSqlInsertAttributes());
+        }
     }
 
 }
