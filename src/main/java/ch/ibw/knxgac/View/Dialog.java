@@ -39,7 +39,7 @@ public class Dialog {
         return alert;
     }
     public Alert getException(String title, String headerText, String text, Exception exception) {
-        // TODO Quelle: https://code.makery.ch/blog/javafx-dialogs-official/
+        // Quelle: https://code.makery.ch/blog/javafx-dialogs-official/
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(headerText);

@@ -112,7 +112,7 @@ public class ObjectTemplate extends Data {
      * holt die differenz zweier int-arrays
      */
     private int[] diff(int[] a, int[] b){
-        // Todo https://stackoverflow.com/questions/17863319/java-find-intersection-of-two-arrays
+        // Quelle https://stackoverflow.com/questions/17863319/java-find-intersection-of-two-arrays
         return IntStream.concat(IntStream.of(a), IntStream.of(b))
                 .filter(x -> IntStream.of(a).noneMatch(y -> y == x) || IntStream.of(b).noneMatch(z -> z == x))
                 .toArray();
@@ -122,7 +122,7 @@ public class ObjectTemplate extends Data {
      * holt die übereinstimmenden werte aus zwei int-arrays
      */
     private int[] intersection(int[] a, int[] b){
-        // Todo https://stackoverflow.com/questions/17863319/java-find-intersection-of-two-arrays
+        // Quelle https://stackoverflow.com/questions/17863319/java-find-intersection-of-two-arrays
         return Arrays.stream(a)
                 .distinct()
                 .filter(x -> Arrays.stream(b).anyMatch(y -> y == x))

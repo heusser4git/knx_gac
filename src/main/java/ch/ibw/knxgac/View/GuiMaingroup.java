@@ -51,7 +51,6 @@ public class GuiMaingroup {
     private ObservableList<ComboBoxItem> mgroupItems(){
         ObservableList<ComboBoxItem> items = FXCollections.observableArrayList();
         for (MainGroup m : this.mainGroups){
-            // TODO wenn du meine methode "updateMaingroupList(int idProject)" nutzt erübrigt sich die prüfung mit der currendProjectID, da nur diese aus der DB geholt werden
             if (m.getIdProject() == KnxGacApplication.currentProjectID){
                 items.add(new ComboBoxItem(m.getId(), m.getNumber() + " " + m.getName()));
             }

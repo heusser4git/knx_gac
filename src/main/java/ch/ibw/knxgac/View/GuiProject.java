@@ -150,9 +150,12 @@ public class GuiProject {
                     // project allready exists
                     projectAllreadyExists = true;
                 }
-            } catch (SQLException e) {
-                // TODO Urs
-                e.printStackTrace();
+            } catch (SQLException exception) {
+                new Dialog().getException(
+                        "Datenbankfehler",
+                        "Prüfung Projekt fehlgeschlagen",
+                        "Es konnte nicht überprüft werden, ob das Projekt bereits in der Datenbank vorhanden ist.",
+                        exception).showAndWait();
             }
 
             if(errorsFields.size()>0) {
