@@ -331,7 +331,7 @@ public class GuiAddress {
         });
 
         cbObjectTemplates.setOnAction(actionEvent -> {
-            if(!cbObjectTemplates.getSelectionModel().isEmpty()){
+            if(!cbObjectTemplates.getSelectionModel().isEmpty() && !cbMiddelgroup.getSelectionModel().isEmpty()){
                 // Todo Urs: meine implementation
 //                updateAddressstartnumber();
                 setAdressstartnumber();
