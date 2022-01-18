@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -149,6 +150,20 @@ public class GuiConfig {
                 config.setDbUsername(tfUser.getText());
                 config.setDbPassword(tfPassword.getText());
                 config.setCsvOutputpath(csvpath.getText());
+                try {
+                    if(!StringChecker.directoryWriteFilePermission(config.getCsvOutputpath())) {
+                        errorOccurred = true;
+                        wrongInput("CSV-Export Pfad", "In dieses Verzeichnis kann nicht geschrieben werden. Bitte wählen Sie ein anderes oder korrigieren Sie die Zugriffsrechte.").showAndWait();
+                    }
+                } catch (IOException exception) {
+                    errorOccurred = true;
+                    new Dialog().getException(
+                            "Eingabe- / Ausgabe-Fehler",
+                            "CSV-Export Pfad",
+                            "In dieses Verzeichnis kann nicht geschrieben werden. " +
+                                    "Bitte wählen Sie ein anderes oder korrigieren Sie die Zugriffsrechte.",
+                            exception).showAndWait();
+                }
                 if(!errorOccurred) {
                     try {
                         // save the config
