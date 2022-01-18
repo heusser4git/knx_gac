@@ -142,11 +142,29 @@ public class GuiProject {
             } else {
                 errorsFields.add(lblProjektnummer.getText());
             }
+            // check if the same project allready exists
+            Boolean projectAllreadyExists = false;
+            try {
+                ArrayList<Project> allreadyExists = controller.selectObject(project);
+                if(allreadyExists.size()>0) {
+                    // project allready exists
+                    projectAllreadyExists = true;
+                }
+            } catch (SQLException e) {
+                // TODO Urs
+                e.printStackTrace();
+            }
+
             if(errorsFields.size()>0) {
                 new Dialog().getWarning("Falsche Eingabe",
                         "Bitte Eingabe prüfen",
                         "Folgende Felder müssen korrekt ausgefüllt werden:\n" +
                                 StringHelper.implode(errorsFields, ", ")).showAndWait();
+            } else if(projectAllreadyExists) {
+                new Dialog().getWarning("Projekt doppelt",
+                        "Projekt schon vorhanden",
+                        "Das Projekt kann mit diesen Angaben nicht gespeichert werden:\n" +
+                                "Ein solches exisitiert bereits.").showAndWait();
             } else {
                 try {
                     project.setId(controller.insertObject(project));
