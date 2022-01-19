@@ -47,7 +47,7 @@ public class CsvWriter {
     }
 
     public boolean writeToFile(String data) throws IOException {
-        BufferedWriter bufferedWriter = Files.newBufferedWriter(this.file, StandardCharsets.UTF_8);
+        BufferedWriter bufferedWriter = Files.newBufferedWriter(this.file, StandardCharsets.ISO_8859_1);
         bufferedWriter.write(data);
         bufferedWriter.close();
         return Files.exists(this.file);
