@@ -136,7 +136,12 @@ public class GuiAddress {
     private void setAdressstartnumber() {
         // generate all adresses
         ArrayList<Integer> maxStartadresses = new ArrayList<>();
-        for (int i = 0; i <255; i++) {
+        // you can't use the Address 0/0/0 because it's a KNX System Address
+        int start = 0;
+        if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 && cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
+            start = 1;
+        }
+        for (int i = start; i <255; i++) {
             maxStartadresses.add(i);
         }
         int idTemplate = cbObjectTemplates.getSelectionModel().getSelectedItem().getId();
@@ -160,11 +165,7 @@ public class GuiAddress {
         addressstartnumber.clear();
         addressstartnumber.addAll(startadresses);
 
-            // you can't use the Address 0/0/0 because it's a KNX System Address
-            if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 &&
-                    cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
-                addressstartnumber.remove(0);
-            }
+
     }
 
     public GridPane getAddressGrid() {
