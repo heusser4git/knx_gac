@@ -179,6 +179,7 @@ public class GuiAddress {
         grid.add(fieldHelper.getLable("Hauptgruppe"),x,y);
         cbMaingroup = new ComboBox<>();
         cbMaingroup.getItems().addAll(this.maingroupItems());
+        cbMaingroup.setPrefWidth(180);
         grid.add(cbMaingroup,x+1,y);
 
         adressesGroupList = new ListView<>();
@@ -189,12 +190,14 @@ public class GuiAddress {
         grid.add(fieldHelper.getLable("Mittelgruppe"),x,y);
         cbMiddelgroup = new ComboBox<>();
         cbMiddelgroup.getItems().addAll(this.middelgroupItems());
+        cbMiddelgroup.setPrefWidth(180);
         grid.add(cbMiddelgroup,x+1,y);
 
         y++;
         grid.add(fieldHelper.getLable("Objekt"),x,y);
         cbObjectTemplates = new ComboBox<>();
         cbObjectTemplates.getItems().addAll(this.objectTemplateItems());
+        cbObjectTemplates.setPrefWidth(180);
         grid.add(cbObjectTemplates,x+1,y);
 
         y++;
@@ -206,11 +209,13 @@ public class GuiAddress {
         grid.add(fieldHelper.getLable("Startadresse"),x,y);
         cbAdressStartNumber = new ComboBox<>();
         cbAdressStartNumber.getItems().addAll(addressstartnumber);
+        cbAdressStartNumber.setPrefWidth(180);
         grid.add(cbAdressStartNumber,x+1,y);
 
         y++;
         Button btnCreate = new Button();
         btnCreate.setText("erstellen");
+        btnCreate.setPrefWidth(100);
         grid.add(btnCreate,x+1,y);
 
         cbMaingroup.setOnAction(actionEvent -> {

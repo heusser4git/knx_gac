@@ -111,17 +111,18 @@ public class GuiProject {
         y++;
         Button btnCreate = new Button();
         btnCreate.setText("erstellen");
+        btnCreate.setPrefWidth(100);
         grid.add(btnCreate,x+1,y);
 
         btnDelete.setText("Projekt löschen");
         btnDelete.setId("btnDelete");
-        btnDelete.setPrefWidth(80);
+        btnDelete.setPrefWidth(100);
         btnDelete.setDisable(true);
         grid.add(btnDelete,x+4,y,2,1);
 
         y++;
         btnExport.setText("CSV Export");
-        btnExport.setPrefWidth(80);
+        btnExport.setPrefWidth(100);
         btnExport.setDisable(true);
         // hide because it's not done yet
 //        btnExport.setVisible(false);

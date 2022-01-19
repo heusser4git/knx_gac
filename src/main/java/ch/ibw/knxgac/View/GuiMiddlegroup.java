@@ -114,6 +114,7 @@ public class GuiMiddlegroup {
         cbMaingroup = new ComboBox<>();
         cbMaingroup.getItems().addAll(this.maingroupItems());
         cbMaingroup.setPromptText("Auswählen");
+        cbMaingroup.setPrefWidth(180);
         grid.add(cbMaingroup,x+1,y);
 
         middelGroupList.getItems().addAll(this.middelgroupItems());
@@ -127,11 +128,13 @@ public class GuiMiddlegroup {
         y++;
         grid.add(fieldHelper.getLable("Nummer"),x,y);
         cbMiddlegroupNumber = new ComboBox();
+        cbMiddlegroupNumber.setPrefWidth(180);
         grid.add(cbMiddlegroupNumber,x+1,y);
 
         y++;
         Button btnCreate = new Button();
         btnCreate.setText("erstellen");
+        btnCreate.setPrefWidth(100);
         grid.add(btnCreate,x+1,y);
 
         btnCreate.setOnAction(actionEvent -> {

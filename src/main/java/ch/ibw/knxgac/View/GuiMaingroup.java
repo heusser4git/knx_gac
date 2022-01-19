@@ -100,10 +100,12 @@ public class GuiMaingroup {
         grid.add(fieldHelper.getLable("Nummer"),x,y);
         cbMaingroupnumber = new ComboBox();
         cbMaingroupnumber.getItems().addAll(maingroupnumber);
+        cbMaingroupnumber.setPrefWidth(180);
         grid.add(cbMaingroupnumber,x+1,y);
 
         y++;
         Button btnCreate = new Button();
+        btnCreate.setPrefWidth(100);
         btnCreate.setText("erstellen");
         grid.add(btnCreate,x+1,y);
 
