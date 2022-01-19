@@ -159,6 +159,12 @@ public class GuiAddress {
         // refresh combobox
         addressstartnumber.clear();
         addressstartnumber.addAll(startadresses);
+
+            // you can't use the Address 0/0/0 because it's a KNX System Address
+            if (cbMaingroup.getSelectionModel().getSelectedItem().getNumber() == 0 &&
+                    cbMiddelgroup.getSelectionModel().getSelectedItem().getNumber() == 0){
+                addressstartnumber.remove(0);
+            }
     }
 
     public GridPane getAddressGrid() {
