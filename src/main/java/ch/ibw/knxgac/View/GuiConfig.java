@@ -179,10 +179,16 @@ public class GuiConfig {
                             ).showAndWait();
                             KnxGacApplication.configuration = newConfiguration;
                             KnxGacApplication.configGui = false;
-                            for (Tab tab : tabPane.getTabs()) {
-                                tab.setDisable(false);
+                            // if a project is choosen - activate all tabs
+                            if(KnxGacApplication.currentProjectID>0) {
+                                for (Tab tab : tabPane.getTabs()) {
+                                    tab.setDisable(false);
+                                }
                             }
+                            // select the first (project) tab
                             tabPane.getSelectionModel().selectFirst();
+                            // activate the first (project) tab
+                            tabPane.getSelectionModel().getSelectedItem().setDisable(false);
                         } else {
                             new Dialog().getInformation(
                                     "Information",
