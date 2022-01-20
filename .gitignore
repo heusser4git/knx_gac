@@ -1,8 +1,5 @@
-target/*
-.idea/*
 pom.xml
 KNX-GAC.iml
-*.class
-out/*
-target/*
-META-INF/*
+/out/
+/target/
+/META-INF/
