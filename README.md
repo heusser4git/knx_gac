@@ -1,12 +1,10 @@
 # knx_gac
 Semesterarbeit 1
+================
 
+Installationsanleitung
+----------------------
 
-=> TODO git aus dem zipten projekt entfernen (Version Control Root Mapping entfernen)
-
-
-Installationsanleitung:
-**********************
 
 System-Voraussetzungen:
 -----------------------
@@ -28,7 +26,7 @@ Programm in IntelliJ einrichten und starten
 
 
 Systemkonfiguration (GUI)
-*************************
+-------------------------
 Die Systemkonfiguration ist für die Einrichtung der Datenbankverbindung und das definieren CSV-Export-Verzeichnis da.
 Servertyp wählen: MARIADB
 Server:          localhost (bei lokal installiertem Datenbankserver)
