@@ -1,5 +1,4 @@
 target/*
-.idea/*
 pom.xml
 KNX-GAC.iml
 *.class
