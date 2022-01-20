@@ -3,3 +3,6 @@ target/*
 pom.xml
 KNX-GAC.iml
 *.class
+out/*
+target/*
+META-INF/*
