@@ -24,7 +24,7 @@ public class FieldHelper {
      * @return
      */
     public Label getLable(String lable, String schriftart, int fontSize, FontWeight fontStyle) {
-        Font font = Font.font(schriftart, fontStyle, fontSize);
+        Font font = Font.font("", fontStyle, fontSize);
         Label l = new Label(lable);
         l.setFont(font);
         return l;
