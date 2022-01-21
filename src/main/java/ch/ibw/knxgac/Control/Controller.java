@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controller implements ControllerInterface {
-    final String CONFIGFILE = System.getProperty("user.dir") + "/src/main/java/ch/ibw/knxgac/configuration.txt";
+    final String CONFIGFILE = "configuration.txt";
+//    final String CONFIGFILE = System.getProperty("user.dir") + "/src/main/java/ch/ibw/knxgac/configuration.txt";
     private Database db;
 
     public Controller() throws IOException, SQLException {
