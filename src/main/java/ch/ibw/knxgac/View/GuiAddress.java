@@ -31,7 +31,6 @@ public class GuiAddress {
     private ListView<ComboBoxItem> adressesGroupList = null;
     private ComboBox<Integer> cbAdressStartNumber= null;
     int idMaingroup;
-    int objectsize;
 
     public GuiAddress(Controller controller){
         this.controller = controller;
