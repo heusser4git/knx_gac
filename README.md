@@ -36,5 +36,5 @@ User:            Datenbankuser siehe Systemvoraussetzungen
 Passwort:        dito User
 CSV Ausgabepfad: Verzeichnis mit Schreibrechten auswählen
 
-Die Systemkonfiguration wird in einem File configruation.txt unter ch.ibw.knxgac abgelegt.
+Die Systemkonfiguration wird in einem File configruation.txt im Projekt-Root abgelegt.
 
